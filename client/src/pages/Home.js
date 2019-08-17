@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col';
-import Navbar from './Component/Navbar';
 import Row from 'react-bootstrap/Row';
 
 class Home extends Component {
@@ -10,10 +9,13 @@ class Home extends Component {
         return (
             <Container>
                 <Row>
-                    <Navbar />
+                    <Col size="md-12">
+                        <h1>Home</h1>
+                    </Col>
                 </Row>
             </Container>
-        )
+        );
     }
-
 }
+
+export default Home;
