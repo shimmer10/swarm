@@ -10,11 +10,15 @@ module.exports = function (sequelize, DataTypes) {
     var Session = sequelize.define("Session", {
         session_date: {
             type: DataTypes.DATE,
-            allowNull: false
+            validate: {
+                allowNull: false
+            }
         },
         team_name: {
             type: DataTypes.STRING,
-            allowNull: false
+            validate: {
+                allowNull: false
+            }
         }
     });
 
@@ -23,7 +27,7 @@ module.exports = function (sequelize, DataTypes) {
             onDelete: "cascade",
             hooks: true
         });
-        Session.hasOne(models.Team, {
+        Session.belongsTo(models.Team, {
         });
     };
 

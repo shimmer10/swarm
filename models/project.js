@@ -10,11 +10,15 @@ module.exports = function (sequelize, DataTypes) {
     var Project = sequelize.define("Project", {
         project_name: {
             type: DataTypes.STRING,
-            allowNull: false
+            validate: {
+                allowNull: false
+            }
         },
         description: {
             type: DataTypes.STRING,
-            len:254
+            validate: {
+                len: 254
+            }
         }
     });
 
