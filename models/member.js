@@ -10,20 +10,26 @@ module.exports = function (sequelize, DataTypes) {
     var Member = sequelize.define("Member", {
         employee_name: {
             type: DataTypes.STRING,
-            allowNull: false
+            validate: {
+                allowNull: false
+            }
         },
         role: {
             type: DataTypes.STRING,
-            allowNull: false
+            validate: {
+                allowNull: false
+            }
         },
         image_link: {
             type: DataTypes.STRING,
-            isUrl: true
+            validate: {
+                isUrl: true
+            }
         }
     });
 
     Member.associate = function (models) {
-        Member.hasOne(models.Employee, {
+        Member.belongsTo(models.Employee_Profile, {
         });
     };
 

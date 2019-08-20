@@ -10,19 +10,27 @@ module.exports = function (sequelize, DataTypes) {
     var Status = sequelize.define("Status", {
         status: {
             type: DataTypes.STRING,
-            allowNull: false
+            validate: {
+                allowNull: false
+            }
         },
         yesterday_description: {
             type: DataTypes.STRING,
-            len: 254
+            validate: {
+                len: 254
+            }
         },
         today_description: {
             type: DataTypes.STRING,
-            len:254
+            validate: {
+                len: 254
+            }
         },
         blocker_description: {
             type: DataTypes.STRING,
-            len:254
+            validate: {
+                len: 254
+            }
         }
     });
 

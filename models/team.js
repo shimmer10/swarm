@@ -10,12 +10,14 @@ module.exports = function (sequelize, DataTypes) {
     var Team = sequelize.define("Team", {
         team_name: {
             type: DataTypes.STRING,
-            allowNull: false
+            validate: {
+                allowNull: false
+            }
         }
     });
 
     Team.associate = function (models) {
-        Team.hasMany(models.Employee, {
+        Team.hasMany(models.Employee_Profile, {
         });
     };
 
