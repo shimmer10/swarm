@@ -1,14 +1,14 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Home from "./pages/Home";
-import Nav from "./components/Nav";
+import NavBar from "./components/Nav";
 import "./App.css";
 
 function App() {
   return (
     <Router>
       <div>
-        <Nav />
+        <NavBar />
         <Switch>
           <Route exact path="/" component={Home} />
         </Switch>
