@@ -42,7 +42,7 @@ class NavBar extends Component {
                     <Nav className="mr-auto">
                         <Navbar.Brand href="/">
                             <img
-                                src={require('../../images/beehive.png')}
+                                src={require('../../images/transparent_beehive.png')}
                                 width="30"
                                 height="30"
                                 className="d-inline-block align-top"
