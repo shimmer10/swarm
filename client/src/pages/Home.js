@@ -37,7 +37,7 @@ class Home extends Component {
                             </h4>
                                 <h4>We want to help solve the remote daily standup conundrum!</h4>
                                 <h4>
-                                    <Link href="/">Sign up </Link>
+                                    <Link className="ml-auto" id="login" to="/loginscreen">Sign up </Link>
                                     today to start having improved standups!
                             </h4>
                             </div>
