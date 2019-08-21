@@ -59,7 +59,7 @@ class NavBar extends Component {
                             <NavDropdown.Item href="https://spbryan.github.io/Bootstrap-Portfolio/">Sean</NavDropdown.Item>
                         </NavDropdown>
                     </Nav>
-                    <Link className="ml-auto" id="login" to="/">
+                    <Link className="ml-auto" id="login" to="/loginscreen">
                         Sign-in/Sign-up
                     </Link>
                 </Navbar.Collapse>
