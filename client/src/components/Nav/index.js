@@ -1,35 +1,71 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import Navbar from "react-bootstrap/";
-import './style.css';
+import Nav from 'react-bootstrap/Nav'
+import Navbar from 'react-bootstrap/Navbar'
+import NavDropdown from 'react-bootstrap/NavDropdown';
+// import './style.css';
 
-class Navbar extends Component {
+class NavBar extends Component {
+
+    state = {
+        open: false,
+        width: window.innerWidth
+    };
+
+    updateWidth = () => {
+        const newState = { width: window.innerWidth };
+
+        if (this.state.open && newState.width < 991) {
+            newState.open = false
+        }
+
+        this.setState(newState);
+    };
+
+    toggleNav = () => {
+        this.setState({ open: !this.state.open });
+    };
+
+    componentDidMount() {
+        window.addEventListener("resize", this.updateWidth);
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener("resize", this.updateWidth);
+    }
 
     render() {
         return (
-            <Navbar bg="dark" variant="dark" expand="lg">
-                <Navbar.Brand href="#home">React-Bootstrap</Navbar.Brand>
-                <Navbar.Toggle aria-controls="basic-navbar-nav" />
-                <Navbar.Collapse id="basic-navbar-nav">
+            <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
+                <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+                <Navbar.Collapse id="responsive-navbar-nav">
                     <Nav className="mr-auto">
-                        <Nav.Link href="#home">Home</Nav.Link>
-                        <Nav.Link href="#link">Link</Nav.Link>
-                        <NavDropdown title="Dropdown" id="basic-nav-dropdown">
-                            <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-                            <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
-                            <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
+                        <Navbar.Brand href="/">
+                            <img
+                                src={require('../../images/transparent_beehive.png')}
+                                width="30"
+                                height="30"
+                                className="d-inline-block align-top"
+                                alt="SWARM"
+                            />
+                        </Navbar.Brand>
+                        <NavDropdown title="Developers" id="collasible-nav-dropdown">
+                            <NavDropdown.Item href="https://bethgrogg.github.io/Portfolio/">Bethany</NavDropdown.Item>
                             <NavDropdown.Divider />
-                            <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
+                            <NavDropdown.Item href="https://brendath.github.io/">Brenda</NavDropdown.Item>
+                            <NavDropdown.Divider />
+                            <NavDropdown.Item href="https://shimmer10.github.io/Bootstrap-Portfolio/">Jenn</NavDropdown.Item>
+                            <NavDropdown.Divider />
+                            <NavDropdown.Item href="https://spbryan.github.io/Bootstrap-Portfolio/">Sean</NavDropdown.Item>
                         </NavDropdown>
                     </Nav>
-                    <Form inline>
-                        <FormControl type="text" placeholder="Search" className="mr-sm-2" />
-                        <Button variant="outline-success">Search</Button>
-                    </Form>
+                    <Link className="ml-auto" id="login" to="/">
+                        Sign-in/Sign-up
+                    </Link>
                 </Navbar.Collapse>
-            </Navbar>
+            </Navbar >
         )
     }
 }
 
-export default Navbar;
+export default NavBar;

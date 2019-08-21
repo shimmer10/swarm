@@ -1,0 +1,15 @@
+h1, h6 {
+    text-align: center;
+}
+
+#home-text {
+    text-align: center;
+}
+
+#main-logo {
+    opacity: 0.5;
+}
+
+#main-section {
+    resize: vertical;
+}
