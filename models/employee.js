@@ -1,5 +1,5 @@
 /********************************
- * Team Model for Swarm
+ * Employee Model for Swarm
  * 
  * @author Scrumblebees
  * 
@@ -7,7 +7,7 @@
  ********************************/
 
 module.exports = function (sequelize, DataTypes) {
-    var Employee_Profile = sequelize.define("Employee_Profile", {
+    var Employee = sequelize.define("Employee", {
         first_name: {
             type: DataTypes.STRING,
             validate: {
@@ -66,5 +66,5 @@ module.exports = function (sequelize, DataTypes) {
     //     });
     // };
 
-    return Employee_Profile;
+    return Employee;
 };

@@ -1,5 +1,5 @@
 /********************************
- * Team Model for Swarm
+ * Status Model for Swarm
  * 
  * @author Scrumblebees
  * 
@@ -8,7 +8,7 @@
 
 module.exports = function (sequelize, DataTypes) {
     var Status = sequelize.define("Status", {
-        status: {
+        current_status: {
             type: DataTypes.STRING,
             validate: {
                 allowNull: false

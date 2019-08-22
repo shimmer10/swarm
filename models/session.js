@@ -1,5 +1,5 @@
 /********************************
- * Team Model for Swarm
+ * Session Model for Swarm
  * 
  * @author Scrumblebees
  * 

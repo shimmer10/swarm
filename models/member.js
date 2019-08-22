@@ -1,5 +1,5 @@
 /********************************
- * Team Model for Swarm
+ * Member Model for Swarm
  * 
  * @author Scrumblebees
  * 
@@ -8,10 +8,16 @@
 
 module.exports = function (sequelize, DataTypes) {
     var Member = sequelize.define("Member", {
-        employee_name: {
+        first_name: {
             type: DataTypes.STRING,
             validate: {
-                allowNull: false
+                notEmpty: true
+            }
+        },
+        last_name: {
+            type: DataTypes.STRING,
+            validate: {
+                notEmpty: true
             }
         },
         role: {
@@ -29,7 +35,7 @@ module.exports = function (sequelize, DataTypes) {
     });
 
     Member.associate = function (models) {
-        Member.belongsTo(models.Employee_Profile, {
+        Member.belongsTo(models.Employee, {
         });
     };
 
