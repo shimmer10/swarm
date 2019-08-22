@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import Container from 'react-bootstrap/Container';
-import Col from 'react-bootstrap/Col';
+// import Container from 'react-bootstrap/Container';
+// import Col from 'react-bootstrap/Col';
 //import Navbar from './Component/Navbar';
-import Row from 'react-bootstrap/Row';
+// import Row from 'react-bootstrap/Row';
 import Login from '../components/LoginForm';
 import Signup from '../components/SignupForm';
-import Button from 'react-bootstrap/Button';
+// import Button from 'react-bootstrap/Button';
 import './Login.css';
 
 
@@ -21,11 +21,11 @@ class LoginScreen extends Component {
 
   showLogin() {
     this.setState({isLoginOpen: true, isRegisterOpen: false});
-  }
+  };
 
   showSignup() {
     this.setState({isRegisterOpen: true, isLoginOpen: false});
-  }
+  };
    
 
       render() {
