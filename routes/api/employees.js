@@ -7,12 +7,26 @@
  ********************************/
 
 const router = require("express").Router();
+const passport = require('passport');
 const employeeController = require("../../controllers/employeeController");
 
 // Matches with "/api/employees"
 router.route("/")
   .get(employeeController.findAll)
-  .post(employeeController.create);
+  // .post(employeeController.create);
+  .post(passport.authenticate('local-signup', {
+    successRedirect: '/dashboard',
+    failureRedirect: '/signup'
+  }
+  ));
+
+// Matches with "/api/employees/login"
+router.route("/login")
+.post(passport.authenticate('local-signup', {
+  successRedirect: '/dashboard',
+  failureRedirect: '/signup'
+}
+));
 
 // Matches with "/api/employees/:id"
 router
