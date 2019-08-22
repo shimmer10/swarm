@@ -40,6 +40,7 @@ class Home extends Component {
                                     <Link className="ml-auto" id="login" to="/loginscreen">Sign up </Link>
                                     today to start having improved standups!
                             </h4>
+                            <h4>If I add more things will it scroll?</h4>
                             </div>
                         </Col>
                         <Col size="md-2">

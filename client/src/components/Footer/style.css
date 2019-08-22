@@ -1,15 +1,12 @@
-.footer {
-    min-height: 50px;
-    position: relative;
-    background: #343a40;
-    color: rgba(255,255,255,.5);
-    bottom: 0;
-    left: 0;
-    right: 0;
+#footer {
+    text-align: center;
+    height: 100%;
+    width: 100%;
 }
   
-  .footer p {
-    text-align: center;
+  #footer p {
+    color: rgba(255,255,255,.5);
+    margin-left: 42%;
     padding-top: 25px;
     padding-bottom: 15px;
   }
