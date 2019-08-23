@@ -21,4 +21,10 @@ router
   .put(sessionController.update)
   .delete(sessionController.remove);
 
+// Matches with "/api/sessions/team/:id"
+router
+  // .route("/:teamName/:sessionDate")
+  .route("/team/:teamName/:sessionDate")
+  .get(sessionController.findByNameAndDate)
+
 module.exports = router;

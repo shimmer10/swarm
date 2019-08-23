@@ -52,7 +52,12 @@ module.exports = {
       TeamId: employee.TeamId
     }, {
         where: { id: req.params.id }
-      }).then(dbEmployee => res.json(dbEmployee))
+      }).then(dbEmployee => {
+        db.Employee.findOne({
+          where: { id: req.params.id }
+        }).then(dbEmployee => res.json(dbEmployee))
+          .catch(err => res.status(422).json(err));
+      })
       .catch(err => res.status(422).json(err));
   },
   remove: function (req, res) {
@@ -61,6 +66,6 @@ module.exports = {
         id: req.params.id
       }
     }).then(dbEmployee => res.json(dbEmployee))
-    .catch(err => res.status(422).json(err));
+      .catch(err => res.status(422).json(err));
   }
 };

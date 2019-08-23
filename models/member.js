@@ -22,9 +22,7 @@ module.exports = function (sequelize, DataTypes) {
         },
         role: {
             type: DataTypes.STRING,
-            validate: {
-                allowNull: false
-            }
+            allowNull: false
         },
         image_link: {
             type: DataTypes.STRING,
@@ -35,7 +33,13 @@ module.exports = function (sequelize, DataTypes) {
     });
 
     Member.associate = function (models) {
+        Member.belongsTo(models.Session, {foreignKey: 'SessionId'
+        });
+
         Member.belongsTo(models.Employee, {
+        });
+
+        Member.hasOne(models.Status, {
         });
     };
 
