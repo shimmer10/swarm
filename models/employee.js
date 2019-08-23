@@ -22,9 +22,7 @@ module.exports = function (sequelize, DataTypes) {
         },
         role: {
             type: DataTypes.STRING,
-            validate: {
-                allowNull: false
-            }
+            allowNull: false
         },
         email: {
             type: DataTypes.STRING,
@@ -34,15 +32,11 @@ module.exports = function (sequelize, DataTypes) {
         },
         password: {
             type: DataTypes.STRING,
-            validate: {
-                allowNull: false
-            }
+            allowNull: false
         },
         employee_number: {
             type: DataTypes.STRING,
-            validate: {
-                allowNull: false
-            }
+            allowNull: false
         },
         image_link: {
             type: DataTypes.STRING,

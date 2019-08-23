@@ -10,9 +10,7 @@ module.exports = function (sequelize, DataTypes) {
     var Team = sequelize.define("Team", {
         team_name: {
             type: DataTypes.STRING,
-            validate: {
-                allowNull: false
-            }
+            allowNull: false
         }
     });
 

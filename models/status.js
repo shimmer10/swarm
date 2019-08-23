@@ -10,9 +10,7 @@ module.exports = function (sequelize, DataTypes) {
     var Status = sequelize.define("Status", {
         current_status: {
             type: DataTypes.STRING,
-            validate: {
-                allowNull: false
-            }
+            allowNull: false
         },
         yesterday_description: {
             type: DataTypes.STRING,

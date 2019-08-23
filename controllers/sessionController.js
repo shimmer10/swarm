@@ -17,7 +17,13 @@ module.exports = {
   },
   findById: function (req, res) {
     db.Session.findOne({
-      where: { id: req.params.id }
+      where: { id: req.params.id },
+      include: [
+        {
+          model: db.Member,
+          include: [db.Status]
+        }
+      ]
     }).then(dbSession => res.json(dbSession))
       .catch(err => res.status(422).json(err));
   },
@@ -27,14 +33,13 @@ module.exports = {
         team_name: req.params.teamName,
         session_date: req.params.sessionDate + TIMESTAMP,
       },
-      //  include: [db.Member]
       include: [
         {
           model: db.Member,
           include: [db.Status]
         }
       ]
-    }).then(dbSession => res.json(dbSession))
+    }).then(dbSession => {res.json(dbSession)})
       .catch(err => res.status(422).json(err));
   },
   create: function (req, res) {

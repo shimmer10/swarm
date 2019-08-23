@@ -21,4 +21,9 @@ router
   .put(teamController.update)
   .delete(teamController.remove);
 
+// Matches with "/api/teams/team/:teamName"
+router
+  .route("/team/:teamName")
+  .get(teamController.findByName)
+
 module.exports = router;

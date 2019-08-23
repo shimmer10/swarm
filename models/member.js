@@ -22,9 +22,7 @@ module.exports = function (sequelize, DataTypes) {
         },
         role: {
             type: DataTypes.STRING,
-            validate: {
-                allowNull: false
-            }
+            allowNull: false
         },
         image_link: {
             type: DataTypes.STRING,
