@@ -10,9 +10,7 @@ module.exports = function (sequelize, DataTypes) {
     var Status = sequelize.define("Status", {
         current_status: {
             type: DataTypes.STRING,
-            validate: {
-                allowNull: false
-            }
+            allowNull: false
         },
         yesterday_description: {
             type: DataTypes.STRING,
@@ -35,7 +33,7 @@ module.exports = function (sequelize, DataTypes) {
     });
 
     Status.associate = function (models) {
-        Status.belongsTo(models.Member, {
+        Status.belongsTo(models.Member, {foreignKey: 'MemberId',
             onDelete: "cascade",
             hooks: true
         });

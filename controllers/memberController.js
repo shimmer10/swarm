@@ -44,7 +44,12 @@ module.exports = {
       SessionId: member.SessionId
     }, {
         where: { id: req.params.id }
-      }).then(dbMember => res.json(dbMember))
+      }).then(dbMember => {
+        db.Member.findOne({
+          where: { id: req.params.id }
+        }).then(dbMember => res.json(dbMember))
+          .catch(err => res.status(422).json(err));
+      })
       .catch(err => res.status(422).json(err));
   },
   remove: function (req, res) {
@@ -53,6 +58,6 @@ module.exports = {
         id: req.params.id
       }
     }).then(dbMember => res.json(dbMember))
-    .catch(err => res.status(422).json(err));
+      .catch(err => res.status(422).json(err));
   }
 };

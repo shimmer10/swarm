@@ -16,7 +16,23 @@ module.exports = {
   },
   findById: function (req, res) {
     db.Team.findOne({
-      where: { id: req.params.id }
+      where: { id: req.params.id },
+      include: [
+        {
+          model: db.Employee
+        }
+      ]
+    }).then(dbTeam => res.json(dbTeam))
+      .catch(err => res.status(422).json(err));
+  },
+  findByName: function (req, res) {
+    db.Team.findOne({
+      where: { team_name: req.params.teamName },
+      include: [
+        {
+          model: db.Employee
+        }
+      ]
     }).then(dbTeam => res.json(dbTeam))
       .catch(err => res.status(422).json(err));
   },
@@ -34,7 +50,13 @@ module.exports = {
       team_name: team.team_name
     }, {
         where: { id: req.params.id }
-      }).then(dbTeam => res.json(dbTeam))
+      }).then(dbTeam => {
+        db.Team.findOne({
+          where: { id: req.params.id }
+        }).then(dbTeam => res.json(dbTeam))
+          .catch(err => res.status(422).json(err));        
+      })
+      // }).then(dbTeam => res.json(dbTeam))
       .catch(err => res.status(422).json(err));
   },
   remove: function (req, res) {
