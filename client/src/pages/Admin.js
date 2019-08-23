@@ -18,62 +18,37 @@ class Admin extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isPeople: true,
-      isProjects: false,
-      isTeams: false
+      key: 'People'
     };
+    this.handleSelect = this.handleSelect.bind(this);
   }
 
-  showPeople() {
-    this.setState({isPeople: true, isProjects: false, isTeams: false});
-  }
-
-  showProjects() {
-    this.setState({isProjects: true, isPeople: false, isTeams: false});
-  }
-   
-  showTeams() {
-    this.setState({isTeams: true, isPeople: false, isProjects: false});
-  }
+  handleSelect(key) {
+    console.log('selected' + key);
+    this.setState({key: key});
+    if (key == 'People') {
+console.log("in people")
+    } else if (key == "Projects") {
+console.log("in projects")
+    } else {
+console.log("in teams")
+    };
+}
    
 
       render() {
         return (
         <div align="center">
           
-          <Tabs defaultActiveKey="People" id="uncontrolled-tab-example">
+          <Tabs activeKey={this.state.key} onSelect={this.handleSelect} id="controlled-tab-example">
             <Tab eventKey="People" title="People">
-            <div
-              className={"controller " + (this.state.isPeople
-                ? "selected-controller"
-                : "")}
-                onClick={this
-                .showPeople
-                .bind(this)}>
-                People
-            </div>
+           
             </Tab>
             <Tab eventKey="Projects" title="Projects">
-            <div
-            className={"controller " + (this.state.isProjects
-              ? "selected-controller"
-              : "")}
-              onClick={this
-              .showProjects
-              .bind(this)}>
-              Projects
-            </div>
+            
             </Tab>
             <Tab eventKey="Teams" title="Teams">
-            <div
-            className={"controller " + (this.state.isTeams
-              ? "selected-controller"
-              : "")}
-              onClick={this
-              .showTeams
-              .bind(this)}>
-              Teams
-            </div>
+           
            
             </Tab>
           </Tabs>
