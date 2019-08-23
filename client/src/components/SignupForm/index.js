@@ -24,20 +24,13 @@ class SignupForm extends Component {
     event.preventDefault();
     API.register(this.state)
       .then(res => {
-        console.log('in handleform submit on then in signup');
-        // console.log(res);
-        console.log(res.status);
-        if (res.status !== 200) {
-          throw new Error(res.data.message);
-        }
-        //const results = res.data.items;
-        //this.setState({ results: results, error: "" });
-
-
-        //console.log(this.state.results);
+        // all is good now go home
+        window.location.href = '/home';
       })
-      .catch(err => this.setState({ error: err.message }));
-
+      .catch(err => {
+        this.setState({ error: err.message })
+        window.location.href = '/authenticateFailure';
+      });
   }
 
   render() {

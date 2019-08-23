@@ -44,12 +44,14 @@ module.exports = function (passport, user) {
                 return bCrypt.hashSync(password, bCrypt.genSaltSync(8), null);
             };
 
+            console.log(" in local -signup ", + password);
             User.findOne({
                 where: {
                     email: email
                 }
             }).then(function (user) {
                 if (user) {
+                    console.log("that email is already taken");
                     return done(null, false, {
                         message: 'That email is already taken'
                     });
@@ -91,19 +93,21 @@ module.exports = function (passport, user) {
             var isValidPassword = function (userpass, password) {
                 return bCrypt.compareSync(password, userpass);
             }
-
+            console.log(" in local -signin ", + password);
             User.findOne({
                 where: {
                     email: email
                 }
             }).then(function (user) {
                 if (!user) {
+                    console.log('for login could not find email matching this email ' + email);
                     return done(null, false, {
                         message: 'Email does not exist'
                     });
                 }
 
                 if (!isValidPassword(user.password, password)) {
+                    console.log('Password in not valid in passport.js bjt ');
                     return done(null, false, {
                         message: 'Incorrect password.'
                     });
