@@ -39,7 +39,15 @@ module.exports = {
           include: [db.Status]
         }
       ]
-    }).then(dbSession => {res.json(dbSession)})
+    }).then(dbSession => {
+      if (dbSession !== null) {
+        res.json(dbSession)
+      }
+      else {
+        console.log("Calling createInitialSession");
+        createInitialSession(req, res);
+      }
+    })
       .catch(err => res.status(422).json(err));
   },
   create: function (req, res) {
@@ -77,3 +85,52 @@ module.exports = {
       .catch(err => res.status(422).json(err));
   }
 };
+
+/**
+ * Function to create Initial Session 
+ * @param {*} req 
+ * @param {*} res 
+//  */
+function createInitialSession(req, res) {
+  db.Team.findOne({
+    where: { team_name: req.params.teamName },
+    include: [
+      {
+        model: db.Employee
+      }
+    ]
+  }).then(dbTeam => {
+    db.Session.create({
+      session_date: req.params.sessionDate,
+      team_name: req.params.teamName,
+      TeamId: dbTeam.id
+    })
+      .then(dbSession => {
+        dbTeam.Employees.forEach(employee => {
+          db.Member.create({
+            first_name: employee.first_name,
+            last_name: employee.last_name,
+            role: employee.role,
+            image_link: employee.image_link,
+            EmployeeId: employee.id,
+            SessionId: dbSession.id
+          })
+            .then(dbMember => {
+              //res.json(dbMember)
+            })
+            .catch(err => res.status(422).json(err));
+        });
+        db.Session.findOne({
+          where: { id: dbSession.id },
+          include: [
+            {
+              model: db.Member
+            }
+          ]
+        }).then(finalSession => res.json(finalSession))
+          .catch(err => res.status(422).json(err));
+      })
+      .catch(err => res.status(422).json(err));
+  })
+    .catch(err => res.status(422).json(err));
+}
