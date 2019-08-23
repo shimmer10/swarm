@@ -35,7 +35,13 @@ module.exports = function (sequelize, DataTypes) {
     });
 
     Member.associate = function (models) {
+        Member.belongsTo(models.Session, {foreignKey: 'SessionId'
+        });
+
         Member.belongsTo(models.Employee, {
+        });
+
+        Member.hasOne(models.Status, {
         });
     };
 

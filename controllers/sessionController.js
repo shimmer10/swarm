@@ -6,6 +6,7 @@
  * 2019-08-17
  ********************************/
 const db = require("../models");
+const TIMESTAMP = "T00:00:00.000Z";
 
 // Defining methods for the Controller
 module.exports = {
@@ -17,6 +18,22 @@ module.exports = {
   findById: function (req, res) {
     db.Session.findOne({
       where: { id: req.params.id }
+    }).then(dbSession => res.json(dbSession))
+      .catch(err => res.status(422).json(err));
+  },
+  findByNameAndDate: function (req, res) {
+    db.Session.findOne({
+      where: {
+        team_name: req.params.teamName,
+        session_date: req.params.sessionDate + TIMESTAMP,
+      },
+      //  include: [db.Member]
+      include: [
+        {
+          model: db.Member,
+          include: [db.Status]
+        }
+      ]
     }).then(dbSession => res.json(dbSession))
       .catch(err => res.status(422).json(err));
   },
@@ -47,6 +64,6 @@ module.exports = {
         id: req.params.id
       }
     }).then(dbSession => res.json(dbSession))
-    .catch(err => res.status(422).json(err));
+      .catch(err => res.status(422).json(err));
   }
 };

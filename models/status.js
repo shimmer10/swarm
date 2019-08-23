@@ -35,7 +35,7 @@ module.exports = function (sequelize, DataTypes) {
     });
 
     Status.associate = function (models) {
-        Status.belongsTo(models.Member, {
+        Status.belongsTo(models.Member, {foreignKey: 'MemberId',
             onDelete: "cascade",
             hooks: true
         });

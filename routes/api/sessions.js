@@ -21,4 +21,9 @@ router
   .put(sessionController.update)
   .delete(sessionController.remove);
 
+router
+  // .route("/:teamName/:sessionDate")
+  .route("/team/:teamName/:sessionDate")
+  .get(sessionController.findByNameAndDate)
+
 module.exports = router;
