@@ -40,7 +40,6 @@ module.exports = {
   update: function (req, res) {
     let employee = req.body;
     db.Employee.update({
-      // id: employee.id,
       first_name: employee.first_name,
       last_name: employee.last_name,
       role: employee.role,
@@ -50,8 +49,6 @@ module.exports = {
       image_link: employee.image_link,
       last_login: employee.last_login,
       status: employee.status,
-      // createdAt: employee.createdAt,
-      // updatedAt: employee.updatedAt,
       TeamId: employee.TeamId
     }, {
         where: { id: req.params.id }

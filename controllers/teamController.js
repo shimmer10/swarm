@@ -50,7 +50,13 @@ module.exports = {
       team_name: team.team_name
     }, {
         where: { id: req.params.id }
-      }).then(dbTeam => res.json(dbTeam))
+      }).then(dbTeam => {
+        db.Team.findOne({
+          where: { id: req.params.id }
+        }).then(dbTeam => res.json(dbTeam))
+          .catch(err => res.status(422).json(err));        
+      })
+      // }).then(dbTeam => res.json(dbTeam))
       .catch(err => res.status(422).json(err));
   },
   remove: function (req, res) {

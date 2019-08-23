@@ -60,7 +60,12 @@ module.exports = {
       TeamId: session.TeamId
     }, {
         where: { id: req.params.id }
-      }).then(dbSession => res.json(dbSession))
+      }).then(dbSession => {
+        db.Session.findOne({
+          where: { id: req.params.id }
+        }).then(dbSession => res.json(dbSession))
+          .catch(err => res.status(422).json(err));
+      })
       .catch(err => res.status(422).json(err));
   },
   remove: function (req, res) {

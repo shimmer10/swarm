@@ -36,7 +36,12 @@ module.exports = {
       description: project.description
     }, {
         where: { id: req.params.id }
-      }).then(dbProject => res.json(dbProject))
+      }).then(dbProject => {
+        db.Project.findOne({
+          where: { id: req.params.id }
+        }).then(dbProject => res.json(dbProject))
+          .catch(err => res.status(422).json(err));
+      })
       .catch(err => res.status(422).json(err));
   },
   remove: function (req, res) {
@@ -45,6 +50,6 @@ module.exports = {
         id: req.params.id
       }
     }).then(dbProject => res.json(dbProject))
-    .catch(err => res.status(422).json(err));
+      .catch(err => res.status(422).json(err));
   }
 };
