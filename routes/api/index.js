@@ -20,7 +20,7 @@ router.use("/projects", projectRoutes);
 router.use("/sessions", sessionRoutes);
 
 // Member Routes
-router.use("/status", statusRoutes);
+router.use("/statuses", statusRoutes);
 
 // Member Routes
 router.use("/teams", teamRoutes);

@@ -15,19 +15,19 @@ module.exports = function (sequelize, DataTypes) {
         yesterday_description: {
             type: DataTypes.STRING,
             validate: {
-                len: 254
+                len: [1, 254]
             }
         },
         today_description: {
             type: DataTypes.STRING,
             validate: {
-                len: 254
+                len: [1, 254]
             }
         },
         blocker_description: {
             type: DataTypes.STRING,
             validate: {
-                len: 254
+                len: [1, 254]
             }
         }
     });
