@@ -20,7 +20,7 @@ class People extends Component {
               People
             </h2>
             <div className="box">
-    
+    <p>Testing</p>
              </div>
       </div>
     );

@@ -26,38 +26,28 @@ class Admin extends Component {
   handleSelect(key) {
     console.log('selected' + key);
     this.setState({key: key});
-    if (key == 'People') {
-console.log("in people")
-    } else if (key == "Projects") {
-console.log("in projects")
-    } else {
-console.log("in teams")
-    };
+    
 }
    
 
       render() {
         return (
         <div align="center">
-          
+         <div className="box-container" align="left">
           <Tabs activeKey={this.state.key} onSelect={this.handleSelect} id="controlled-tab-example">
             <Tab eventKey="People" title="People">
-           
+            <People />
             </Tab>
             <Tab eventKey="Projects" title="Projects">
-            
+            <Projects />
             </Tab>
             <Tab eventKey="Teams" title="Teams">
-           
+           <Teams />
            
             </Tab>
           </Tabs>
          
-          <div className="box-container" align="left">
-            {this.state.isPeople && <People/>}
-            {this.state.isProjects && <Projects/>}
-            {this.state.isTeams && <Teams/>}
-          </div>
+          </div> 
          </div> 
 
         )
