@@ -15,8 +15,25 @@ class LoginForm extends Component {
     };
   }
 
-  submitLogin(e) {}
+  handleInputChange = event => {
+    console.log('handle input change on login: ' + event.target.name + ' ' + event.target.value);
+    this.setState({ [event.target.name]: event.target.value });
+  }
 
+  submitLogin = event => {
+    event.preventDefault();
+    API.login(this.state)
+      .then(res => {
+        console.log(res);
+        // all is good now go home
+        // window.location.href = '/home';
+      })
+      .catch(err => {
+        this.setState({ error: err.message })
+        window.location.href = '/authenticateFailure';
+      });
+
+  }
 
   render() {
     return (
@@ -30,6 +47,7 @@ class LoginForm extends Component {
             <label htmlFor="email">Email</label>
             <input
               type="text"
+              onChange={this.handleInputChange}
               name="email"
               className="login-input"
               placeholder="Email" />
@@ -39,6 +57,7 @@ class LoginForm extends Component {
             <label htmlFor="password">Password</label>
             <input
               type="password"
+              onChange={this.handleInputChange}
               name="password"
               className="login-input"
               placeholder="Password"/>

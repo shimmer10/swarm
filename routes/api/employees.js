@@ -12,21 +12,30 @@ const employeeController = require("../../controllers/employeeController");
 
 // Matches with "/api/employees"
 router.route("/")
-  .get(employeeController.findAll)
-  // .post(employeeController.create);
-  .post(passport.authenticate('local-signup', {
-    successRedirect: '/dashboard',
-    failureRedirect: '/signup'
-  }
-  ));
+  .get(employeeController.findAll);
+
+
+// Matches with "/api/employees/register"
+router.route("/register")
+  // if we fail to authenticate then passport will respond with a 401 unauthorized status
+  .post(passport.authenticate('local-signup'), function (req, res) {
+    // If this function gets called, authentication was successful.
+    // `req.user` contains the authenticated user.
+    console.log(req.user);
+    res.json(req.user);
+  });
+
 
 // Matches with "/api/employees/login"
 router.route("/login")
-.post(passport.authenticate('local-signup', {
-  successRedirect: '/dashboard',
-  failureRedirect: '/signup'
-}
-));
+  // if we fail to authenticate then passport will respond with a 401 unauthorized status
+  .post(passport.authenticate('local-signin'), function (req, res) {
+    // If this function gets called, authentication was successful.
+    // `req.user` contains the authenticated user.
+    console.log(req.user);
+    res.json(req.user);
+  });
+
 
 // Matches with "/api/employees/:id"
 router
