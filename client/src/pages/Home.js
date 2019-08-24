@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import API from "../utils/API";
+import Button from 'react-bootstrap/Button';
 import CustomToggle from '../components/CustomToggle';
 import CustomMenu from '../components/CustomMenu';
 import DatePicker from 'react-date-picker';
@@ -42,7 +43,7 @@ class Home extends Component {
 
                     <Dropdown.Menu as={CustomMenu}>
                         {this.state.teams.map(team => (
-                            <Dropdown.Item>{team.team_name}</Dropdown.Item>
+                            <Dropdown.Item key={team.id}>{team.team_name}</Dropdown.Item>
                         ))}
                     </Dropdown.Menu>
                 </Dropdown>
@@ -50,6 +51,7 @@ class Home extends Component {
                     onChange={this.onChange}
                     value={this.state.date}
                 />
+                <Button variant="outline-primary">Submit</Button>
             </div>
         )
     }
