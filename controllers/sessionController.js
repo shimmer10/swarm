@@ -115,18 +115,12 @@ function createInitialSession(req, res) {
             EmployeeId: employee.id,
             SessionId: dbSession.id
           })
-            .then(dbMember => {
-              //res.json(dbMember)
-            })
+            .then(dbMember => {})
             .catch(err => res.status(422).json(err));
         });
         db.Session.findOne({
           where: { id: dbSession.id },
-          include: [
-            {
-              model: db.Member
-            }
-          ]
+          include: [db.Member]
         }).then(finalSession => res.json(finalSession))
           .catch(err => res.status(422).json(err));
       })
