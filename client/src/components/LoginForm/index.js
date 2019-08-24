@@ -3,6 +3,9 @@ import API from "../../utils/API";
 // import { Link } from 'react-router-dom';
 // import Form from "react-bootstrap/";
 // import Button from "react-bootstrap";
+import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
+import Col from "react-bootstrap/Col";
 //import './style.css';
 
 class LoginForm extends Component {
@@ -43,32 +46,25 @@ class LoginForm extends Component {
             </h2>
         <div className="box">
 
-          <div className="input-group">
-            <label htmlFor="email">Email</label>
-            <input
-              type="text"
-              onChange={this.handleInputChange}
-              name="email"
-              className="login-input"
-              placeholder="Email" />
-          </div>
+        <Form onSubmit={this.submitLogin}>
+          <Form.Row>
+            <Form.Group as={Col} controlId="formGridEmail">
+            <Form.Label>Email</Form.Label>
+            <Form.Control type="email" placeholder="Enter email" onChange={this.handleInputChange} />
+            </Form.Group>
+          </Form.Row>
+          <Form.Row>
+            <Form.Group as={Col} controlId="formGridPassword">
+            <Form.Label>Password</Form.Label>
+            <Form.Control type="password" placeholder="Password" onChange={this.handleInputChange} />
+            </Form.Group>
+          </Form.Row>
+          <Button variant="primary" type="submit">
+              Sign-up
+            </Button>
+          </Form>
 
-          <div className="input-group">
-            <label htmlFor="password">Password</label>
-            <input
-              type="password"
-              onChange={this.handleInputChange}
-              name="password"
-              className="login-input"
-              placeholder="Password"/>
-          </div>
-
-          <button
-            type="button"
-            className="login-btn"
-            onClick={this
-              .submitLogin
-              .bind(this)}>Sign-in</button>
+         
         </div>
       </div>
     );

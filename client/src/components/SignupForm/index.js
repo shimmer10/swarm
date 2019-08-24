@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import API from "../../utils/API";
 // import { Link } from 'react-router-dom';
-// import Form from "react-bootstrap/";
+import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
 //import './style.css';
+import Col from "react-bootstrap/Col";
+
 
 class SignupForm extends Component {
 
@@ -38,64 +41,50 @@ class SignupForm extends Component {
       <div className="inner-container">
         <h2 align="center" className="header">
           Sign-up
-            </h2>
+        </h2>
         <div className="box">
 
-          <div className="input-group">
-            <label htmlFor="firstname">First Name</label>
-            <input
-              type="text"
-              onChange={this.handleInputChange}
-              name="firstname"
-              className="login-input"
-              placeholder="First Name" />
-          </div>
+        <Form onSubmit={this.submitRegister}>
+          <Form.Row>
+            <Form.Group as={Col} controlId="formGridfirstName">
+            <Form.Label>First Name</Form.Label>
+            <Form.Control type="firstname" placeholder="First Name" onChange={this.handleInputChange} />
+            </Form.Group>
 
-          <div className="input-group" >
-            <label htmlFor="lastname">Last Name</label>
-            <input
-              type="text"
-              onChange={this.handleInputChange}
-              name="lastname"
-              className="login-input"
-              placeholder="Last Name" />
-          </div>
+            <Form.Group as={Col} controlId="formGridLastName">
+            <Form.Label>Last Name</Form.Label>
+            <Form.Control type="last name" placeholder="Last Name" onChange={this.handleInputChange} />
+            </Form.Group>
+          </Form.Row>
 
-          <div className="input-group">
-            <label htmlFor="role">Role</label>
-            <input
-              type="dropdown"
-              onChange={this.handleInputChange}
-              name="role"
-              className="login-input"
-              placeholder="Role" />
-          </div>
+          <Form.Row>
+            <Form.Group as={Col} controlId="formGridEmail">
+            <Form.Label>Email</Form.Label>
+            <Form.Control type="email" placeholder="Enter email" onChange={this.handleInputChange} />
+            </Form.Group>
 
-          <div className="input-group">
-            <label htmlFor="email">Email</label>
-            <input
-              type="text"
-              onChange={this.handleInputChange}
-              name="email"
-              className="login-input"
-              placeholder="Email" />
-          </div>
+            <Form.Group as={Col} controlId="formGridPassword">
+            <Form.Label>Password</Form.Label>
+            <Form.Control type="password" placeholder="Password" onChange={this.handleInputChange} />
+            </Form.Group>
+          </Form.Row>
+          <Form.Row>
+            <Form.Group as={Col} controlId="formGridRole">
+            <Form.Label>Role</Form.Label>
+            <Form.Control as="select" onChange={this.handleInputChange}>
+              <option>Choose...</option>
+              <option>Developer</option>
+              <option>Scrum Master</option>
+            </Form.Control>
+            </Form.Group>
+          </Form.Row>
+            <Button variant="primary" type="submit">
+              Sign-up
+            </Button>
+          </Form>
 
-          <div className="input-group">
-            <label htmlFor="password">Password</label>
-            <input
-              type="password"
-              onChange={this.handleInputChange}
-              name="password"
-              className="login-input"
-              placeholder="Password" />
-          </div>
-          <button
-            type="button"
-            className="login-btn"
-            onClick={this
-              .submitRegister
-              .bind(this)}>Sign-up</button>
+
+              
         </div>
       </div>
     );
