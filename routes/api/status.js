@@ -9,12 +9,12 @@
 const router = require("express").Router();
 const statusController = require("../../controllers/statusController");
 
-// Matches with "/api/status"
+// Matches with "/api/statuses"
 router.route("/")
   .get(statusController.findAll)
   .post(statusController.create);
 
-// Matches with "/api/status/:id"
+// Matches with "/api/statuses/:id"
 router
   .route("/:id")
   .get(statusController.findById)
