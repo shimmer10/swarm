@@ -11,10 +11,9 @@
 import axios from "axios";
 
 export default {
-
   // Saves employee info to the database
   register: function (registerData) {
-    return axios.post("/api/employees", registerData);
+    return axios.post("/api/employees/register", registerData);
   },
 
   // verifies employee login info in the database
