@@ -19,5 +19,9 @@ export default {
   // verifies employee login info in the database
   login: function (loginData) {
     return axios.post("/api/employees/login", loginData);
+  },
+
+  getTeams: function() {
+    return axios.get("/api/teams");
   }
 };
