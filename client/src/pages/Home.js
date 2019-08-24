@@ -1,31 +1,49 @@
 import React, { Component } from 'react';
-import DatePicker from 'react-date-picker';
-import Dropdown from 'react-bootstrap/Dropdown';
+import API from "../utils/API";
 import CustomToggle from '../components/CustomToggle';
 import CustomMenu from '../components/CustomMenu';
+import DatePicker from 'react-date-picker';
+import Dropdown from 'react-bootstrap/Dropdown';
 
 class Home extends Component {
     state = {
         date: new Date(),
+        teams: []
+    }
+
+    componentWillMount(){
+        this.getTeams();
     }
 
     onChange = date => this.setState({ date })
 
+    getTeams = () => {
+        API.getTeams()
+          .then(res =>
+            this.setState({
+              teams: res.data
+            })
+          )
+          .catch(() =>
+            this.setState({
+              teams: []
+            })
+          );
+      };
+
     render() {
+        console.log("teams: " + JSON.stringify(this.state.teams));
         return (
             <div>
                 <Dropdown>
                     <Dropdown.Toggle as={CustomToggle} id="dropdown-custom-components">
-                        Custom toggle
+                        Choose Team
                     </Dropdown.Toggle>
 
                     <Dropdown.Menu as={CustomMenu}>
-                        <Dropdown.Item eventKey="1">Red</Dropdown.Item>
-                        <Dropdown.Item eventKey="2">Blue</Dropdown.Item>
-                        <Dropdown.Item eventKey="3" active>
-                            Orange
-                        </Dropdown.Item>
-                        <Dropdown.Item eventKey="1">Red-Orange</Dropdown.Item>
+                        {this.state.teams.map(team => (
+                            <Dropdown.Item>{team.team_name}</Dropdown.Item>
+                        ))}
                     </Dropdown.Menu>
                 </Dropdown>
                 <DatePicker
