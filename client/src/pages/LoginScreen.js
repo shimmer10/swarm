@@ -6,6 +6,8 @@ import React, { Component } from 'react';
 import Login from '../components/LoginForm';
 import Signup from '../components/SignupForm';
 // import Button from 'react-bootstrap/Button';
+import Tabs from 'react-bootstrap/Tabs';
+import Tab from 'react-bootstrap/Tab';
 import './Login.css';
 
 
@@ -14,49 +16,31 @@ class LoginScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isLoginOpen: true,
-      isRegisterOpen: false
+      key: 'Signin'
     };
+    this.handleSelect = this.handleSelect.bind(this);
   }
 
-  showLogin() {
-    this.setState({isLoginOpen: true, isRegisterOpen: false});
-  };
-
-  showSignup() {
-    this.setState({isRegisterOpen: true, isLoginOpen: false});
-  };
-   
+  handleSelect(key) {
+    console.log('selected' + key);
+    this.setState({key: key});
+    
+}
 
       render() {
         return (
         <div align="center">
           <div className="box-container" align="left">
-            {this.state.isLoginOpen && <Login/>}
-            {this.state.isRegisterOpen && <Signup/>}
-          </div>
-
-          <div className="box-controller">
-            <div
-              className={"controller " + (this.state.isLoginOpen
-                ? "selected-controller"
-                : "")}
-                onClick={this
-                .showLogin
-                .bind(this)}>
-                Sign-in
-            </div>
-            <div
-            className={"controller " + (this.state.isRegisterOpen
-              ? "selected-controller"
-              : "")}
-              onClick={this
-              .showSignup
-              .bind(this)}>
-              Sign-up
-            </div>
-
+          <Tabs activeKey={this.state.key} onSelect={this.handleSelect} id="controlled-tab-example">
+            <Tab eventKey="Signin" title="Sign-in">
+            < Login />
+            </Tab>
+            <Tab eventKey="Signup" title="Sign-up">
+            <Signup />
+            </Tab>
             
+          </Tabs>
+                    
           </div>
          </div> 
 

@@ -6,6 +6,7 @@ import NavBar from "./components/Nav";
 import NoMatch from "./pages/NoMatch";
 import Main from "./pages/Main";
 import LoginScreen from "./pages/LoginScreen";
+import Admin from "./pages/Admin";
 import "./App.css";
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
           <Route exact path="/home" component={Home} />
           <Route exact path="/homeTwo" component={Hometwo} />
           <Route exact path="/loginscreen" component={LoginScreen} />
+          <Route exact path="/admin" component={Admin} />
           <Route component={NoMatch} />
         </Switch>
       </div>
