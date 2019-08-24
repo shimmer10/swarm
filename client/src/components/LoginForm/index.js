@@ -1,38 +1,63 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import Form from "react-bootstrap/";
-import Button from "react-bootstrap";
+import API from "../../utils/API";
+// import { Link } from 'react-router-dom';
+// import Form from "react-bootstrap/";
+// import Button from "react-bootstrap";
 //import './style.css';
 
 class LoginForm extends Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {};
-      }
-    
-      submitLogin(e) {}
+  constructor(props) {
+    super(props);
+    this.state = {
+      email: '',
+      password: ''
+    };
+  }
 
-      render() {
-        return (
-          <div className="inner-container">
-            <h2 align="center" className="header">
-              Sign-in
+  handleInputChange = event => {
+    console.log('handle input change on login: ' + event.target.name + ' ' + event.target.value);
+    this.setState({ [event.target.name]: event.target.value });
+  }
+
+  submitLogin = event => {
+    event.preventDefault();
+    API.login(this.state)
+      .then(res => {
+        console.log(res);
+        // all is good now go home
+        // window.location.href = '/home';
+      })
+      .catch(err => {
+        this.setState({ error: err.message })
+        window.location.href = '/authenticateFailure';
+      });
+
+  }
+
+  render() {
+    return (
+      <div className="inner-container">
+        <h2 align="center" className="header">
+          Sign-in
             </h2>
-            <div className="box">
-    
-              <div className="input-group">
-                <label htmlFor="username">Username</label>
-                <input
-                  type="text"
-                  name="username"
-                  className="login-input"
-                  placeholder="Username"/>
-              </div>
-              <div className="input-group">
+        <div className="box">
+
+          <div className="input-group">
+            <label htmlFor="email">Email</label>
+            <input
+              type="text"
+              onChange={this.handleInputChange}
+              name="email"
+              className="login-input"
+              placeholder="Email" />
+          </div>
+
+          <div className="input-group">
             <label htmlFor="password">Password</label>
             <input
               type="password"
+              onChange={this.handleInputChange}
               name="password"
               className="login-input"
               placeholder="Password"/>
@@ -42,8 +67,8 @@ class LoginForm extends Component {
             type="button"
             className="login-btn"
             onClick={this
-            .submitLogin
-            .bind(this)}>Sign-in</button>
+              .submitLogin
+              .bind(this)}>Sign-in</button>
         </div>
       </div>
     );
