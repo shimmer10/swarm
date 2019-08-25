@@ -12,7 +12,7 @@ class Hometwo extends Component {
                 <Container id="container">
                     <Row fluid>
                         <Col size="md-12">
-                            <h1>Congrats on a successful signin/signup</h1>
+                            <h1>sessions</h1>
                         </Col>
                     </Row>
                 </Container>
