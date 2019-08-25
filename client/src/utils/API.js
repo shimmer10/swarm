@@ -29,6 +29,14 @@ export default {
     return axios.get("/api/teams");
   },
 
+  addTeam: function(teamData) {
+    return axios.post("/api/teams", teamData);
+  },
+
+  updateEmployee: function(id, employeeData) {
+    return axios.put("/api/employees/" + id, employeeData);
+  },
+
   getTeamByTeamName: function(teamName) {
     return axios.get("/api/teams/team/" + teamName);
   }
