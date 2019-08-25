@@ -23,30 +23,30 @@ class LoginScreen extends Component {
 
   handleSelect(key) {
     console.log('selected' + key);
-    this.setState({key: key});
-    
-}
+    this.setState({ key: key });
 
-      render() {
-        return (
-        <div align="center">
-          <div className="box-container" align="left">
+  }
+
+  render() {
+    return (
+      <div align="center">
+        <div className="box-container" align="left">
           <Tabs activeKey={this.state.key} onSelect={this.handleSelect} id="controlled-tab-example">
             <Tab eventKey="Signin" title="Sign-in">
-            < Login />
+              < Login />
             </Tab>
             <Tab eventKey="Signup" title="Sign-up">
-            <Signup />
+              <Signup />
             </Tab>
-            
-          </Tabs>
-                    
-          </div>
-         </div> 
 
-        )
-      }
-    };     
+          </Tabs>
+
+        </div>
+      </div>
+
+    )
+  }
+};
 
 
 export default LoginScreen;
