@@ -21,7 +21,15 @@ export default {
     return axios.post("/api/employees/login", loginData);
   },
 
+  getEmployees: function() {
+    return axios.get("/api/employees");
+  },
+
   getTeams: function() {
     return axios.get("/api/teams");
+  },
+
+  getTeamByTeamName: function(teamName) {
+    return axios.get("/api/teams/team/" + teamName);
   }
 };

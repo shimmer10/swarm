@@ -4,9 +4,8 @@ import Form from "react-bootstrap/";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-// import DropdownButton from "react-bootstrap/DropdownButton";
 import Dropdown from "react-bootstrap/Dropdown";
-import ButtonToolbar from "react-bootstrap/ButtonToolbar";
+import ListGroup from "react-bootstrap/ListGroup";
 import API from "../../utils/API";
 import CustomToggle from '../../components/CustomToggle';
 import CustomMenu from '../../components/CustomMenu';
@@ -23,15 +22,22 @@ class Teams extends Component {
   state = {
     teamSelected: false,
     teams: [],
+    employees: [],
+    team: {},
     teamName: "",
   };
 
   componentDidMount() {
     this.getTeams();
+    this.getEmployees();
     this.setState({
       teamSelected: false
     })
   }
+
+  handleEmployeeSelect = id => {
+    alert("Added Employee " + id);
+  };
 
   handleInputChange = event => {
     const { name, value } = event.target;
@@ -45,6 +51,7 @@ class Teams extends Component {
     this.setState({
       teamSelected: true
     })
+    // this.getTeamByTeamName();  <-- use with select option
   };
 
   getTeams = () => {
@@ -61,9 +68,33 @@ class Teams extends Component {
       );
   };
 
-  // addTeam(e) { }
-  // updateTeam(e) { }
-  // deleteTeam(e) { }
+  getEmployees = () => {
+    API.getEmployees()
+      .then(res =>
+        this.setState({
+          employees: res.data
+        })
+      )
+      .catch(() =>
+        this.setState({
+          employees: []
+        })
+      );
+  };
+
+  getTeamByTeamName = () => {
+    API.getTeamByTeamName(this.state.teamName)
+      .then(res =>
+        this.setState({
+          team: res.data
+        })
+      )
+      .catch(() =>
+        this.setState({
+          team: {}
+        })
+      );
+  };
 
   render() {
     if (!this.state.teamSelected) {
@@ -108,6 +139,18 @@ class Teams extends Component {
             <Row>
               <Col>
                 <h1>{this.state.teamName}</h1>
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <h2>Employee List (Click to Add)</h2>
+                <ListGroup>
+                  {this.state.employees.map(employee => (
+                    <ListGroup.Item 
+                      key={employee.id}
+                      onClick={() => this.handleEmployeeSelect(employee.id)}>{employee.last_name}, {employee.first_name}</ListGroup.Item>
+                  ))}
+                </ListGroup>
               </Col>
             </Row>
           </Container>
