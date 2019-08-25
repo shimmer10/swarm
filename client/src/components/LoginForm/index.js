@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
 import API from "../../utils/API";
 // import { Link } from 'react-router-dom';
-// import Form from "react-bootstrap/";
-// import Button from "react-bootstrap";
+import { Redirect } from 'react-router-dom';
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
-//import './style.css';
 
 class LoginForm extends Component {
 
@@ -14,7 +12,8 @@ class LoginForm extends Component {
     super(props);
     this.state = {
       email: '',
-      password: ''
+      password: '',
+      redirect: false
     };
   }
 
@@ -28,17 +27,19 @@ class LoginForm extends Component {
     API.login(this.state)
       .then(res => {
         console.log(res);
-        // all is good now go home
-        // window.location.href = '/home';
+        this.setState({redirect: true});
       })
       .catch(err => {
-        this.setState({ error: err.message })
-        window.location.href = '/authenticateFailure';
+        console.log("in catch for submitlogin form");
+        this.setState({redirect: false});
       });
 
   }
 
   render() {
+    // if redirect is true then go to home
+    if (this.state.redirect) return <Redirect to='/home' />;
+    // else display login form
     return (
       <div className="inner-container">
         <h2 align="center" className="header">
@@ -46,25 +47,25 @@ class LoginForm extends Component {
             </h2>
         <div className="box">
 
-        <Form onSubmit={this.submitLogin}>
-          <Form.Row>
-            <Form.Group as={Col} controlId="formGridEmail">
-            <Form.Label>Email</Form.Label>
-            <Form.Control type="email" placeholder="Enter email" onChange={this.handleInputChange} />
-            </Form.Group>
-          </Form.Row>
-          <Form.Row>
-            <Form.Group as={Col} controlId="formGridPassword">
-            <Form.Label>Password</Form.Label>
-            <Form.Control type="password" placeholder="Password" onChange={this.handleInputChange} />
-            </Form.Group>
-          </Form.Row>
-          <Button variant="primary" type="submit">
-              Sign-up
+          <Form onSubmit={this.submitLogin}>
+            <Form.Row>
+              <Form.Group as={Col} controlId="formGridEmail">
+                <Form.Label>Email</Form.Label>
+                <Form.Control type="email" name="email" placeholder="Enter email" onChange={this.handleInputChange} />
+              </Form.Group>
+            </Form.Row>
+            <Form.Row>
+              <Form.Group as={Col} controlId="formGridPassword">
+                <Form.Label>Password</Form.Label>
+                <Form.Control type="password" name="password" placeholder="Password" onChange={this.handleInputChange} />
+              </Form.Group>
+            </Form.Row>
+            <Button variant="primary" type="submit">
+              Sign-in
             </Button>
           </Form>
 
-         
+
         </div>
       </div>
     );
