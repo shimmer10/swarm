@@ -12,6 +12,13 @@ class NavBar extends Component {
         width: window.innerWidth
     };
 
+    // called when logout button is selected
+    // this clears the session storage which is
+    // what we use to indicate a user is logged in
+    handleLogOut = props => {
+        sessionStorage.clear()
+    }
+
     updateWidth = () => {
         const newState = { width: window.innerWidth };
 
@@ -61,6 +68,9 @@ class NavBar extends Component {
                     </Nav>
                     <Link className="ml-auto" id="login" to="/loginscreen">
                         Sign-in/Sign-up
+                    </Link>
+                    <Link onClick={this.handleLogOut} className="ml-auto" id="logout" to="/">
+                        Logout
                     </Link>
                 </Navbar.Collapse>
             </Navbar >

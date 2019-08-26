@@ -17,6 +17,8 @@ class LoginForm extends Component {
     };
   }
 
+  redirectLocation = '';  // set when we want to redirect. used when this.state.redirect is true
+
   handleInputChange = event => {
     console.log('handle input change on login: ' + event.target.name + ' ' + event.target.value);
     this.setState({ [event.target.name]: event.target.value });
@@ -26,19 +28,30 @@ class LoginForm extends Component {
     event.preventDefault();
     API.login(this.state)
       .then(res => {
-        console.log(res);
-        this.setState({redirect: true});
+        console.log(res.data);
+        // set logged in user into session storage for retreival by other components
+        sessionStorage.setItem("userID", res.data.id);
+        sessionStorage.setItem("firstName", res.data.firstname);
+        sessionStorage.setItem("lastName", res.data.lastname);
+        sessionStorage.setItem("role", res.data.role);
+        sessionStorage.setItem("email", res.data.email);
+
+        this.redirectLocation = '/home';
+        this.setState({ redirect: true });  // causes a re-render so put it last
       })
       .catch(err => {
         console.log("in catch for submitlogin form");
-        this.setState({redirect: false});
+        console.log(err);
+        this.redirectLocation = '/authfailure';
+        this.setState({ redirect: true });   // causes a re-render so put it last
       });
-
   }
 
   render() {
-    // if redirect is true then go to home
-    if (this.state.redirect) return <Redirect to='/home' />;
+    // if redirect is true then go elsewhere
+    if (this.state.redirect) {
+      return <Redirect to={this.redirectLocation} />;
+    }
     // else display login form
     return (
       <div className="inner-container">
