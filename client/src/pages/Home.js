@@ -12,25 +12,38 @@ class Home extends Component {
         teams: []
     }
 
-    componentWillMount(){
+    componentWillMount() {
         this.getTeams();
     }
+
+    componentDidMount() {
+        console.log(sessionStorage)
+        if (sessionStorage.getItem("userID") == undefined) {
+            console.log("no user ID in session");
+            // prevent user from going to this page
+            this.props.history.push({
+                pathname: "/",
+            })
+        }
+
+    }
+
 
     onChange = date => this.setState({ date })
 
     getTeams = () => {
         API.getTeams()
-          .then(res =>
-            this.setState({
-              teams: res.data
-            })
-          )
-          .catch(() =>
-            this.setState({
-              teams: []
-            })
-          );
-      };
+            .then(res =>
+                this.setState({
+                    teams: res.data
+                })
+            )
+            .catch(() =>
+                this.setState({
+                    teams: []
+                })
+            );
+    };
 
     render() {
         console.log("teams: " + JSON.stringify(this.state.teams));

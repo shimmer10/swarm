@@ -23,6 +23,18 @@ class Admin extends Component {
     this.handleSelect = this.handleSelect.bind(this);
   }
 
+  componentDidMount() {
+    console.log(sessionStorage)
+    if (sessionStorage.getItem("role") !== 'Scrum Master') {
+        console.log("user role is not admin in session");
+        // prevent user from going to this page
+        this.props.history.push({
+            pathname: "/",
+        })
+    }
+
+}
+
   handleSelect(key) {
     console.log('selected' + key);
     this.setState({key: key});
