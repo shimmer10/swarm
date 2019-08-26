@@ -4,6 +4,7 @@ import Form from "react-bootstrap/";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import Button from "react-bootstrap/Button";
 import Dropdown from "react-bootstrap/Dropdown";
 import ListGroup from "react-bootstrap/ListGroup";
 import API from "../../utils/API";
@@ -23,21 +24,50 @@ class Teams extends Component {
     teamSelected: false,
     teams: [],
     employees: [],
+    availableEmployees: [],
+    selectedEmployees: [],
     team: {},
     teamName: "",
+    updatedEmployeeIds: []
   };
 
-  componentDidMount() {
+  componentWillMount() {
     this.getTeams();
     this.getEmployees();
     this.setState({
-      teamSelected: false
+      teamSelected: false,
+      selectedEmployees: this.determineSelectedEmployees(),
+      availableEmployees: this.determineAvailableEmployees()
     })
   }
 
+  /******************
+   * Event Handlers
+   ******************/
   handleEmployeeSelect = id => {
-    alert("Added Employee " + id);
-    this.addEmployeeToTeam(id);
+    this.state.employees.forEach(employee => {
+      if (id === employee.id) {
+        employee.TeamId = this.state.team.id;
+        this.state.updatedEmployeeIds.push(id);
+        this.setState({
+          selectedEmployees: this.determineSelectedEmployees(),
+          availableEmployees: this.determineAvailableEmployees()
+        })
+      }
+    });
+  };
+
+  handleEmployeeDeselect = id => {
+    this.state.selectedEmployees.forEach(teamEmployee => {
+      if (id === teamEmployee.id) {
+        teamEmployee.TeamId = null;
+        this.state.updatedEmployeeIds.push(id);
+        this.setState({
+          selectedEmployees: this.determineSelectedEmployees(),
+          availableEmployees: this.determineAvailableEmployees()
+        })
+      }
+    });
   };
 
   handleInputChange = event => {
@@ -50,12 +80,41 @@ class Teams extends Component {
   handleFormSubmit = event => {
     event.preventDefault();
     this.setState({
-      teamSelected: true
+      teamSelected: true,
+      selectedEmployees: this.determineSelectedEmployees(),
+      availableEmployees: this.determineAvailableEmployees()
     })
     this.addTeam();
     // this.getTeamByTeamName();  <-- use with select option
   };
 
+  handleSubmit = (event) => {
+    event.preventDefault();
+    this.updateEmployees();
+    this.getTeams();
+    this.setState({
+      teamSelected: false,
+      team: "",
+      selectedEmployees: this.determineSelectedEmployees(),
+      availableEmployees: this.determineAvailableEmployees()
+    })
+    // this.addTeam();
+    // this.getTeamByTeamName();  <-- use with select option
+  };
+
+  handleCancel = (event) => {
+    event.preventDefault();
+    this.getTeams();
+    this.setState({
+      teamSelected: false,
+      selectedEmployees: this.determineSelectedEmployees(),
+      availableEmployees: this.determineAvailableEmployees()
+    })
+  };
+
+  /********************
+   * API Router Calls
+   ********************/
   getTeams = () => {
     API.getTeams()
       .then(res =>
@@ -84,19 +143,21 @@ class Teams extends Component {
       );
   };
 
-  addEmployeeToTeam = (id) => {
-    this.state.employees.forEach(employee => {
-      if (id === employee.id) {
-        employee.TeamId = this.state.team.id;
-        API.updateEmployee(id, employee)
-          .then(res =>
-            employee = res.data
-          )
-          .catch(() =>
-            employee = {}
-          );
-      }
-    });
+  updateEmployees = () => {
+    let uniqueIdList = Array.from(new Set(this.state.updatedEmployeeIds));
+    if (uniqueIdList.length > 0) {
+      this.state.employees.forEach(employee => {
+        if (uniqueIdList.includes(employee.id)) {
+          API.updateEmployee(employee.id, employee)
+            .then(res =>
+              employee = res.data
+            )
+            .catch(() =>
+              employee = {}
+            );
+        }
+      });
+    }
   };
 
   getEmployees = () => {
@@ -127,6 +188,31 @@ class Teams extends Component {
       );
   };
 
+  /********************
+   * Support Methods
+   ********************/
+  determineSelectedEmployees = () => {
+    let selectedEmployees = [];
+    this.state.employees.forEach(employee => {
+      if (this.state.team &&
+        this.state.team.id === employee.TeamId) {
+        selectedEmployees.push(employee);
+      }
+    });
+    return selectedEmployees;
+  }
+
+  determineAvailableEmployees = () => {
+    let availableEmployees = [];
+    this.state.employees.forEach(employee => {
+      if (!this.state.team ||
+        this.state.team.id !== employee.TeamId) {
+        availableEmployees.push(employee);
+      }
+    });
+    return availableEmployees;
+  }
+
   render() {
     if (!this.state.teamSelected) {
       return (
@@ -137,7 +223,7 @@ class Teams extends Component {
           <Container>
             <Row>
               <Col>
-                <Dropdown>
+                <Dropdown xs={5}>
                   <Dropdown.Toggle as={CustomToggle} id="dropdown-custom-components">
                     Choose Team
                     </Dropdown.Toggle>
@@ -148,7 +234,7 @@ class Teams extends Component {
                   </Dropdown.Menu>
                 </Dropdown>
               </Col>
-              <Col xs={9}>
+              <Col xs={7}>
                 <TeamForm
                   handleInputChange={this.handleInputChange}
                   handleFormSubmit={this.handleFormSubmit}
@@ -164,34 +250,43 @@ class Teams extends Component {
       return (
         <div className="inner-container">
           <h2 align="center" className="header">
-            Teams
-            </h2>
+            {this.state.teamName}
+          </h2>
           <Container>
-            {/* <Row>
-              <Col>
-                <h1>{this.state.teamName}</h1>
-              </Col>
-            </Row> */}
             <Row>
               <Col>
-                <h4>Employee List (Click to Add)</h4>
+                <h4>Employees</h4>
+                <p>Click to Add</p>
                 <ListGroup>
-                  {this.state.employees.map(employee => (
+                  {this.state.availableEmployees.map(availableEmployee => (
                     <ListGroup.Item className="list-item"
-                      key={employee.id}
-                      onClick={() => this.handleEmployeeSelect(employee.id)}>{employee.last_name}, {employee.first_name}</ListGroup.Item>
+                      key={availableEmployee.id}
+                      onClick={() => this.handleEmployeeSelect(availableEmployee.id)}>{availableEmployee.last_name}, {availableEmployee.first_name}</ListGroup.Item>
                   ))}
                 </ListGroup>
               </Col>
               <Col>
-                <h4>{this.state.teamName}</h4>
-                {/* <ListGroup>
-                  {this.state.employees.map(employee => (
-                    <ListGroup.Item 
-                      key={employee.id}
-                      onClick={() => this.handleEmployeeSelect(employee.id)}>{employee.last_name}, {employee.first_name}</ListGroup.Item>
+                <h4>Team Members</h4>
+                <p>Click to Remove</p>
+                <ListGroup>
+                  {this.state.selectedEmployees.map(selectedEmployee => (
+                    <ListGroup.Item className="list-item"
+                      key={selectedEmployee.id}
+                      onClick={() => this.handleEmployeeDeselect(selectedEmployee.id)}>{selectedEmployee.last_name}, {selectedEmployee.first_name}</ListGroup.Item>
                   ))}
-                </ListGroup> */}
+                </ListGroup>
+              </Col>
+            </Row>
+            <Row>
+              <Col align="center">
+                <Button
+                  type="button"
+                  className="new-btn ml-4"
+                  onClick={this.handleSubmit}>Submit</Button>
+                <Button
+                  type="button"
+                  className="new-btn ml-4"
+                  onClick={this.handleCancel}>Cancel</Button>
               </Col>
             </Row>
           </Container>

@@ -9,12 +9,6 @@ function Form({ q, handleInputChange, handleFormSubmit }) {
   return (
     <Container>
       <Row>
-        <Col className="form-button">
-          <Button
-            type="button"
-            className="new-btn ml-4"
-            onClick={handleFormSubmit}>New Team</Button>
-        </Col>
         <Col>
           <form>
             <div className="form-group">
@@ -28,13 +22,14 @@ function Form({ q, handleInputChange, handleFormSubmit }) {
                 onChange={handleInputChange}
                 required
               />
-              {/* <Button
-          type="button"
-          className="new-btn ml-4"
-          onClick={handleFormSubmit}>New Team</Button> */}
             </div>
-
           </form>
+        </Col>
+        <Col className="form-button">
+          <Button
+            type="button"
+            className="new-btn ml-4"
+            onClick={handleFormSubmit}>New Team</Button>
         </Col>
       </Row>
     </Container>
