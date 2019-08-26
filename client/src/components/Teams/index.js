@@ -23,11 +23,13 @@ class Teams extends Component {
     teamSelected: false,
     teams: [],
     employees: [],
+    teamEmployees: [],
     team: {},
     teamName: "",
+    updatedEmployeeIds: []
   };
 
-  componentDidMount() {
+  componentWillMount() {
     this.getTeams();
     this.getEmployees();
     this.setState({
@@ -38,6 +40,11 @@ class Teams extends Component {
   handleEmployeeSelect = id => {
     alert("Added Employee " + id);
     this.addEmployeeToTeam(id);
+  };
+
+  handleEmployeeDeselect = id => {
+    alert("Removed Employee " + id);
+    this.removeEmployeeFromTeam(id);
   };
 
   handleInputChange = event => {
@@ -87,16 +94,62 @@ class Teams extends Component {
   addEmployeeToTeam = (id) => {
     this.state.employees.forEach(employee => {
       if (id === employee.id) {
+        console.log("<debug> size EmployeeList before: " + this.state.employees.length);
         employee.TeamId = this.state.team.id;
-        API.updateEmployee(id, employee)
-          .then(res =>
-            employee = res.data
-          )
-          .catch(() =>
-            employee = {}
-          );
+        let tempTeamList = this.state.teamEmployees;
+        tempTeamList.push(employee);
+        this.state.updatedEmployeeIds.push(id);
+        this.setState({
+          teamEmployees: tempTeamList
+        })
+        console.log("<debug> size EmployeeList after: " + this.state.employees.length);
+        console.log("<debug> size TeamEmpList: " + this.state.teamEmployees.length);
       }
     });
+  };
+
+  removeEmployeeFromTeam = (id) => {
+    this.state.teamEmployees.forEach(teamEmployee => {
+      if (id === teamEmployee.id) {
+        teamEmployee.TeamId = null;
+        // this.state.teamEmployees.
+          this.state.updatedEmployeeIds.push(id);
+      }
+    });
+  };
+
+  updateEmployees = () => {
+    let uniqueIdList = Array.from(new Set(this.state.updatedEmployeeIds));
+    if (uniqueIdList.length > 0) {
+      this.state.employees.forEach(employee => {
+        if (uniqueIdList.includes(employee.id)) {
+          API.updateEmployee(employee.id, employee)
+            .then(res =>
+              employee = res.data
+            )
+            .catch(() =>
+              employee = {}
+            );
+        }
+      });
+    }
+  };
+
+  updateTeamEmployees = () => {
+    let uniqueIdList = Array.from(new Set(this.state.updatedEmployeeIds));
+    if (uniqueIdList.length > 0) {
+      this.state.teamEmployees.forEach(teamEmployee => {
+        if (uniqueIdList.includes(teamEmployee.id)) {
+          API.updateEmployee(teamEmployee.id, teamEmployee)
+            .then(res =>
+              teamEmployee = res.data
+            )
+            .catch(() =>
+              teamEmployee = {}
+            );
+        }
+      });
+    }
   };
 
   getEmployees = () => {
@@ -164,17 +217,13 @@ class Teams extends Component {
       return (
         <div className="inner-container">
           <h2 align="center" className="header">
-            Teams
-            </h2>
+            {this.state.teamName}
+          </h2>
           <Container>
-            {/* <Row>
-              <Col>
-                <h1>{this.state.teamName}</h1>
-              </Col>
-            </Row> */}
             <Row>
               <Col>
-                <h4>Employee List (Click to Add)</h4>
+                <h4>Employees</h4>
+                <p>Click to Add</p>
                 <ListGroup>
                   {this.state.employees.map(employee => (
                     <ListGroup.Item className="list-item"
@@ -184,14 +233,15 @@ class Teams extends Component {
                 </ListGroup>
               </Col>
               <Col>
-                <h4>{this.state.teamName}</h4>
-                {/* <ListGroup>
-                  {this.state.employees.map(employee => (
-                    <ListGroup.Item 
-                      key={employee.id}
-                      onClick={() => this.handleEmployeeSelect(employee.id)}>{employee.last_name}, {employee.first_name}</ListGroup.Item>
+                <h4>Team Members</h4>
+                <p>Click to Remove</p>
+                <ListGroup>
+                  {this.state.teamEmployees.map(teamEmployee => (
+                    <ListGroup.Item className="list-item"
+                      key={teamEmployee.id}
+                      onClick={() => this.handleEmployeeDeselect(teamEmployee.id)}>{teamEmployee.last_name}, {teamEmployee.first_name}</ListGroup.Item>
                   ))}
-                </ListGroup> */}
+                </ListGroup>
               </Col>
             </Row>
           </Container>
