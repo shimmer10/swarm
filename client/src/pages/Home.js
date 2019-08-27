@@ -19,14 +19,13 @@ class Home extends Component {
     componentDidMount() {
         this.getTeams();
         console.log(sessionStorage)
-        if (sessionStorage.getItem("userID") == undefined) {
+        if (sessionStorage.getItem("userID") === undefined) {
             console.log("no user ID in session");
             // prevent user from going to this page
             this.props.history.push({
                 pathname: "/",
             })
         }
-
     }
 
     // get teams from db

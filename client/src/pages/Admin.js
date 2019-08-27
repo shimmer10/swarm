@@ -1,12 +1,7 @@
 import React, { Component } from 'react';
-import Container from 'react-bootstrap/Container';
-import Col from 'react-bootstrap/Col';
-//import Navbar from './Component/Navbar';
-import Row from 'react-bootstrap/Row';
 import People from '../components/People';
 import Projects from '../components/Projects';
 import Teams from '../components/Teams';
-import Button from 'react-bootstrap/Button';
 import Tabs from 'react-bootstrap/Tabs';
 import Tab from 'react-bootstrap/Tab';
 

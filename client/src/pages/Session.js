@@ -6,8 +6,22 @@ import './Session.css';
 
 class Session extends Component {
     state = {
-        date: this.props.location.state.date,
-        teamChosen: this.props.location.state.teamChosen
+        date: "",
+        teamChosen: ""
+    }
+
+    componentDidMount() {
+        if (this.state.date === undefined || this.state.teamChosen === undefined) {
+            console.log("no team/date selected to render session");
+            // prevent user from going to this page without info from /home
+            this.props.history.push({
+                pathname: "/",
+            })
+        }
+        else {
+            this.setState({ date: this.props.location.state.date });
+            this.setState({ teamChosen: this.props.location.state.teamChosen })
+        }
     }
 
     render() {
