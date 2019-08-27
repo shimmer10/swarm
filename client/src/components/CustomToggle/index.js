@@ -15,7 +15,7 @@ class CustomToggle extends Component {
 
     render() {
         return (
-            <a href="" onClick={this.handleClick}>
+            <a href="#" onClick={this.handleClick}>
                 {this.props.children}
             </a>
         );
