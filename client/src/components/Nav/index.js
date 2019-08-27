@@ -57,13 +57,13 @@ class NavBar extends Component {
                             />
                         </Navbar.Brand>
                         <NavDropdown title="Developers" id="collasible-nav-dropdown">
-                            <NavDropdown.Item href="https://bethgrogg.github.io/Portfolio/">Bethany</NavDropdown.Item>
+                            <NavDropdown.Item href="https://bethgrogg.github.io/Portfolio/" target="_blank">Bethany</NavDropdown.Item>
                             <NavDropdown.Divider />
-                            <NavDropdown.Item href="https://brendath.github.io/">Brenda</NavDropdown.Item>
+                            <NavDropdown.Item href="https://brendath.github.io/" target="_blank">Brenda</NavDropdown.Item>
                             <NavDropdown.Divider />
-                            <NavDropdown.Item href="https://shimmer10.github.io/Bootstrap-Portfolio/">Jenn</NavDropdown.Item>
+                            <NavDropdown.Item href="https://shimmer10.github.io/Bootstrap-Portfolio/" target="_blank">Jenn</NavDropdown.Item>
                             <NavDropdown.Divider />
-                            <NavDropdown.Item href="https://spbryan.github.io/Bootstrap-Portfolio/">Sean</NavDropdown.Item>
+                            <NavDropdown.Item href="https://spbryan.github.io/Bootstrap-Portfolio/" target="_blank">Sean</NavDropdown.Item>
                         </NavDropdown>
                     </Nav>
                     <Link className="ml-auto" id="login" to="/loginscreen">
