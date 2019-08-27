@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import Footer from '../components/Footer';
 import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col';
 import Image from 'react-bootstrap/Image';
@@ -47,7 +46,6 @@ class Main extends Component {
                         </Col>
                     </Row>
                 </Container>
-                <Footer />
             </div>
         );
     }
