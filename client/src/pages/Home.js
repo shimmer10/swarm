@@ -7,6 +7,7 @@ import CustomMenu from '../components/CustomMenu';
 import DatePicker from 'react-date-picker';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Moment from 'moment';
+
 class Home extends Component {
     state = {
         date: Moment(new Date()).format('YYYY-MM-DD'),
@@ -17,9 +18,18 @@ class Home extends Component {
 
     componentDidMount() {
         this.getTeams();
+        console.log(sessionStorage)
+        if (sessionStorage.getItem("userID") == undefined) {
+            console.log("no user ID in session");
+            // prevent user from going to this page
+            this.props.history.push({
+                pathname: "/",
+            })
+        }
+
     }
 
-    // get teams from database
+    // get teams from db
     getTeams = () => {
         API.getTeams()
             .then(res =>
@@ -66,8 +76,6 @@ class Home extends Component {
     }
 
     render() {
-        console.log("teams: " + JSON.stringify(this.state.teams));
-        var chosenteam = this.state.teamChosen;
         return (
             <div>
                 {this.renderRedirect()}
