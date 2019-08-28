@@ -69,9 +69,7 @@ class NavBar extends Component {
                     <Link className="ml-auto" id="login" to="/loginscreen">
                         Sign-in/Sign-up
                     </Link>
-                    <Link onClick={this.handleLogOut} className="ml-auto" id="logout" to="/">
-                        Logout
-                    </Link>
+                    
                 </Navbar.Collapse>
             </Navbar >
         )

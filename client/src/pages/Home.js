@@ -5,6 +5,8 @@ import CustomToggle from '../components/CustomToggle';
 import CustomMenu from '../components/CustomMenu';
 import DatePicker from 'react-date-picker';
 import Dropdown from 'react-bootstrap/Dropdown';
+import NavDeveloper from '../components/NavDeveloper';
+import NavScrumMaster from '../components/NavScrumMaster';
 
 class Home extends Component {
     state = {
@@ -23,6 +25,7 @@ class Home extends Component {
             // prevent user from going to this page
             this.props.history.push({
                 pathname: "/",
+            
             })
         }
 
