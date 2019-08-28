@@ -1,3 +1,11 @@
 .list-item:hover {
     background-color: #4f9eff;
 }
+
+.list-overflow-container {
+    max-height: 180px;
+    border: 1px #DDDDDD solid;
+    border-radius: 4px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+  }
