@@ -35,24 +35,34 @@ class Teams extends Component {
     this.getTeams();
     this.getEmployees();
     this.setState({
-      teamSelected: false,
-      selectedEmployees: this.determineSelectedEmployees(),
-      availableEmployees: this.determineAvailableEmployees()
+      teamSelected: false
+    }, () => {
+      this.determineSelectedEmployees();
+      this.determineAvailableEmployees();
     })
   }
 
   /******************
    * Event Handlers
    ******************/
+  teamSelectHandler = event => {
+    this.setState({
+      teamSelected: true,
+      team: event,
+      teamName: event.team_name,
+    }, () => {
+      this.determineSelectedEmployees();
+      this.determineAvailableEmployees();
+    })
+  }
+
   handleEmployeeSelect = id => {
     this.state.employees.forEach(employee => {
       if (id === employee.id) {
         employee.TeamId = this.state.team.id;
         this.state.updatedEmployeeIds.push(id);
-        this.setState({
-          selectedEmployees: this.determineSelectedEmployees(),
-          availableEmployees: this.determineAvailableEmployees()
-        })
+        this.determineSelectedEmployees();
+        this.determineAvailableEmployees();
       }
     });
   };
@@ -62,10 +72,8 @@ class Teams extends Component {
       if (id === teamEmployee.id) {
         teamEmployee.TeamId = null;
         this.state.updatedEmployeeIds.push(id);
-        this.setState({
-          selectedEmployees: this.determineSelectedEmployees(),
-          availableEmployees: this.determineAvailableEmployees()
-        })
+        this.determineSelectedEmployees();
+        this.determineAvailableEmployees();
       }
     });
   };
@@ -80,12 +88,12 @@ class Teams extends Component {
   handleFormSubmit = event => {
     event.preventDefault();
     this.setState({
-      teamSelected: true,
-      selectedEmployees: this.determineSelectedEmployees(),
-      availableEmployees: this.determineAvailableEmployees()
+      teamSelected: true
+    }, () => {
+      this.determineSelectedEmployees();
+      this.determineAvailableEmployees();
     })
     this.addTeam();
-    // this.getTeamByTeamName();  <-- use with select option
   };
 
   handleSubmit = (event) => {
@@ -95,11 +103,9 @@ class Teams extends Component {
     this.setState({
       teamSelected: false,
       team: "",
-      selectedEmployees: this.determineSelectedEmployees(),
-      availableEmployees: this.determineAvailableEmployees()
+      selectedEmployees: [],
+      availableEmployees: []
     })
-    // this.addTeam();
-    // this.getTeamByTeamName();  <-- use with select option
   };
 
   handleCancel = (event) => {
@@ -107,8 +113,8 @@ class Teams extends Component {
     this.getTeams();
     this.setState({
       teamSelected: false,
-      selectedEmployees: this.determineSelectedEmployees(),
-      availableEmployees: this.determineAvailableEmployees()
+      selectedEmployees: [],
+      availableEmployees: []
     })
   };
 
@@ -199,7 +205,10 @@ class Teams extends Component {
         selectedEmployees.push(employee);
       }
     });
-    return selectedEmployees;
+
+    this.setState({
+      selectedEmployees: selectedEmployees
+    })
   }
 
   determineAvailableEmployees = () => {
@@ -210,7 +219,10 @@ class Teams extends Component {
         availableEmployees.push(employee);
       }
     });
-    return availableEmployees;
+
+    this.setState({
+      availableEmployees: availableEmployees
+    })
   }
 
   render() {
@@ -229,7 +241,8 @@ class Teams extends Component {
                     </Dropdown.Toggle>
                   <Dropdown.Menu as={CustomMenu}>
                     {this.state.teams.map(team => (
-                      <Dropdown.Item key={team.id}>{team.team_name}</Dropdown.Item>
+                      <Dropdown.Item key={team.id}
+                        onClick={() => this.teamSelectHandler(team)}>{team.team_name}</Dropdown.Item>
                     ))}
                   </Dropdown.Menu>
                 </Dropdown>
@@ -258,7 +271,7 @@ class Teams extends Component {
                 <h4>Employees</h4>
                 <p>Click to Add</p>
                 <ListGroup>
-                  {this.state.availableEmployees.map(availableEmployee => (
+                  {this.state.availableEmployees.length > 0 && this.state.availableEmployees.map(availableEmployee => (
                     <ListGroup.Item className="list-item"
                       key={availableEmployee.id}
                       onClick={() => this.handleEmployeeSelect(availableEmployee.id)}>{availableEmployee.last_name}, {availableEmployee.first_name}</ListGroup.Item>
@@ -269,7 +282,7 @@ class Teams extends Component {
                 <h4>Team Members</h4>
                 <p>Click to Remove</p>
                 <ListGroup>
-                  {this.state.selectedEmployees.map(selectedEmployee => (
+                  {this.state.selectedEmployees.length > 0 && this.state.selectedEmployees.map(selectedEmployee => (
                     <ListGroup.Item className="list-item"
                       key={selectedEmployee.id}
                       onClick={() => this.handleEmployeeDeselect(selectedEmployee.id)}>{selectedEmployee.last_name}, {selectedEmployee.first_name}</ListGroup.Item>
