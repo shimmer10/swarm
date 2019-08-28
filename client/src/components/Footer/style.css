@@ -1,13 +1,5 @@
-#footer {
-    text-align: center;
-    height: 100%;
-    width: 100%;
-}
-  
-  #footer p {
+  #copyright {
     color: rgba(255,255,255,.5);
     margin-left: 42%;
-    padding-top: 25px;
-    padding-bottom: 15px;
   }
   
