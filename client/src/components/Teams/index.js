@@ -96,7 +96,7 @@ class Teams extends Component {
     this.addTeam();
   };
 
-  handleSubmit = (event) => {
+  handleSave = (event) => {
     event.preventDefault();
     this.updateEmployees();
     this.getTeams();
@@ -108,13 +108,14 @@ class Teams extends Component {
     })
   };
 
-  handleCancel = (event) => {
+  handleExit = (event) => {
     event.preventDefault();
     this.getTeams();
     this.setState({
       teamSelected: false,
       selectedEmployees: [],
-      availableEmployees: []
+      availableEmployees: [],
+      updatedEmployeeIds: []
     })
   };
 
@@ -270,7 +271,7 @@ class Teams extends Component {
               <Col>
                 <h4>Employees</h4>
                 <p>Click to Add</p>
-                <ListGroup>
+                <ListGroup className="list-overflow-container">
                   {this.state.availableEmployees.length > 0 && this.state.availableEmployees.map(availableEmployee => (
                     <ListGroup.Item className="list-item"
                       key={availableEmployee.id}
@@ -281,7 +282,7 @@ class Teams extends Component {
               <Col>
                 <h4>Team Members</h4>
                 <p>Click to Remove</p>
-                <ListGroup>
+                <ListGroup className="list-overflow-container">
                   {this.state.selectedEmployees.length > 0 && this.state.selectedEmployees.map(selectedEmployee => (
                     <ListGroup.Item className="list-item"
                       key={selectedEmployee.id}
@@ -290,16 +291,16 @@ class Teams extends Component {
                 </ListGroup>
               </Col>
             </Row>
-            <Row>
+            <Row className="button-row">
               <Col align="center">
                 <Button
                   type="button"
                   className="new-btn ml-4"
-                  onClick={this.handleSubmit}>Submit</Button>
+                  onClick={this.handleSave}>Save</Button>
                 <Button
                   type="button"
                   className="new-btn ml-4"
-                  onClick={this.handleCancel}>Cancel</Button>
+                  onClick={this.handleExit}>Exit</Button>
               </Col>
             </Row>
           </Container>
