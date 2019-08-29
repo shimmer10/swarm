@@ -14,7 +14,7 @@ class Session extends Component {
         members: [],
         date: "",
         teamChosen: "",
-        status: ""
+        status: "choose status"
     }
 
     componentDidMount() {
@@ -50,10 +50,9 @@ class Session extends Component {
     };
 
     // handle status selection
-    handleStatusSelect(event){
+    handleStatusSelect(event) {
         var status = event.target.value;
         this.setState({ status })
-        console.log("status: " + status);
     }
 
     render() {
@@ -80,10 +79,16 @@ class Session extends Component {
                                                 <Form.Group controlId="exampleForm.ControlSelect1">
                                                     <Form.Label>Status</Form.Label>
                                                     <Form.Control as="select" onChange={this.handleStatusSelect.bind(this)}>
+                                                        <option value="choose status">Choose Status</option>
                                                         <option value="blocked">Blocked</option>
                                                         <option value="impeded">Impeded</option>
                                                         <option value="clear">Clear</option>
                                                     </Form.Control>
+                                                    {this.state.status == "blocked" &&
+                                                        (<Form.Group controlId="exampleForm.ControlTextarea1">
+                                                            <Form.Label>Blocker</Form.Label>
+                                                            <Form.Control as="textarea" rows="3" placeholder="What is blocking you?" />
+                                                        </Form.Group>)}
                                                 </Form.Group>
                                             </Form>
                                         </Card.Body>
