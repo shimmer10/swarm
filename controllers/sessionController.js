@@ -50,6 +50,24 @@ module.exports = {
     })
       .catch(err => res.status(422).json(err));
   },
+  findByNameAndDateRange: function (req, res) {
+    const Op = require('../models').Sequelize.Op;
+    db.Session.findAll({
+      where: {
+        team_name: req.params.teamName,
+        session_date: {
+          [Op.between]: [req.params.sessionDateLow + TIMESTAMP, req.params.sessionDateHigh + TIMESTAMP]
+        }
+      },
+      include: [
+        {
+          model: db.Member,
+          include: [db.Status]
+        }
+      ]
+    }).then(dbSession => res.json(dbSession))
+      .catch(err => res.status(422).json(err));
+  },
   create: function (req, res) {
     let session = req.body;
     db.Session.create({
@@ -115,7 +133,7 @@ function createInitialSession(req, res) {
             EmployeeId: employee.id,
             SessionId: dbSession.id
           })
-            .then(dbMember => {})
+            .then(dbMember => { })
             .catch(err => res.status(422).json(err));
         });
         db.Session.findOne({

@@ -21,10 +21,14 @@ router
   .put(sessionController.update)
   .delete(sessionController.remove);
 
-// Matches with "/api/sessions/team/:id"
+// Matches with "/api/sessions/team/:teamName/:sessionDate"
 router
-  // .route("/:teamName/:sessionDate")
   .route("/team/:teamName/:sessionDate")
   .get(sessionController.findByNameAndDate)
+
+// Matches with "/api/sessions/range/:teamName/:sessionDateLow/:sessionDateHigh"
+router
+  .route("/range/:teamName/:sessionDateLow/:sessionDateHigh")
+  .get(sessionController.findByNameAndDateRange)
 
 module.exports = router;
