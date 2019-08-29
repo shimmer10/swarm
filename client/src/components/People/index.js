@@ -2,22 +2,22 @@ import React, { Component } from 'react';
 
 class People extends Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {};
-      }
-    
-      submitPeople(e) {}
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
 
-      render() {
-        return (
-          <div className="inner-container">
-            <h2 align="center" className="header">
-              People
+  submitPeople(e) { }
+
+  render() {
+    return (
+      <div className="inner-container">
+        <h2 align="center" className="header">
+          People
             </h2>
-            <div className="box">
-    <p>Testing</p>
-             </div>
+        <div className="box">
+          <p>Testing</p>
+        </div>
       </div>
     );
   }
