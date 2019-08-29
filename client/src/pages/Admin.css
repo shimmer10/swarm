@@ -77,6 +77,12 @@ body,
     border-bottom: 2px solid #70a1ff;
 }
 
+.button-row {
+    border-top: 2px solid #70a1ff;
+    margin-top: 10px;
+    padding-top: 20px;
+}
+
 .box {
     display: flex;
     flex-direction: column;
