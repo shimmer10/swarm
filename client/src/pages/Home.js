@@ -6,27 +6,26 @@ import CustomToggle from '../components/CustomToggle';
 import CustomMenu from '../components/CustomMenu';
 import DatePicker from 'react-date-picker';
 import Dropdown from 'react-bootstrap/Dropdown';
-import Moment from 'moment';
 
 class Home extends Component {
     state = {
-        date: Moment(new Date()).format('YYYY-MM-DD'),
+        date: new Date(),
         teams: [],
         redirect: false,
-        teamChosen: 0
+        teamChosen: 0,
+        dropdownLabel: "Choose Team"
     }
 
     componentDidMount() {
         this.getTeams();
         console.log(sessionStorage)
-        if (sessionStorage.getItem("userID") == undefined) {
+        if (sessionStorage.getItem("userID") === undefined) {
             console.log("no user ID in session");
             // prevent user from going to this page
             this.props.history.push({
                 pathname: "/",
             })
         }
-
     }
 
     // get teams from db
@@ -49,7 +48,7 @@ class Home extends Component {
 
     // handle team selection
     handleTeamSelect = teamChosen => {
-        this.setState({ teamChosen })
+        this.setState({ teamChosen, dropdownLabel: teamChosen })
     }
 
     // set redirect to true
@@ -57,7 +56,6 @@ class Home extends Component {
         this.setState({
             redirect: true
         })
-        console.log("team chosen: " + JSON.stringify(this.state.teamChosen));
     }
 
     // render /sessions on redirect
@@ -80,8 +78,8 @@ class Home extends Component {
             <div>
                 {this.renderRedirect()}
                 <Dropdown>
-                    <Dropdown.Toggle as={CustomToggle} id="dropdown-custom-components" placeholder="Choose Team" onChange={this.handleChange}>
-                        this.state.teamChosen
+                    <Dropdown.Toggle as={CustomToggle} id="dropdown-custom-components">
+                        {this.state.dropdownLabel}
                     </Dropdown.Toggle>
                     <Dropdown.Menu as={CustomMenu}>
                         {this.state.teams.map(team => (

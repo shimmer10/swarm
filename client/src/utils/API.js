@@ -39,5 +39,11 @@ export default {
 
   getTeamByTeamName: function(teamName) {
     return axios.get("/api/teams/team/" + teamName);
+  },
+
+  getSessionByTeamNameAndDate: function(teamName, sessionDate) {
+    console.log("path is /api/sessions/team/" + teamName + "/" + sessionDate)
+    return axios.get("/api/sessions/team/" + teamName + "/" + sessionDate);
   }
+
 };
