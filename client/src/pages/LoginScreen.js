@@ -27,6 +27,10 @@ class LoginScreen extends Component {
 
   }
 
+  componentDidMount() {
+    console.log("trying something: " + this.props.getNav);
+  }
+
   render() {
     return (
       <div align="center">
