@@ -88,11 +88,12 @@ class Teams extends Component {
   handleFormSubmit = event => {
     event.preventDefault();
     this.setState({
+      team: null,
       teamSelected: true
     }, () => {
       this.determineSelectedEmployees();
       this.determineAvailableEmployees();
-    })
+    });
     this.addTeam();
   };
 
