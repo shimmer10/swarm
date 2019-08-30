@@ -9,7 +9,10 @@ import Dropdown from 'react-bootstrap/Dropdown';
 class Home extends Component {
     state = {
         date: new Date(),
-        teams: []
+        teams: [],
+        redirect: false,
+        teamChosen: 0,
+        dropdownLabel: "Choose Team"
     }
 
     componentWillMount() {
@@ -18,14 +21,13 @@ class Home extends Component {
 
     componentDidMount() {
         console.log(sessionStorage)
-        if (sessionStorage.getItem("userID") == undefined) {
+        if (sessionStorage.getItem("userID") === undefined) {
             console.log("no user ID in session");
             // prevent user from going to this page
             this.props.history.push({
                 pathname: "/",
             })
         }
-
     }
 
 
@@ -45,6 +47,36 @@ class Home extends Component {
             );
     };
 
+    // handle date selection from date picker
+    handleDateSelect = date => this.setState({ date })
+
+    // handle team selection
+    handleTeamSelect = teamChosen => {
+        this.setState({ teamChosen, dropdownLabel: teamChosen })
+    }
+
+    // set redirect to true
+    setRedirect = () => {
+        this.setState({
+            redirect: true
+        })
+    }
+
+    // render /sessions on redirect
+    renderRedirect = () => {
+        var date = this.state.date;
+        var teamChosen = this.state.teamChosen;
+        if (this.state.redirect) {
+            return <Redirect to={{
+                pathname: '/session',
+                state: {
+                    date,
+                    teamChosen
+                }
+            }} />
+        }
+    }
+
     render() {
         console.log("teams: " + JSON.stringify(this.state.teams));
         return (
@@ -52,6 +84,7 @@ class Home extends Component {
                 <Dropdown>
                     <Dropdown.Toggle as={CustomToggle} id="dropdown-custom-components">
                         Choose Team
+                        {this.state.dropdownLabel}
                     </Dropdown.Toggle>
 
                     <Dropdown.Menu as={CustomMenu}>

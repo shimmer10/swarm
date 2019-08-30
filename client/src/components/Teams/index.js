@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import Form from "react-bootstrap/";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -88,11 +86,12 @@ class Teams extends Component {
   handleFormSubmit = event => {
     event.preventDefault();
     this.setState({
+      team: null,
       teamSelected: true
     }, () => {
       this.determineSelectedEmployees();
       this.determineAvailableEmployees();
-    })
+    });
     this.addTeam();
   };
 
