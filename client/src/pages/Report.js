@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-// import { Redirect } from 'react-router-dom'
 import API from "../utils/API";
 import Button from 'react-bootstrap/Button';
 import CustomToggle from '../components/CustomToggle';
@@ -19,6 +18,10 @@ class Report extends Component {
         highDate: new Date(),
         teams: [],
         sessions: [],
+        sessionDates: [],
+        redTotals: [],
+        yellowTotals: [],
+        greenTotals: [],
         displayReport: false,
         teamChosen: 0,
         dropdownLabel: "Choose Team"
@@ -48,10 +51,15 @@ class Report extends Component {
 
     displayReport = () => {
         this.getSessions();
-        this.setState({
-            displayReport: true
-        })
-        alert("Team: " + this.state.teamChosen + " Low Date: " + this.state.lowDate + " High Date: " + this.state.highDate);
+        // this.determineCounts();
+        // this.setState({
+        //     displayReport: true
+        // }
+        // , () => {
+        //     console.log(JSON.stringify(this.state.sessions));
+        //     this.determineCounts();
+        // }
+        // );
     }
 
     resetPage = () => {
@@ -60,6 +68,10 @@ class Report extends Component {
             highDate: new Date(),
             teamChosen: 0,
             sessions: [],
+            sessionDates: [],
+            redTotals: [],
+            yellowTotals: [],
+            greenTotal: [],
             displayReport: false
         })
     }
@@ -85,10 +97,14 @@ class Report extends Component {
         var lowDate = Moment(this.state.lowDate).format('YYYY-MM-DD');
         var highDate = Moment(this.state.highDate).format('YYYY-MM-DD');
         API.getSessionByTeamNameAndDateRange(this.state.teamChosen, lowDate, highDate)
-            .then(res =>
+            .then(res => {
                 this.setState({
                     sessions: res.data
+                    // displayReport: true
                 })
+                console.log("<debug> calling determineCounts");
+                this.determineCounts();
+            }
             )
             .catch(() =>
                 this.setState({
@@ -97,20 +113,46 @@ class Report extends Component {
             );
     };
 
-    // render /sessions on redirect
-    // renderRedirect = () => {
-    //     var date = this.state.date;
-    //     var teamChosen = this.state.teamChosen;
-    //     if (this.state.redirect) {
-    //         return <Redirect to={{
-    //             pathname: '/session',
-    //             state: {
-    //                 date,
-    //                 teamChosen
-    //             }
-    //         }} />
-    //     }
-    // }
+    /**
+     * Support Methods
+     */
+    determineCounts = () => {
+        let dateList = [];
+        let redList = [];
+        let yellowList = [];
+        let greenList = [];
+        this.state.sessions.forEach(session => {
+            let redCtr = 0;
+            let yellowCtr = 0;
+            let greenCtr = 0;
+            dateList.push(session.session_date);
+            session.Members.forEach(member => {
+                if (member.Status) {
+                    if (member.Status.current_status === "RED") {
+                        redCtr++;
+                    }
+                    else if (member.Status.current_status === "YELLOW") {
+                        yellowCtr++;
+                    }
+                    else {
+                        greenCtr++;
+                    }
+                }
+            });
+            redList.push(redCtr);
+            yellowList.push(yellowCtr);
+            greenList.push(greenCtr);
+        });
+
+        this.setState({
+            sessionDates: dateList,
+            redTotals: redList,
+            yellowTotals: yellowList,
+            greenTotals: greenList,
+            displayReport: true
+        })
+        console.log("<debug> leaving determineCounts");
+    }
 
     render() {
         if (!this.state.displayReport) {
@@ -162,7 +204,11 @@ class Report extends Component {
                     <Row>
                         <Col>
                             <h1>Main Diagram</h1>
-                            <p>{JSON.stringify(this.state.sessions)}</p>
+                            {/* <p>{JSON.stringify(this.state.sessions)}</p> */}
+                            <p>{this.state.sessionDates}</p>
+                            <p>{this.state.redTotals}</p>
+                            <p>{this.state.yellowTotals}</p>
+                            <p>{this.state.greenTotals}</p>
                         </Col>
                     </Row>
                     <Row>
