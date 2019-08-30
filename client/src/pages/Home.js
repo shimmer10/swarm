@@ -4,15 +4,19 @@ import API from "../utils/API";
 import Button from 'react-bootstrap/Button';
 import CustomToggle from '../components/CustomToggle';
 import CustomMenu from '../components/CustomMenu';
+import Col from 'react-bootstrap/Col';
+import Container from 'react-bootstrap/Container'
 import DatePicker from 'react-date-picker';
 import Dropdown from 'react-bootstrap/Dropdown';
+import Row from 'react-bootstrap/Row';
+import './Home.css';
 
 class Home extends Component {
     state = {
         date: new Date(),
         teams: [],
         redirect: false,
-        teamChosen: 0,
+        teamChosen: null,
         dropdownLabel: "Choose Team"
     }
 
@@ -58,18 +62,28 @@ class Home extends Component {
         })
     }
 
+    setStateToFalse = () => this.setState({ redirect: false })
+
     // render /sessions on redirect
     renderRedirect = () => {
         var date = this.state.date;
         var teamChosen = this.state.teamChosen;
+
         if (this.state.redirect) {
-            return <Redirect to={{
-                pathname: '/session',
-                state: {
-                    date,
-                    teamChosen
-                }
-            }} />
+            if (teamChosen != null) {
+
+                return <Redirect to={{
+                    pathname: '/session',
+                    state: {
+                        date,
+                        teamChosen
+                    }
+                }} />
+            }
+            else {
+                alert("Please Choose a Team");
+                this.setStateToFalse();
+            }
         }
     }
 
@@ -77,23 +91,31 @@ class Home extends Component {
         return (
             <div>
                 {this.renderRedirect()}
-                <Dropdown>
-                    <Dropdown.Toggle as={CustomToggle} id="dropdown-custom-components">
-                        {this.state.dropdownLabel}
-                    </Dropdown.Toggle>
-                    <Dropdown.Menu as={CustomMenu}>
-                        {this.state.teams.map(team => (
-                            <Dropdown.Item key={team.id}
-                                onClick={() => this.handleTeamSelect(team.team_name)}>{team.team_name}</Dropdown.Item>
-                        ))}
-                    </Dropdown.Menu>
-                </Dropdown>
-                <DatePicker
-                    onChange={this.handleDateSelect}
-                    value={this.state.date}
-                />
-                <Button variant="outline-primary" size="lg" className="px-4"
-                    onClick={this.setRedirect}>Submit</Button>
+                <Container>
+                    <Row id="select-row" className="justify-content-md-center">
+                        <Col md="auto" className="columns">
+                            <Dropdown>
+                                <Dropdown.Toggle as={CustomToggle} id="dropdown-custom-components">
+                                    {this.state.dropdownLabel}
+                                </Dropdown.Toggle>
+                                <Dropdown.Menu as={CustomMenu}>
+                                    {this.state.teams.map(team => (
+                                        <Dropdown.Item key={team.id}
+                                            onClick={() => this.handleTeamSelect(team.team_name)}>{team.team_name}</Dropdown.Item>
+                                    ))}
+                                </Dropdown.Menu>
+                            </Dropdown>
+                        </Col>
+                        <DatePicker
+                            onChange={this.handleDateSelect}
+                            value={this.state.date}
+                        />
+                        <Col xs lg="2" className="columns">
+                            <Button variant="outline-primary" size="lg" className="px-4"
+                                onClick={this.setRedirect}>Submit</Button>
+                        </Col>
+                    </Row>
+                </Container>
             </div>
         )
     }

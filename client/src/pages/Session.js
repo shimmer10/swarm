@@ -38,15 +38,17 @@ class Session extends Component {
         API.getSessionByTeamNameAndDate(teamName, formattedDate)
             .then(res =>
                 this.setState({
-                    members: res.data.Members
-                })
+                    members: res.data.Members,
+                    date: formattedDate
+                },
+                    this.getSession(this.state.teamChosen, this.state.date)
+                )
             )
             .catch(() =>
                 this.setState({
-                    teams: []
+                    members: []
                 })
             );
-
     };
 
     // handle status selection
@@ -57,14 +59,23 @@ class Session extends Component {
 
     render() {
         return (
-            <div>
+            <div id="divider">
                 <Container id="container">
+                    <Row className="justify-content-md-center">
+                        <Col xs lg="2">
+                            {/* {this.state.date}                        */}
+                        </Col>
+                        <Col md="auto">                     </Col>
+                        <Col xs lg="2">
+                            {this.state.teamChosen}
+                        </Col>
+                    </Row>
                     <Row>
                         <Col size="md-12">
-                            {this.state.members.map(member => (
-                                <CardDeck id="card-deck">
+                            <CardDeck id="card-deck">
+                                {this.state.members.map(member => (
                                     <Card key={member.id} id="employee-card">
-                                        <Card.Img variant="top" src={member.image_link} />
+                                        <Card.Img variant="top" rounded />
                                         <Card.Body>
                                             <Card.Title>{member.first_name} {member.last_name}</Card.Title>
                                             <Form>
@@ -80,11 +91,11 @@ class Session extends Component {
                                                     <Form.Label>Status</Form.Label>
                                                     <Form.Control as="select" onChange={this.handleStatusSelect.bind(this)}>
                                                         <option value="choose status">Choose Status</option>
-                                                        <option value="blocked">Blocked</option>
-                                                        <option value="impeded">Impeded</option>
                                                         <option value="clear">Clear</option>
+                                                        <option value="impeded">Impeded</option>
+                                                        <option value="blocked">Blocked</option>
                                                     </Form.Control>
-                                                    {this.state.status == "blocked" &&
+                                                    {this.state.status === "blocked" &&
                                                         (<Form.Group controlId="exampleForm.ControlTextarea1">
                                                             <Form.Label>Blocker</Form.Label>
                                                             <Form.Control as="textarea" rows="3" placeholder="What is blocking you?" />
@@ -93,8 +104,8 @@ class Session extends Component {
                                             </Form>
                                         </Card.Body>
                                     </Card>
-                                </CardDeck>
-                            ))}
+                                ))}
+                            </CardDeck>
                         </Col>
                     </Row>
                 </Container>
