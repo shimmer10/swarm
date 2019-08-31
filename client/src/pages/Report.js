@@ -3,6 +3,7 @@ import API from "../utils/API";
 import Button from 'react-bootstrap/Button';
 import CustomToggle from '../components/CustomToggle';
 import CustomMenu from '../components/CustomMenu';
+import DoughnutChart from '../components/DoughnutChart';
 import DatePicker from 'react-date-picker';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Container from "react-bootstrap/Container";
@@ -54,15 +55,6 @@ class Report extends Component {
 
     displayReport = () => {
         this.getSessions();
-        // this.determineCounts();
-        // this.setState({
-        //     displayReport: true
-        // }
-        // , () => {
-        //     console.log(JSON.stringify(this.state.sessions));
-        //     this.determineCounts();
-        // }
-        // );
     }
 
     resetPage = () => {
@@ -106,7 +98,6 @@ class Report extends Component {
             .then(res => {
                 this.setState({
                     sessions: res.data
-                    // displayReport: true
                 })
                 console.log("<debug> calling determineCounts");
                 this.determineCounts();
@@ -150,18 +141,10 @@ class Report extends Component {
             this.state.greenTotals.push(greenCtr);
         });
 
-        // let allSessionsRed = this.state.redTotals.reduce(this.getSum(),0);
-        // console.log("boom" + allSessionsRed);
-
         this.setState({
             displayReport: true
         })
     }
-
-    // getSum(total, num) {
-    //     console.log("inside getSum");
-    //     return total + num;
-    // }
 
     render() {
         if (!this.state.displayReport) {
@@ -214,11 +197,14 @@ class Report extends Component {
                         <Col>
                             <h1>Main Diagram</h1>
                             {/* <p>{JSON.stringify(this.state.sessions)}</p> */}
-                            <p>{this.state.sessionDates}</p>
+                            {/* <p>{this.state.sessionDates}</p>
                             <p>{this.state.redTotals}</p>
                             <p>{this.state.yellowTotals}</p>
                             <p>{this.state.greenTotals}</p>
-                            <p>{this.state.redTotal}</p>
+                            <p>{this.state.redTotal}</p> */}
+                            <DoughnutChart>
+                                
+                            </DoughnutChart>
                         </Col>
                     </Row>
                     <Row>
