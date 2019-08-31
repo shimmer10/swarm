@@ -1,10 +1,7 @@
 #card-deck {
-    display: 'flex'; 
-    flex-direction: 'row';
+    padding-top: 20px;
 }
 
 #employee-card {
-    flex: 1;
     max-width:25%;
-    max-height: 10%;
 }
