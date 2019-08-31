@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import API from "../utils/API";
+import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import CardDeck from 'react-bootstrap/CardDeck';
 import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
+import { FaPlusCircle } from 'react-icons/fa';
 import FormStatus from '../components/FormStatus';
 import Moment from 'moment';
 import './Session.css';
@@ -15,7 +17,10 @@ class Session extends Component {
         members: [],
         date: "",
         teamChosen: "",
-        status: "choose status"
+        status: "choose status",
+        memberStatus: [],
+        today: "",
+        yesterday: ""
     }
 
     componentDidMount() {
@@ -52,6 +57,23 @@ class Session extends Component {
             );
     };
 
+    getStatus = (id) => {
+        API.getStatusByMemberId(id)
+        .then(res =>
+            this.setState ({
+                memberStatus: res.data.Statuses
+            }))
+            .catch(() =>
+            this.setState({
+                memberStatus: []
+            }))
+
+    }
+
+    addStatus = () => {
+        console.log("adding status");
+    }
+
     render() {
         return (
             <div id="divider">
@@ -60,7 +82,7 @@ class Session extends Component {
                         <Col xs lg="2">
                             {/* {this.state.date}                        */}
                         </Col>
-                        <Col md="auto">                     
+                        <Col md="auto">
                         </Col>
                         <Col xs lg="2">
                             {this.state.teamChosen}
@@ -70,18 +92,24 @@ class Session extends Component {
                         <Col size="md-12">
                             <CardDeck id="card-deck">
                                 {this.state.members.map(member => (
-                                    <Card key={member.id} id="employee-card">
+                                    <Card key={member.id} id="employee-card" fluid>
                                         <Card.Img variant="top" rounded />
                                         <Card.Body>
                                             <Card.Title>{member.first_name} {member.last_name}</Card.Title>
+                                            {/* <div onClick={this.addStatus}> */}
+                                                <FaPlusCircle id="plus" size={25} onClick={this.addStatus}/>
+                                            {/* </div> */}
+                                            {/* {this.getStatus(member.id)} */}
                                             <Form>
                                                 <Form.Group controlId="exampleForm.ControlTextarea1">
                                                     <Form.Label>Doing</Form.Label>
-                                                    <Form.Control as="textarea" rows="3" placeholder="What are you doing today?" />
+                                                    <Form.Control as="textarea" rows="3" placeholder="What are you doing today?" inputRef={todayStatus => this.setState({  today: todayStatus })}/>
+                                                    {/* {this.state.memberStatus.today_description} */}
                                                 </Form.Group>
                                                 <Form.Group controlId="exampleForm.ControlTextarea1">
                                                     <Form.Label>Done</Form.Label>
                                                     <Form.Control as="textarea" rows="3" placeholder="What did you do yesterday?" />
+                                                    {/* {this.state.memberStatus.yesterday_description} */}
                                                 </Form.Group>
                                                 <FormStatus />
                                             </Form>

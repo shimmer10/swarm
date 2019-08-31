@@ -5,3 +5,12 @@
 #employee-card {
     max-width:25%;
 }
+
+#plus {
+    color: green;  
+    position: absolute; 
+}
+
+#plus-col {
+    margin-left: 1px;
+}

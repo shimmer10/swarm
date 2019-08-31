@@ -47,6 +47,14 @@ export default {
 
   getSessionByTeamNameAndDateRange: function(teamName, lowDate, highDate) {
     return axios.get("/api/sessions/range/" + teamName + "/" + lowDate + "/" + highDate);
+  },
+
+  addStatus: function() {
+    return axios.get("api/statuses");
+  },
+
+  getStatusByMemberId: function(memberId) {
+    return axios.get("/api/statuses/" + memberId);
   }
 
 };
