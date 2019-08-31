@@ -4,20 +4,24 @@ import API from "../utils/API";
 import Button from 'react-bootstrap/Button';
 import CustomToggle from '../components/CustomToggle';
 import CustomMenu from '../components/CustomMenu';
+import Alert from 'react-bootstrap/Alert';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container'
 import DatePicker from 'react-date-picker';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Row from 'react-bootstrap/Row';
 import './Home.css';
+import { cpus } from 'os';
 
 class Home extends Component {
+
     state = {
         date: new Date(),
         teams: [],
         redirect: false,
         teamChosen: null,
-        dropdownLabel: "Choose Team"
+        dropdownLabel: "Choose Team",
+        showAlert: false
     }
 
     componentDidMount() {
@@ -56,13 +60,19 @@ class Home extends Component {
     }
 
     // set redirect to true
-    setRedirect = () => {
+    setRedirectToTrue = () => {
         this.setState({
             redirect: true
         })
     }
 
-    setStateToFalse = () => this.setState({ redirect: false })
+    // should set redirect to false so they have to hit submit again
+    setRedirectToFalse = () => {
+        this.setState({
+            redirect: false,
+            showAlert: true
+        })
+    }
 
     // render /sessions on redirect
     renderRedirect = () => {
@@ -81,8 +91,7 @@ class Home extends Component {
                 }} />
             }
             else {
-                alert("Please Choose a Team");
-                this.setStateToFalse();
+                this.setRedirectToFalse();
             }
         }
     }
@@ -112,9 +121,21 @@ class Home extends Component {
                         />
                         <Col xs lg="2" className="columns">
                             <Button variant="outline-primary" size="lg" className="px-4"
-                                onClick={this.setRedirect}>Submit</Button>
+                                onClick={this.setRedirectToTrue}>Submit</Button>
                         </Col>
                     </Row>
+                    {this.state.showAlert === true &&
+                        (<Row>
+                            <Col xs lg="12">
+                                <Alert id="alert" variant="danger" onClose={() => this.setState({ showAlert: false })} dismissible>
+                                    <Alert.Heading>No Team Provided</Alert.Heading>
+                                    <p>
+                                        A team is required. Please select a team and submit again
+                                </p>
+                                </Alert>
+                            </Col>
+                        </Row>
+                        )}
                 </Container>
             </div>
         )

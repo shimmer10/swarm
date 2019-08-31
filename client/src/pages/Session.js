@@ -6,6 +6,7 @@ import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
+import FormStatus from '../components/FormStatus';
 import Moment from 'moment';
 import './Session.css';
 
@@ -51,12 +52,6 @@ class Session extends Component {
             );
     };
 
-    // handle status selection
-    handleStatusSelect(event) {
-        var status = event.target.value;
-        this.setState({ status })
-    }
-
     render() {
         return (
             <div id="divider">
@@ -65,7 +60,8 @@ class Session extends Component {
                         <Col xs lg="2">
                             {/* {this.state.date}                        */}
                         </Col>
-                        <Col md="auto">                     </Col>
+                        <Col md="auto">                     
+                        </Col>
                         <Col xs lg="2">
                             {this.state.teamChosen}
                         </Col>
@@ -87,20 +83,7 @@ class Session extends Component {
                                                     <Form.Label>Done</Form.Label>
                                                     <Form.Control as="textarea" rows="3" placeholder="What did you do yesterday?" />
                                                 </Form.Group>
-                                                <Form.Group controlId="exampleForm.ControlSelect1">
-                                                    <Form.Label>Status</Form.Label>
-                                                    <Form.Control as="select" onChange={this.handleStatusSelect.bind(this)}>
-                                                        <option value="choose status">Choose Status</option>
-                                                        <option value="clear">Clear</option>
-                                                        <option value="impeded">Impeded</option>
-                                                        <option value="blocked">Blocked</option>
-                                                    </Form.Control>
-                                                    {this.state.status === "blocked" &&
-                                                        (<Form.Group controlId="exampleForm.ControlTextarea1">
-                                                            <Form.Label>Blocker</Form.Label>
-                                                            <Form.Control as="textarea" rows="3" placeholder="What is blocking you?" />
-                                                        </Form.Group>)}
-                                                </Form.Group>
+                                                <FormStatus />
                                             </Form>
                                         </Card.Body>
                                     </Card>
