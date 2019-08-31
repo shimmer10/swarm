@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-// import { Redirect } from 'react-router-dom'
 import API from "../utils/API";
 import Button from 'react-bootstrap/Button';
 import CustomToggle from '../components/CustomToggle';
 import CustomMenu from '../components/CustomMenu';
+import DoughnutChart from '../components/DoughnutChart';
 import DatePicker from 'react-date-picker';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Container from "react-bootstrap/Container";
@@ -19,6 +19,13 @@ class Report extends Component {
         highDate: new Date(),
         teams: [],
         sessions: [],
+        sessionDates: [],
+        redTotals: [],
+        redTotal: 0,
+        yellowTotals: [],
+        yellowTotal: 0,
+        greenTotals: [],
+        greenTotal: 0,
         displayReport: false,
         teamChosen: 0,
         dropdownLabel: "Choose Team"
@@ -48,10 +55,6 @@ class Report extends Component {
 
     displayReport = () => {
         this.getSessions();
-        this.setState({
-            displayReport: true
-        })
-        alert("Team: " + this.state.teamChosen + " Low Date: " + this.state.lowDate + " High Date: " + this.state.highDate);
     }
 
     resetPage = () => {
@@ -60,6 +63,13 @@ class Report extends Component {
             highDate: new Date(),
             teamChosen: 0,
             sessions: [],
+            sessionDates: [],
+            redTotals: [],
+            redTotal: 0,
+            yellowTotals: [],
+            yellowTotal: 0,
+            greenTotal: [],
+            greenTotal: 0,
             displayReport: false
         })
     }
@@ -85,10 +95,13 @@ class Report extends Component {
         var lowDate = Moment(this.state.lowDate).format('YYYY-MM-DD');
         var highDate = Moment(this.state.highDate).format('YYYY-MM-DD');
         API.getSessionByTeamNameAndDateRange(this.state.teamChosen, lowDate, highDate)
-            .then(res =>
+            .then(res => {
                 this.setState({
                     sessions: res.data
                 })
+                console.log("<debug> calling determineCounts");
+                this.determineCounts();
+            }
             )
             .catch(() =>
                 this.setState({
@@ -97,20 +110,41 @@ class Report extends Component {
             );
     };
 
-    // render /sessions on redirect
-    // renderRedirect = () => {
-    //     var date = this.state.date;
-    //     var teamChosen = this.state.teamChosen;
-    //     if (this.state.redirect) {
-    //         return <Redirect to={{
-    //             pathname: '/session',
-    //             state: {
-    //                 date,
-    //                 teamChosen
-    //             }
-    //         }} />
-    //     }
-    // }
+    /**
+     * Support Methods
+     */
+    determineCounts = () => {
+        this.state.sessions.forEach(session => {
+            let redCtr = 0;
+            let yellowCtr = 0;
+            let greenCtr = 0;
+            let formatDate = Moment(session.session_date, "YYYY-MM-DD[T]HH:mm:ss").format('YYYY-MM-DD');
+            this.state.sessionDates.push(formatDate);
+            session.Members.forEach(member => {
+                if (member.Status) {
+                    if (member.Status.current_status === "RED") {
+                        redCtr++;
+                        this.state.redTotal++;
+                    }
+                    else if (member.Status.current_status === "YELLOW") {
+                        yellowCtr++;
+                        this.state.yellowTotal++;
+                    }
+                    else {
+                        greenCtr++;
+                        this.state.greenTotal++;
+                    }
+                }
+            });
+            this.state.redTotals.push(redCtr);
+            this.state.yellowTotals.push(yellowCtr);
+            this.state.greenTotals.push(greenCtr);
+        });
+
+        this.setState({
+            displayReport: true
+        })
+    }
 
     render() {
         if (!this.state.displayReport) {
@@ -162,7 +196,15 @@ class Report extends Component {
                     <Row>
                         <Col>
                             <h1>Main Diagram</h1>
-                            <p>{JSON.stringify(this.state.sessions)}</p>
+                            {/* <p>{JSON.stringify(this.state.sessions)}</p> */}
+                            {/* <p>{this.state.sessionDates}</p>
+                            <p>{this.state.redTotals}</p>
+                            <p>{this.state.yellowTotals}</p>
+                            <p>{this.state.greenTotals}</p>
+                            <p>{this.state.redTotal}</p> */}
+                            <DoughnutChart>
+                                
+                            </DoughnutChart>
                         </Col>
                     </Row>
                     <Row>
