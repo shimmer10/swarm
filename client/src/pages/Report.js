@@ -20,8 +20,11 @@ class Report extends Component {
         sessions: [],
         sessionDates: [],
         redTotals: [],
+        redTotal: 0,
         yellowTotals: [],
+        yellowTotal: 0,
         greenTotals: [],
+        greenTotal: 0,
         displayReport: false,
         teamChosen: 0,
         dropdownLabel: "Choose Team"
@@ -70,8 +73,11 @@ class Report extends Component {
             sessions: [],
             sessionDates: [],
             redTotals: [],
+            redTotal: 0,
             yellowTotals: [],
+            yellowTotal: 0,
             greenTotal: [],
+            greenTotal: 0,
             displayReport: false
         })
     }
@@ -117,42 +123,45 @@ class Report extends Component {
      * Support Methods
      */
     determineCounts = () => {
-        let dateList = [];
-        let redList = [];
-        let yellowList = [];
-        let greenList = [];
         this.state.sessions.forEach(session => {
             let redCtr = 0;
             let yellowCtr = 0;
             let greenCtr = 0;
-            dateList.push(session.session_date);
+            let formatDate = Moment(session.session_date, "YYYY-MM-DD[T]HH:mm:ss").format('YYYY-MM-DD');
+            this.state.sessionDates.push(formatDate);
             session.Members.forEach(member => {
                 if (member.Status) {
                     if (member.Status.current_status === "RED") {
                         redCtr++;
+                        this.state.redTotal++;
                     }
                     else if (member.Status.current_status === "YELLOW") {
                         yellowCtr++;
+                        this.state.yellowTotal++;
                     }
                     else {
                         greenCtr++;
+                        this.state.greenTotal++;
                     }
                 }
             });
-            redList.push(redCtr);
-            yellowList.push(yellowCtr);
-            greenList.push(greenCtr);
+            this.state.redTotals.push(redCtr);
+            this.state.yellowTotals.push(yellowCtr);
+            this.state.greenTotals.push(greenCtr);
         });
 
+        // let allSessionsRed = this.state.redTotals.reduce(this.getSum(),0);
+        // console.log("boom" + allSessionsRed);
+
         this.setState({
-            sessionDates: dateList,
-            redTotals: redList,
-            yellowTotals: yellowList,
-            greenTotals: greenList,
             displayReport: true
         })
-        console.log("<debug> leaving determineCounts");
     }
+
+    // getSum(total, num) {
+    //     console.log("inside getSum");
+    //     return total + num;
+    // }
 
     render() {
         if (!this.state.displayReport) {
@@ -209,6 +218,7 @@ class Report extends Component {
                             <p>{this.state.redTotals}</p>
                             <p>{this.state.yellowTotals}</p>
                             <p>{this.state.greenTotals}</p>
+                            <p>{this.state.redTotal}</p>
                         </Col>
                     </Row>
                     <Row>
