@@ -19,7 +19,7 @@ CanvasJS.addColorSet("customColorSet1",
         "#cc3232", //red
         "#e7b416", //yellow
         "#2dc937", //green
-        "#B2BFB6"
+        "#B2BFB6"  //grey
     ]);
 
 class Report extends Component {
@@ -29,13 +29,10 @@ class Report extends Component {
         highDate: new Date(),
         teams: [],
         sessions: [],
-        sessionDates: [],
-        redTotals: [],
         redTotal: 0,
-        yellowTotals: [],
         yellowTotal: 0,
-        greenTotals: [],
         greenTotal: 0,
+        greyTotal: 0,
         displayReport: false,
         teamChosen: 0,
         dropdownLabel: "Choose Team"
@@ -73,13 +70,10 @@ class Report extends Component {
             highDate: new Date(),
             teamChosen: 0,
             sessions: [],
-            sessionDates: [],
-            redTotals: [],
             redTotal: 0,
-            yellowTotals: [],
             yellowTotal: 0,
-            greenTotal: [],
             greenTotal: 0,
+            greyTotal: 0,
             displayReport: false,
             dropdownLabel: "Choose Team"
         })
@@ -110,7 +104,6 @@ class Report extends Component {
                 this.setState({
                     sessions: res.data
                 })
-                console.log("<debug> calling determineCounts");
                 this.determineCounts();
             }
             )
@@ -126,30 +119,26 @@ class Report extends Component {
      */
     determineCounts = () => {
         this.state.sessions.forEach(session => {
-            let redCtr = 0;
-            let yellowCtr = 0;
-            let greenCtr = 0;
-            let formatDate = Moment(session.session_date, "YYYY-MM-DD[T]HH:mm:ss").format('YYYY-MM-DD');
-            this.state.sessionDates.push(formatDate);
+            // let formatDate = Moment(session.session_date, "YYYY-MM-DD[T]HH:mm:ss").format('YYYY-MM-DD');
             session.Members.forEach(member => {
                 if (member.Status) {
                     if (member.Status.current_status === "RED") {
-                        redCtr++;
                         this.state.redTotal++;
                     }
                     else if (member.Status.current_status === "YELLOW") {
-                        yellowCtr++;
                         this.state.yellowTotal++;
                     }
-                    else {
-                        greenCtr++;
+                    else if (member.Status.current_status === "GREEN"){
                         this.state.greenTotal++;
                     }
+                    else {
+                        this.state.greyTotal++;
+                    }
+                }
+                else {
+                    this.state.greyTotal++;
                 }
             });
-            this.state.redTotals.push(redCtr);
-            this.state.yellowTotals.push(yellowCtr);
-            this.state.greenTotals.push(greenCtr);
         });
 
         this.setState({
@@ -212,7 +201,7 @@ class Report extends Component {
                     text: "Team Status " + lowDate + " to " + highDate
                 },
                 subtitles: [{
-                    text: "Scrumblebees",
+                    text: this.state.teamChosen,
                     verticalAlign: "center",
                     fontSize: 20,
                     dockInsidePlotArea: true
@@ -233,13 +222,13 @@ class Report extends Component {
 
             return (
                 <Container>
-                    <Row>
+                    <Row id="chart-row">
                         <Col>
                             <CanvasJSChart options={options}
                             /></Col>
                     </Row>
-                    <Row>
-                        <Col>
+                    <Row id="button-row">
+                        <Col id="exit-button">
                             <Button variant="outline-primary" size="lg" className="px-4"
                                 onClick={this.resetPage}>Exit</Button>
                         </Col>
