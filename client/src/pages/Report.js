@@ -215,7 +215,7 @@ class Report extends Component {
                         { name: "Blocked", y: this.state.redTotal }, //red
                         { name: "At Risk", y: this.state.yellowTotal }, //yellow
                         { name: "No Blockers", y: this.state.greenTotal }, //green
-                        { name: "Unreported", y: 2 } //grey
+                        { name: "Unreported", y: this.state.greyTotal } //grey
                     ]
                 }]
             }
