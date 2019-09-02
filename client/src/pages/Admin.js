@@ -42,9 +42,6 @@ class Admin extends Component {
             <Tab eventKey="People" title="People">
               <People />
             </Tab>
-            <Tab eventKey="Projects" title="Projects">
-              <Projects />
-            </Tab>
             <Tab eventKey="Teams" title="Teams">
               <Teams />
 

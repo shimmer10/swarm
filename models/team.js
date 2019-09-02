@@ -10,7 +10,8 @@ module.exports = function (sequelize, DataTypes) {
     var Team = sequelize.define("Team", {
         team_name: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: false,
+            unique: true
         }
     });
 

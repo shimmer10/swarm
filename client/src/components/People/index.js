@@ -217,7 +217,7 @@ class People extends Component {
 
         <div className="inner-container">
           <h2 align="center" className="header">
-            Select an employee to edit profile
+          Editing: {this.state.firstName} {this.state.lastName} Information
       </h2>
           <Container>
             <Row>
