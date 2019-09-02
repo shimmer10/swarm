@@ -10,6 +10,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Moment from 'moment';
 import CanvasJSReact from '../assets/canvasjs.react';
+import con from "../utils/const";
 import './Report.css';
 const CanvasJS = CanvasJSReact.CanvasJS;
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
@@ -40,11 +41,27 @@ class Report extends Component {
 
     componentDidMount() {
         this.getTeams();
-        if (sessionStorage.getItem("userID") === undefined) {
-            console.log("no user ID in session");
+        console.log(sessionStorage)
+        if (!sessionStorage.getItem("userID")) {
+            console.log("REPORT: no user ID");
+            this.props.updateWhichNav(con.NOUSER);
             // prevent user from going to this page
-            this.props.history.push({
-                pathname: "/",
+            this.setState({
+                LoggedIn: false
+            })
+        } else if (sessionStorage.getItem("role") === 'Scrum Master') {
+            console.log("REPORT: returning nav admin");
+            console.log(sessionStorage.getItem("userID"));
+            this.props.updateWhichNav(con.ADMIN);
+            this.setState({
+                LoggedIn: true
+            })
+        } else {
+            console.log("REPORT: returning nav developer");
+            console.log(sessionStorage.getItem("userID"));
+            this.props.updateWhichNav(con.DEVELOPER);
+            this.setState({
+                LoggedIn: true
             })
         }
     }
