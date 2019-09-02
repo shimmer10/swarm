@@ -3,20 +3,23 @@ import { Link } from 'react-router-dom';
 import Nav from 'react-bootstrap/Nav'
 import Navbar from 'react-bootstrap/Navbar'
 import NavDropdown from 'react-bootstrap/NavDropdown';
+import con from "../../utils/const";
 // import './style.css';
 
-class NavBar extends Component {
+class NavBarDeveloper extends Component {
 
     state = {
         open: false,
-        width: window.innerWidth
+        width: window.innerWidth,
     };
 
     // called when logout button is selected
     // this clears the session storage which is
     // what we use to indicate a user is logged in
     handleLogOut = props => {
-        sessionStorage.clear()
+        console.log(sessionStorage)
+        sessionStorage.clear();
+        this.props.updateWhichNav(con.NOUSER);
     }
 
     updateWidth = () => {
@@ -66,9 +69,14 @@ class NavBar extends Component {
                             <NavDropdown.Item href="https://spbryan.github.io/Bootstrap-Portfolio/" target="_blank">Sean</NavDropdown.Item>
                         </NavDropdown>
                     </Nav>
-                    
                     <Link onClick={this.handleLogOut} className="ml-auto" id="logout" to="/">
-                        Logout
+                        Logout for {this.props.devName}
+                    </Link>
+                    <Link className="ml-auto" id="home" to="/home">
+                        Home
+                    </Link>
+                    <Link className="ml-auto" id="report" to="/report">
+                        Report
                     </Link>
                 </Navbar.Collapse>
             </Navbar >
@@ -76,4 +84,4 @@ class NavBar extends Component {
     }
 }
 
-export default NavBar;
+export default NavBarDeveloper;

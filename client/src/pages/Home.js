@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom'
+import { Redirect } from 'react-router-dom';
 import API from "../utils/API";
 import Button from 'react-bootstrap/Button';
 import CustomToggle from '../components/CustomToggle';
 import CustomMenu from '../components/CustomMenu';
 import Col from 'react-bootstrap/Col';
-import Container from 'react-bootstrap/Container'
+import Container from 'react-bootstrap/Container';
 import DatePicker from 'react-date-picker';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Row from 'react-bootstrap/Row';
+import con from "../utils/const";
 import './Home.css';
 
 class Home extends Component {
@@ -16,6 +17,7 @@ class Home extends Component {
         date: new Date(),
         teams: [],
         redirect: false,
+        LoggedIn: true,  // set the default to true
         teamChosen: null,
         dropdownLabel: "Choose Team"
     }
@@ -24,10 +26,25 @@ class Home extends Component {
         this.getTeams();
         console.log(sessionStorage)
         if (!sessionStorage.getItem("userID")) {
-            console.log("no user ID in session");
+            console.log("no user ID in home");
+            this.props.updateWhichNav(con.NOUSER);
             // prevent user from going to this page
-            this.props.history.push({
-                pathname: "/",
+            this.setState({
+                LoggedIn: false
+            })
+        } else if (sessionStorage.getItem("role") === 'Scrum Master') {
+            console.log("returning nav admin from home");
+            console.log(sessionStorage.getItem("userID"));
+            this.props.updateWhichNav(con.ADMIN);
+            this.setState({
+                LoggedIn: true
+            })
+        } else {
+            console.log("returning nav developer from home");
+            console.log(sessionStorage.getItem("userID"));
+            this.props.updateWhichNav(con.DEVELOPER);
+            this.setState({
+                LoggedIn: true
             })
         }
     }
@@ -64,10 +81,16 @@ class Home extends Component {
 
     setStateToFalse = () => this.setState({ redirect: false })
 
-    // render /sessions on redirect
+    // render / or /sessions on redirect
     renderRedirect = () => {
         var date = this.state.date;
         var teamChosen = this.state.teamChosen;
+
+        // if we arent logged in protect this page by redirecting to main page at /
+        if (!this.state.LoggedIn) {
+            console.log('redirecting to main from home');
+            return <Redirect to="/" />;
+        }
 
         if (this.state.redirect) {
             if (teamChosen != null) {
