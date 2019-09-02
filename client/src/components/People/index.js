@@ -93,6 +93,7 @@ class People extends Component {
         })
       })
       .catch(err => {
+        alert("People Page: update employee error: " + err);
         console.log("in catch for handle submit in people page");
         console.log(err);
       });
@@ -112,6 +113,7 @@ class People extends Component {
         })
       })
       .catch(err => {
+        alert("People Page: delete employee error: " + err);
         console.log("in catch for handle delete on people page");
         console.log(err);
       });
@@ -128,29 +130,12 @@ class People extends Component {
           employees: res.data
         })
       )
-      .catch(() =>
+      .catch(err => {
+        alert("People Page: get employee error: " + err);
         this.setState({
           employees: []
         })
-      );
-  };
-
-  updateEmployees = () => {
-    // you need to fix this bjt
-    let uniqueIdList = Array.from(new Set(this.state.updatedEmployeeIds));
-    if (uniqueIdList.length > 0) {
-      this.state.employees.forEach(employee => {
-        if (uniqueIdList.includes(employee.id)) {
-          API.updateEmployee(employee.id, employee)
-            .then(res =>
-              employee = res.data
-            )
-            .catch(() =>
-              employee = {}
-            );
-        }
       });
-    }
   };
 
   /********************
@@ -217,8 +202,8 @@ class People extends Component {
 
         <div className="inner-container">
           <h2 align="center" className="header">
-          Editing: {this.state.firstName} {this.state.lastName} Information
-      </h2>
+            Editing: {this.state.firstName} {this.state.lastName} Information
+          </h2>
           <Container>
             <Row>
               <Col>
