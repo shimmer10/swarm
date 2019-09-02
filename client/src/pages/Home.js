@@ -23,7 +23,7 @@ class Home extends Component {
     componentDidMount() {
         this.getTeams();
         console.log(sessionStorage)
-        if (sessionStorage.getItem("userID") === undefined) {
+        if (!sessionStorage.getItem("userID")) {
             console.log("no user ID in session");
             // prevent user from going to this page
             this.props.history.push({
