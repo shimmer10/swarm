@@ -15,26 +15,26 @@ import "./App.css";
 
 class App extends Component {
     state = {
-        isLoggedIn: false,
-        role: 'developer'
+        isLoggedIn: false
+        
     }
-componentDidMount() {
-  console.log("trying..." + sessionStorage);
-}
+
     getNav() {
-      console.log(this.state.role);
-      if (this.state.role === 'developer') {
-        console.log("got in here");
-       return <NavDeveloper />
+      console.log("in here: " + this.isLoggedIn);
+      
+      this.setState({isLoggedIn: true}); 
+       
+       
       }
-    }
+    
 
     
   render() {  
-  return (
+    if (this.state.isLoggedIn == true) {
+      return (
     <Router>
       <div>
-        <NavBar>{this.getNav()}</NavBar> 
+        <NavDeveloper />
         <Container id="body">
           <Switch>
             <Route exact path="/" component={Main} />
@@ -49,6 +49,28 @@ componentDidMount() {
       </div>
     </Router>
   );
-}
+      }
+  else {
+    return (
+      <Router>
+        <div>
+          <NavBar />
+          <Container id="body">
+            <Switch>
+              <Route exact path="/" component={Main} />
+              <Route exact path="/home" component={Home} />
+              <Route exact path="/loginscreen" component={() => <LoginScreen getNav={this.getNav} />} />
+              <Route exact path="/admin" component={Admin} />
+              <Route exact path="/session" component={Session} />
+              <Route component={NoMatch} />
+            </Switch>
+          </Container>
+          <Footer />
+        </div>
+      </Router>
+  
+    );
+};
+};
 };
 export default App;

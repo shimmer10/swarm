@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom'
 import API from "../utils/API";
 import Button from 'react-bootstrap/Button';
 import CustomToggle from '../components/CustomToggle';
@@ -15,11 +16,8 @@ class Home extends Component {
         dropdownLabel: "Choose Team"
     }
 
-    componentWillMount() {
-        this.getTeams();
-    }
-
     componentDidMount() {
+        this.getTeams();
         console.log(sessionStorage)
         if (sessionStorage.getItem("userID") === undefined) {
             console.log("no user ID in session");
@@ -30,9 +28,7 @@ class Home extends Component {
         }
     }
 
-
-    onChange = date => this.setState({ date })
-
+    // get teams from db
     getTeams = () => {
         API.getTeams()
             .then(res =>
@@ -78,29 +74,30 @@ class Home extends Component {
     }
 
     render() {
-        console.log("teams: " + JSON.stringify(this.state.teams));
         return (
             <div>
+                {this.renderRedirect()}
                 <Dropdown>
                     <Dropdown.Toggle as={CustomToggle} id="dropdown-custom-components">
-                        Choose Team
                         {this.state.dropdownLabel}
                     </Dropdown.Toggle>
-
                     <Dropdown.Menu as={CustomMenu}>
                         {this.state.teams.map(team => (
-                            <Dropdown.Item key={team.id}>{team.team_name}</Dropdown.Item>
+                            <Dropdown.Item key={team.id}
+                                onClick={() => this.handleTeamSelect(team.team_name)}>{team.team_name}</Dropdown.Item>
                         ))}
                     </Dropdown.Menu>
                 </Dropdown>
                 <DatePicker
-                    onChange={this.onChange}
+                    onChange={this.handleDateSelect}
                     value={this.state.date}
                 />
-                <Button variant="outline-primary">Submit</Button>
+                <Button variant="outline-primary" size="lg" className="px-4"
+                    onClick={this.setRedirect}>Submit</Button>
             </div>
         )
     }
 }
 
 export default Home;
+

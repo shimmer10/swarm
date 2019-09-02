@@ -46,7 +46,7 @@ class LoginForm extends Component {
         this.setState({ redirect: true });   // causes a re-render so put it last
       });
   }
-
+  
   render() {
     // if redirect is true then go elsewhere
     if (this.state.redirect) {
@@ -73,7 +73,7 @@ class LoginForm extends Component {
                 <Form.Control type="password" name="password" placeholder="Password" onChange={this.handleInputChange} />
               </Form.Group>
             </Form.Row>
-            <Button variant="primary" type="submit">
+            <Button variant="primary" type="submit" onClick={this.props.getNav}>
               Sign-in
             </Button>
           </Form>
