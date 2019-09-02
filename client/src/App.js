@@ -15,16 +15,23 @@ import Report from "./pages/Report";
 import "./App.css";
 
 class App extends Component {
-    state = {
+  constructor(props) {
+    super(props)
+    this.getNav = this.getNav.bind(this);
+    this.state = {
         isLoggedIn: false
         
     }
+  };
 
     getNav() {
       console.log("in here: " + this.isLoggedIn);
-      
+      console.log(sessionStorage);
+      if (sessionStorage.userID == undefined) {
+        this.setState({isLoggedIn: false})
+      } else {
       this.setState({isLoggedIn: true}); 
-       
+      } 
        
       }
     
@@ -40,7 +47,7 @@ class App extends Component {
           <Switch>
             <Route exact path="/" component={Main} />
             <Route exact path="/home" component={Home} />
-            <Route exact path="/loginscreen" component={() => <LoginScreen getNav={this.getNav} />} />
+            <Route exact path="/loginscreen" component={() => <LoginScreen getNav={this.props.getNav} />} />
             <Route exact path="/admin" component={Admin} />
             <Route exact path="/session" component={Session} />
             <Route exact path="/report" component={Report} />

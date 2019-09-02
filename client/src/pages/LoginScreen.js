@@ -27,15 +27,7 @@ class LoginScreen extends Component {
 
   }
 
-  getNav() {
-    console.log("in getNav");
-    console.log(sessionStorage);
-    if (sessionStorage.getItem("userID") === undefined) {
-     return false;
-  } else {
-    return true;
-  }
-  }
+  
 
   render() {
     return (
@@ -43,7 +35,7 @@ class LoginScreen extends Component {
         <div className="box-container" align="left">
           <Tabs activeKey={this.state.key} onSelect={this.handleSelect} id="controlled-tab-example">
             <Tab eventKey="Signin" title="Sign-in">
-              < Login  getNav={this.getNav} />
+              < Login  getNav={this.props.getNav} />
             </Tab>
             <Tab eventKey="Signup" title="Sign-up">
               <Signup />

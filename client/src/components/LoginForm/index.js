@@ -13,6 +13,7 @@ class LoginForm extends Component {
     this.state = {
       email: '',
       password: '',
+      isLoggedIn: false,
       redirect: false
     };
   }
@@ -46,6 +47,19 @@ class LoginForm extends Component {
         this.setState({ redirect: true });   // causes a re-render so put it last
       });
   }
+
+  getNav = event => {
+   
+      console.log("in the getNav..." + sessionStorage);
+      if (sessionStorage.userID == undefined) {
+        console.log("not logged in");
+        this.setState({ isLoggedIn: false });
+      } else {
+        console.log("logged in");
+        this.setState({ isLoggedIn: true }); 
+      } 
+     
+    };
   
   render() {
     // if redirect is true then go elsewhere
@@ -73,7 +87,7 @@ class LoginForm extends Component {
                 <Form.Control type="password" name="password" placeholder="Password" onChange={this.handleInputChange} />
               </Form.Group>
             </Form.Row>
-            <Button variant="primary" type="submit" onClick={this.props.getNav}>
+            <Button variant="primary" type="submit" onClick={this.getNav}>
               Sign-in
             </Button>
           </Form>
