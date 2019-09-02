@@ -11,6 +11,7 @@ import Main from "./pages/Main";
 import LoginScreen from "./pages/LoginScreen";
 import Admin from "./pages/Admin";
 import Session from "./pages/Session";
+import Report from "./pages/Report";
 import "./App.css";
 
 class App extends Component {
@@ -42,6 +43,7 @@ class App extends Component {
             <Route exact path="/loginscreen" component={() => <LoginScreen getNav={this.getNav} />} />
             <Route exact path="/admin" component={Admin} />
             <Route exact path="/session" component={Session} />
+            <Route exact path="/report" component={Report} />
             <Route component={NoMatch} />
           </Switch>
         </Container>

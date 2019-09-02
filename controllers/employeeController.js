@@ -44,11 +44,7 @@ module.exports = {
       last_name: employee.last_name,
       role: employee.role,
       email: employee.email,
-      password: employee.password,
-      employee_number: employee.employee_number,
       image_link: employee.image_link,
-      last_login: employee.last_login,
-      status: employee.status,
       TeamId: employee.TeamId
     }, {
         where: { id: req.params.id }

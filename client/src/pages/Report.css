@@ -1,0 +1,23 @@
+#button-row {
+    margin-top: 40px;
+}
+
+#chart-row {
+    margin-top: 20px;
+}
+
+#start-label {
+    text-align: right;
+}
+
+#end-label {
+    text-align: right;
+}
+
+#exit-button {
+    text-align: center;
+}
+
+#submit-button {
+    text-align: right;
+}

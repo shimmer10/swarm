@@ -42,8 +42,15 @@ export default {
   },
 
   getSessionByTeamNameAndDate: function(teamName, sessionDate) {
-    console.log("path is /api/sessions/team/" + teamName + "/" + sessionDate)
     return axios.get("/api/sessions/team/" + teamName + "/" + sessionDate);
+  },
+
+  deleteEmployee: function(id) {
+    return axios.delete("/api/employees/" + id);
+  },
+
+  getSessionByTeamNameAndDateRange: function(teamName, lowDate, highDate) {
+    return axios.get("/api/sessions/range/" + teamName + "/" + lowDate + "/" + highDate);
   }
 
 };
