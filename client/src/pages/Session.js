@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import API from "../utils/API";
-import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import CardDeck from 'react-bootstrap/CardDeck';
 import Container from 'react-bootstrap/Container';
@@ -40,7 +39,8 @@ class Session extends Component {
 
     // get teams from db
     getSession = (teamName, date) => {
-        var formattedDate = Moment(date).format('YYYY-MM-DD');
+        var formattedDate = Moment(date, " YYYY-MM-DD[T]HH:mm:ss").format('YYYY-MM-DD');
+        console.log("session date: " + formattedDate);
         API.getSessionByTeamNameAndDate(teamName, formattedDate)
             .then(res =>
                 this.setState({
@@ -103,7 +103,7 @@ class Session extends Component {
                                             <Form>
                                                 <Form.Group controlId="exampleForm.ControlTextarea1">
                                                     <Form.Label>Doing</Form.Label>
-                                                    <Form.Control as="textarea" rows="3" placeholder="What are you doing today?" inputRef={todayStatus => this.setState({  today: todayStatus })}/>
+                                                    <Form.Control as="textarea" rows="3" placeholder="What are you doing today?" onChange={todayStatus => this.setState({  today: todayStatus })}/>
                                                     {/* {this.state.memberStatus.today_description} */}
                                                 </Form.Group>
                                                 <Form.Group controlId="exampleForm.ControlTextarea1">
