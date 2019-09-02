@@ -128,11 +128,12 @@ class Teams extends Component {
           teams: res.data
         })
       )
-      .catch(() =>
+      .catch(err => {
+        alert("Team Page: get teams error: " + err);
         this.setState({
           teams: []
         })
-      );
+      });
   };
 
   addTeam = () => {
@@ -142,11 +143,13 @@ class Teams extends Component {
           team: res.data
         })
       )
-      .catch(() =>
+      .catch(err => {
+        alert("Team Page: Add Team error (is this a duplicate team name?): " + err);
         this.setState({
+          teamSelected: false,
           team: []
         })
-      );
+      });
   };
 
   updateEmployees = () => {
@@ -158,9 +161,10 @@ class Teams extends Component {
             .then(res =>
               employee = res.data
             )
-            .catch(() =>
+            .catch(err => {
+              alert("Team Page: Update Employees error: " + err);
               employee = {}
-            );
+            });
         }
       });
     }
@@ -173,11 +177,12 @@ class Teams extends Component {
           employees: res.data
         })
       )
-      .catch(() =>
+      .catch(err => {
+        alert("Team Page: get employee error: " + err);
         this.setState({
           employees: []
         })
-      );
+      });
   };
 
   getTeamByTeamName = () => {
@@ -187,11 +192,12 @@ class Teams extends Component {
           team: res.data
         })
       )
-      .catch(() =>
+      .catch(err => {
+        alert("Team Page: Get Team by Team Name error: " + err);
         this.setState({
           team: {}
         })
-      );
+      });
   };
 
   /********************
