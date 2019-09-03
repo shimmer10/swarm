@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-// import { Redirect } from 'react-router-dom'
 import API from "../utils/API";
 import Button from 'react-bootstrap/Button';
 import CustomToggle from '../components/CustomToggle';
@@ -10,15 +9,31 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Moment from 'moment';
-
+import CanvasJSReact from '../assets/canvasjs.react';
+import con from "../utils/const";
 import './Report.css';
+const CanvasJS = CanvasJSReact.CanvasJS;
+var CanvasJSChart = CanvasJSReact.CanvasJSChart;
+
+CanvasJS.addColorSet("customColorSet1",
+    [
+        "#cc3232", //red
+        "#e7b416", //yellow
+        "#2dc937", //green
+        "#B2BFB6"  //grey
+    ]);
 
 class Report extends Component {
+
     state = {
         lowDate: new Date(),
         highDate: new Date(),
         teams: [],
         sessions: [],
+        redTotal: 0,
+        yellowTotal: 0,
+        greenTotal: 0,
+        greyTotal: 0,
         displayReport: false,
         teamChosen: 0,
         dropdownLabel: "Choose Team"
@@ -26,11 +41,27 @@ class Report extends Component {
 
     componentDidMount() {
         this.getTeams();
-        if (sessionStorage.getItem("userID") === undefined) {
-            console.log("no user ID in session");
+        console.log(sessionStorage)
+        if (!sessionStorage.getItem("userID")) {
+            console.log("REPORT: no user ID");
+            this.props.updateWhichNav(con.NOUSER);
             // prevent user from going to this page
-            this.props.history.push({
-                pathname: "/",
+            this.setState({
+                LoggedIn: false
+            })
+        } else if (sessionStorage.getItem("role") === 'Scrum Master') {
+            console.log("REPORT: returning nav admin");
+            console.log(sessionStorage.getItem("userID"));
+            this.props.updateWhichNav(con.ADMIN);
+            this.setState({
+                LoggedIn: true
+            })
+        } else {
+            console.log("REPORT: returning nav developer");
+            console.log(sessionStorage.getItem("userID"));
+            this.props.updateWhichNav(con.DEVELOPER);
+            this.setState({
+                LoggedIn: true
             })
         }
     }
@@ -48,10 +79,6 @@ class Report extends Component {
 
     displayReport = () => {
         this.getSessions();
-        this.setState({
-            displayReport: true
-        })
-        alert("Team: " + this.state.teamChosen + " Low Date: " + this.state.lowDate + " High Date: " + this.state.highDate);
     }
 
     resetPage = () => {
@@ -60,7 +87,12 @@ class Report extends Component {
             highDate: new Date(),
             teamChosen: 0,
             sessions: [],
-            displayReport: false
+            redTotal: 0,
+            yellowTotal: 0,
+            greenTotal: 0,
+            greyTotal: 0,
+            displayReport: false,
+            dropdownLabel: "Choose Team"
         })
     }
 
@@ -85,10 +117,12 @@ class Report extends Component {
         var lowDate = Moment(this.state.lowDate).format('YYYY-MM-DD');
         var highDate = Moment(this.state.highDate).format('YYYY-MM-DD');
         API.getSessionByTeamNameAndDateRange(this.state.teamChosen, lowDate, highDate)
-            .then(res =>
+            .then(res => {
                 this.setState({
                     sessions: res.data
                 })
+                this.determineCounts();
+            }
             )
             .catch(() =>
                 this.setState({
@@ -97,20 +131,37 @@ class Report extends Component {
             );
     };
 
-    // render /sessions on redirect
-    // renderRedirect = () => {
-    //     var date = this.state.date;
-    //     var teamChosen = this.state.teamChosen;
-    //     if (this.state.redirect) {
-    //         return <Redirect to={{
-    //             pathname: '/session',
-    //             state: {
-    //                 date,
-    //                 teamChosen
-    //             }
-    //         }} />
-    //     }
-    // }
+    /**
+     * Support Methods
+     */
+    determineCounts = () => {
+        this.state.sessions.forEach(session => {
+            // let formatDate = Moment(session.session_date, "YYYY-MM-DD[T]HH:mm:ss").format('YYYY-MM-DD');
+            session.Members.forEach(member => {
+                if (member.Status) {
+                    if (member.Status.current_status === "RED") {
+                        this.state.redTotal++;
+                    }
+                    else if (member.Status.current_status === "YELLOW") {
+                        this.state.yellowTotal++;
+                    }
+                    else if (member.Status.current_status === "GREEN"){
+                        this.state.greenTotal++;
+                    }
+                    else {
+                        this.state.greyTotal++;
+                    }
+                }
+                else {
+                    this.state.greyTotal++;
+                }
+            });
+        });
+
+        this.setState({
+            displayReport: true
+        })
+    }
 
     render() {
         if (!this.state.displayReport) {
@@ -157,27 +208,50 @@ class Report extends Component {
             )
         }
         else {
+            let lowDate = Moment(this.state.lowDate).format('YYYY-MM-DD');
+            let highDate = Moment(this.state.highDate).format('YYYY-MM-DD');
+
+            const options = {
+                animationEnabled: true,
+                colorSet: "customColorSet1",
+                title: {
+                    text: "Team Status " + lowDate + " to " + highDate
+                },
+                subtitles: [{
+                    text: this.state.teamChosen,
+                    verticalAlign: "center",
+                    fontSize: 20,
+                    dockInsidePlotArea: true
+                }],
+                data: [{
+                    type: "doughnut",
+                    showInLegend: true,
+                    indexLabel: "{name}: {y}",
+                    yValueFormatString: "#,###",
+                    dataPoints: [
+                        { name: "Blocked", y: this.state.redTotal }, //red
+                        { name: "At Risk", y: this.state.yellowTotal }, //yellow
+                        { name: "No Blockers", y: this.state.greenTotal }, //green
+                        { name: "Unreported", y: this.state.greyTotal } //grey
+                    ]
+                }]
+            }
+
             return (
                 <Container>
-                    <Row>
+                    <Row id="chart-row">
                         <Col>
-                            <h1>Main Diagram</h1>
-                            <p>{JSON.stringify(this.state.sessions)}</p>
-                        </Col>
+                            <CanvasJSChart options={options}
+                            /></Col>
                     </Row>
-                    <Row>
-                        <Col>
-                            <h1>Daily Diagrams</h1>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col>
+                    <Row id="button-row">
+                        <Col id="exit-button">
                             <Button variant="outline-primary" size="lg" className="px-4"
                                 onClick={this.resetPage}>Exit</Button>
                         </Col>
                     </Row>
                 </Container>
-            )
+            );
         }
     }
 }

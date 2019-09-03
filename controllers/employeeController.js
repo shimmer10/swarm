@@ -45,6 +45,7 @@ module.exports = {
       role: employee.role,
       email: employee.email,
       image_link: employee.image_link,
+      TeamId: employee.TeamId
     }, {
         where: { id: req.params.id }
       }).then(dbEmployee => {

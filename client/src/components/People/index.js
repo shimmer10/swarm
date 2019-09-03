@@ -28,8 +28,8 @@ class People extends Component {
     selectedEmployees: [],
     updatedEmployeeIds: [],
     id: '',
-    firstName: '',
-    lastName: '',
+    first_name: '',
+    last_name: '',
     email: '',
     image: '',
     role: '',
@@ -38,8 +38,6 @@ class People extends Component {
   componentDidMount() {
     this.getEmployees();
     this.setState({
-      selectedEmployees: this.determineSelectedEmployees(),
-      availableEmployees: this.determineAvailableEmployees()
     })
   }
 
@@ -52,13 +50,11 @@ class People extends Component {
         this.setState({
           employeeSelected: true,
           id: employee.id,
-          firstName: employee.first_name,
-          lastName: employee.last_name,
+          first_name: employee.first_name,
+          last_name: employee.last_name,
           email: employee.email,
           image: employee.image_link,
           role: employee.role,
-          selectedEmployees: this.determineSelectedEmployees(),
-          availableEmployees: this.determineAvailableEmployees()
         })
       }
     });
@@ -68,8 +64,6 @@ class People extends Component {
     event.preventDefault();
     this.setState({
       employeeSelected: false,
-      selectedEmployees: this.determineSelectedEmployees(),
-      availableEmployees: this.determineAvailableEmployees()
     })
   };
 
@@ -82,17 +76,19 @@ class People extends Component {
       email: this.state.email,
       image_link: this.state.image_link,
     }
+    console.log(data);
+    console.log("in update employee");
     API.updateEmployee(this.state.id, data)
       .then(res => {
         console.log(res.data);
         this.getEmployees();   // refresh the employee information
+        window.location.reload();  // reload so that teams tab picks up any changes we made
         this.setState({
           employeeSelected: false,
-          selectedEmployees: this.determineSelectedEmployees(),
-          availableEmployees: this.determineAvailableEmployees()
         })
       })
       .catch(err => {
+        alert("People Page: update employee error: " + err);
         console.log("in catch for handle submit in people page");
         console.log(err);
       });
@@ -107,11 +103,11 @@ class People extends Component {
         this.getEmployees();
         this.setState({
           employeeSelected: false,
-          selectedEmployees: this.determineSelectedEmployees(),
-          availableEmployees: this.determineAvailableEmployees(),
         })
+        window.location.reload(); // reload so that teams tab picks up any changes we made
       })
       .catch(err => {
+        alert("People Page: delete employee error: " + err);
         console.log("in catch for handle delete on people page");
         console.log(err);
       });
@@ -128,63 +124,21 @@ class People extends Component {
           employees: res.data
         })
       )
-      .catch(() =>
+      .catch(err => {
+        alert("People Page: get employee error: " + err);
         this.setState({
           employees: []
         })
-      );
-  };
-
-  updateEmployees = () => {
-    // you need to fix this bjt
-    let uniqueIdList = Array.from(new Set(this.state.updatedEmployeeIds));
-    if (uniqueIdList.length > 0) {
-      this.state.employees.forEach(employee => {
-        if (uniqueIdList.includes(employee.id)) {
-          API.updateEmployee(employee.id, employee)
-            .then(res =>
-              employee = res.data
-            )
-            .catch(() =>
-              employee = {}
-            );
-        }
       });
-    }
   };
 
   /********************
    * Support Methods
    ********************/
-  determineSelectedEmployees = () => {
-    let selectedEmployees = [];
-    this.state.employees.forEach(employee => {
-      if (this.state.team &&
-        this.state.team.id === employee.TeamId) {
-        selectedEmployees.push(employee);
-      }
-    });
-    return selectedEmployees;
-  }
-
-  determineAvailableEmployees = () => {
-    let availableEmployees = [];
-    this.state.employees.forEach(employee => {
-      if (!this.state.team ||
-        this.state.team.id !== employee.TeamId) {
-        availableEmployees.push(employee);
-      }
-    });
-    return availableEmployees;
-  }
-
   handleInputChange = event => {
     console.log('handle input change on people page: ' + event.target.name + ' ' + event.target.value);
     this.setState({ [event.target.name]: event.target.value });
   }
-
-
-
 
   render() {
 
@@ -217,8 +171,8 @@ class People extends Component {
 
         <div className="inner-container">
           <h2 align="center" className="header">
-            Select an employee to edit profile
-      </h2>
+            Editing: {this.state.first_name} {this.state.last_name} Information
+          </h2>
           <Container>
             <Row>
               <Col>
@@ -238,14 +192,14 @@ class People extends Component {
                 <Form.Row>
                   <Form.Group as={Col} controlId="formGridfirstName">
                     <Form.Label>First Name</Form.Label>
-                    <Form.Control type="firstname" name="firstname" placeholder={this.state.firstName} onChange={this.handleInputChange} />
+                    <Form.Control type="firstname" name="first_name" placeholder={this.state.first_name} onChange={this.handleInputChange} />
                   </Form.Group>
                 </Form.Row>
 
                 <Form.Row>
                   <Form.Group as={Col} controlId="formGridLastName">
                     <Form.Label>Last Name</Form.Label>
-                    <Form.Control type="lastname" name="lastname" placeholder={this.state.lastName} onChange={this.handleInputChange} />
+                    <Form.Control type="lastname" name="last_name" placeholder={this.state.last_name} onChange={this.handleInputChange} />
                   </Form.Group>
                 </Form.Row>
 
@@ -253,18 +207,6 @@ class People extends Component {
                   <Form.Group as={Col} controlId="formGridEmail">
                     <Form.Label>Email</Form.Label>
                     <Form.Control type="email" name="email" placeholder={this.state.email} onChange={this.handleInputChange} />
-                  </Form.Group>
-
-                  {/* <Form.Group as={Col} controlId="formGridPassword">
-                    <Form.Label>Password</Form.Label>
-                    <Form.Control type="password" name="password" placeholder="Password" onChange={this.handleInputChange} />
-                  </Form.Group> */}
-                </Form.Row>
-
-                <Form.Row>
-                  <Form.Group as={Col} controlId="formGridImage">
-                    <Form.Label>Image Link</Form.Label>
-                    <Form.Control type="image" name="image" placeholder={this.state.image} onChange={this.handleInputChange} />
                   </Form.Group>
                 </Form.Row>
 

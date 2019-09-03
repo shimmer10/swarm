@@ -33,8 +33,8 @@ class SignupForm extends Component {
         console.log(res.data);
         // set logged in user into session storage for retreival by other components
         sessionStorage.setItem("userID", res.data.id);
-        sessionStorage.setItem("firstName", res.data.firstname);
-        sessionStorage.setItem("lastName", res.data.lastname);
+        sessionStorage.setItem("firstName", res.data.firs_tname);
+        sessionStorage.setItem("lastName", res.data.last_name);
         sessionStorage.setItem("role", res.data.role);
         sessionStorage.setItem("email", res.data.email);
 
