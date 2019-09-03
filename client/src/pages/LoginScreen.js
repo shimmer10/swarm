@@ -27,13 +27,15 @@ class LoginScreen extends Component {
 
   }
 
+  
+
   render() {
     return (
       <div align="center">
         <div className="box-container" align="left">
           <Tabs activeKey={this.state.key} onSelect={this.handleSelect} id="controlled-tab-example">
             <Tab eventKey="Signin" title="Sign-in">
-              < Login />
+              < Login  getNav={this.props.getNav} />
             </Tab>
             <Tab eventKey="Signup" title="Sign-up">
               <Signup />
