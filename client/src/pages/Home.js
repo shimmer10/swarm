@@ -1,50 +1,72 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import API from "../utils/API";
+import Alert from 'react-bootstrap/Alert';
 import Button from 'react-bootstrap/Button';
+import Card from 'react-bootstrap/Card';
+import CardDeck from 'react-bootstrap/CardDeck';
+import Col from 'react-bootstrap/Col';
+import Container from 'react-bootstrap/Container';
 import CustomToggle from '../components/CustomToggle';
 import CustomMenu from '../components/CustomMenu';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import DatePicker from 'react-date-picker';
 import Dropdown from 'react-bootstrap/Dropdown';
+import { FaPlusCircle } from 'react-icons/fa';
+import Form from 'react-bootstrap/Form';
+import FormStatus from '../components/FormStatus';
 import Row from 'react-bootstrap/Row';
+import Moment from 'moment';
 import con from "../utils/const";
 import './Home.css';
 
 class Home extends Component {
+
     state = {
         date: new Date(),
+        dropdownLabel: "Choose Team",
+        members: [],
+        memberStatus: [],
         teams: [],
+        loggedIn: true,  // set the default to true
         redirect: false,
-        LoggedIn: true,  // set the default to true
         teamChosen: null,
-        dropdownLabel: "Choose Team"
+        teams: [],
+        showAlert: false,
+        status: "choose status",
+        submitted: false,
+        today: "",
+        yesterday: ""
     }
 
     componentDidMount() {
         this.getTeams();
         console.log(sessionStorage)
+        if (!this.state.loggedIn) {
+            console.log('redirecting to main from home');
+            return <Redirect to="/" />;
+        }
         if (!sessionStorage.getItem("userID")) {
             console.log("no user ID in home");
             this.props.updateWhichNav(con.NOUSER);
             // prevent user from going to this page
             this.setState({
-                LoggedIn: false
+                loggedIn: false
             })
         } else if (sessionStorage.getItem("role") === 'Scrum Master') {
             console.log("returning nav admin from home");
             console.log(sessionStorage.getItem("userID"));
             this.props.updateWhichNav(con.ADMIN);
             this.setState({
-                LoggedIn: true
+                loggedIn: true
             })
         } else {
             console.log("returning nav developer from home");
             console.log(sessionStorage.getItem("userID"));
             this.props.updateWhichNav(con.DEVELOPER);
             this.setState({
-                LoggedIn: true
+                loggedIn: true
             })
         }
     }
@@ -73,47 +95,63 @@ class Home extends Component {
     }
 
     // set redirect to true
-    setRedirect = () => {
-        this.setState({
-            redirect: true
-        })
-    }
-
-    setStateToFalse = () => this.setState({ redirect: false })
-
-    // render / or /sessions on redirect
-    renderRedirect = () => {
-        var date = this.state.date;
+    renderCardsOnSubmit = () => {
         var teamChosen = this.state.teamChosen;
 
-        // if we arent logged in protect this page by redirecting to main page at /
-        if (!this.state.LoggedIn) {
-            console.log('redirecting to main from home');
-            return <Redirect to="/" />;
+        console.log("team chosen: " + teamChosen);
+        if (teamChosen != null) {
+            this.setState({
+                submitted: true,
+                showAlert: false
+            })
         }
-
-        if (this.state.redirect) {
-            if (teamChosen != null) {
-
-                return <Redirect to={{
-                    pathname: '/session',
-                    state: {
-                        date,
-                        teamChosen
-                    }
-                }} />
-            }
-            else {
-                alert("Please Choose a Team");
-                this.setStateToFalse();
-            }
+        else {
+            this.setState({
+                showAlert: true
+            });
         }
+        console.log("state submitted: " + this.state.submitted);
+    }
+
+    getSession = (teamName, date) => {
+        var formattedDate = Moment(date, " YYYY-MM-DD[T]HH:mm:ss").format('YYYY-MM-DD');
+        console.log("session date: " + formattedDate);
+        API.getSessionByTeamNameAndDate(teamName, formattedDate)
+            .then(res =>
+                this.setState({
+                    members: res.data.Members,
+                    date: formattedDate
+                },
+                    this.getSession(this.state.teamChosen, this.state.date)
+                )
+            )
+            .catch(() =>
+                this.setState({
+                    members: []
+                })
+            );
+    };
+
+    getStatus = (id) => {
+        API.getStatusByMemberId(id)
+            .then(res =>
+                this.setState({
+                    memberStatus: res.data.Statuses
+                }))
+            .catch(() =>
+                this.setState({
+                    memberStatus: []
+                }))
+
+    }
+
+    addStatus = () => {
+        console.log("adding status");
     }
 
     render() {
         return (
             <div>
-                {this.renderRedirect()}
                 <Container>
                     <Row id="select-row" className="justify-content-md-center">
                         <Col md="auto" className="columns">
@@ -135,10 +173,61 @@ class Home extends Component {
                         />
                         <Col xs lg="2" className="columns">
                             <Button variant="outline-primary" size="lg" className="px-4"
-                                onClick={this.setRedirect}>Submit</Button>
+                                onClick={this.renderCardsOnSubmit}>Submit</Button>
                         </Col>
                     </Row>
+                    {/* Alert when no team chosen */}
+                    {this.state.showAlert === true &&
+                        (<Row>
+                            <Col xs lg="12">
+                                <Alert id="alert" variant="danger" onClose={() => this.setState({ showAlert: false })} dismissible>
+                                    <Alert.Heading>No Team Provided</Alert.Heading>
+                                    <p>
+                                        A team is required. Please select a team and submit again
+                                </p>
+                                </Alert>
+                            </Col>
+                        </Row>
+                        )}
                 </Container>
+                {/* Render team member cards */}
+                {this.state.submitted === true && (
+                    <div id="divider">
+                        <Container id="container">
+                            <Row>
+                                <Col size="md-12">
+                                    <CardDeck id="card-deck">
+                                        {this.state.members.map(member => (
+                                            <Card key={member.id} id="employee-card" fluid>
+                                                <Card.Img variant="top" rounded />
+                                                <Card.Body>
+                                                    <Card.Title>{member.first_name} {member.last_name}</Card.Title>
+                                                    {/* <div onClick={this.addStatus}> */}
+                                                    <FaPlusCircle id="plus" size={25} onClick={this.addStatus} />
+                                                    {/* </div> */}
+                                                    {/* {this.getStatus(member.id)} */}
+                                                    <Form>
+                                                        <Form.Group controlId="exampleForm.ControlTextarea1">
+                                                            <Form.Label>Doing</Form.Label>
+                                                            <Form.Control as="textarea" rows="3" placeholder="What are you doing today?" onChange={todayStatus => this.setState({ today: todayStatus })} />
+                                                            {/* {this.state.memberStatus.today_description} */}
+                                                        </Form.Group>
+                                                        <Form.Group controlId="exampleForm.ControlTextarea1">
+                                                            <Form.Label>Done</Form.Label>
+                                                            <Form.Control as="textarea" rows="3" placeholder="What did you do yesterday?" />
+                                                            {/* {this.state.memberStatus.yesterday_description} */}
+                                                        </Form.Group>
+                                                        <FormStatus />
+                                                    </Form>
+                                                </Card.Body>
+                                            </Card>
+                                        ))}
+                                    </CardDeck>
+                                </Col>
+                            </Row>
+                        </Container>
+                    </div>
+                )}
             </div>
         )
     }

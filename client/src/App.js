@@ -10,7 +10,6 @@ import NoMatch from "./pages/NoMatch";
 import Main from "./pages/Main";
 import LoginScreen from "./pages/LoginScreen";
 import Admin from "./pages/Admin";
-import Session from "./pages/Session";
 import Report from "./pages/Report";
 import con from "./utils/const";
 import "./App.css";
@@ -35,16 +34,16 @@ class App extends Component {
     switch (navType) {
       case con.ADMIN:
         console.log("in update which nav choose admin bjt ");
-        this.setState({ 
+        this.setState({
           whichNav: con.ADMIN,
-          name: sessionStorage.getItem("firstName") + " " +  sessionStorage.getItem("lastName")
+          name: sessionStorage.getItem("firstName") + " " + sessionStorage.getItem("lastName")
         });
         break;
       case con.DEVELOPER:
         console.log("in update which nav choose developer bjt");
-        this.setState({ 
+        this.setState({
           whichNav: con.DEVELOPER,
-          name: sessionStorage.getItem("firstName") + " " +  sessionStorage.getItem("lastName")
+          name: sessionStorage.getItem("firstName") + " " + sessionStorage.getItem("lastName")
         });
         break;
       default:
@@ -72,26 +71,24 @@ class App extends Component {
   }
 
   render() {
-        return (
-          <Router>
-            <div>
-              {this.switchOnUser()}
-              <Container id="body">
-                <Switch>
-                  <Route exact path="/" render={() => <Main updateWhichNav={this.updateWhichNav} />} />
-                  <Route exact path="/home" render={() => <Home updateWhichNav={this.updateWhichNav} />} />
-                  <Route exact path="/loginscreen" component={LoginScreen} />
-                  <Route exact path="/admin" render={() => <Admin updateWhichNav={this.updateWhichNav} />} />
-                  <Route exact path="/session" component={Session}/>
-                  {/* <Route exact path="/session" render={(location) => <Session updateWhichNav={this.updateWhichNav} location={this.props.location} />} /> */}
-                  <Route exact path="/report" render={() => <Report updateWhichNav={this.updateWhichNav} />} />
-                  <Route component={NoMatch} />
-                </Switch>
-              </Container>
-              <Footer />
-            </div>
-          </Router>
-        );
+    return (
+      <Router>
+        <div>
+          {this.switchOnUser()}
+          <Container id="body">
+            <Switch>
+              <Route exact path="/" render={() => <Main updateWhichNav={this.updateWhichNav} />} />
+              <Route exact path="/home" render={() => <Home updateWhichNav={this.updateWhichNav} />} />
+              <Route exact path="/loginscreen" component={LoginScreen} />
+              <Route exact path="/admin" render={() => <Admin updateWhichNav={this.updateWhichNav} />} />
+              <Route exact path="/report" render={() => <Report updateWhichNav={this.updateWhichNav} />} />
+              <Route component={NoMatch} />
+            </Switch>
+          </Container>
+          <Footer />
+        </div>
+      </Router>
+    );
   }
 }
 
