@@ -1,27 +1,36 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom'
 import API from "../utils/API";
+import Alert from 'react-bootstrap/Alert';
 import Button from 'react-bootstrap/Button';
+import Card from 'react-bootstrap/Card';
+import CardDeck from 'react-bootstrap/CardDeck';
+import Col from 'react-bootstrap/Col';
+import Container from 'react-bootstrap/Container';
 import CustomToggle from '../components/CustomToggle';
 import CustomMenu from '../components/CustomMenu';
-import Alert from 'react-bootstrap/Alert';
-import Col from 'react-bootstrap/Col';
-import Container from 'react-bootstrap/Container'
 import DatePicker from 'react-date-picker';
 import Dropdown from 'react-bootstrap/Dropdown';
+import { FaPlusCircle } from 'react-icons/fa';
+import Form from 'react-bootstrap/Form';
+import FormStatus from '../components/FormStatus';
 import Row from 'react-bootstrap/Row';
+import Moment from 'moment';
 import './Home.css';
-import { cpus } from 'os';
 
 class Home extends Component {
 
     state = {
         date: new Date(),
-        teams: [],
-        redirect: false,
-        teamChosen: null,
         dropdownLabel: "Choose Team",
-        showAlert: false
+        members: [],
+        memberStatus: [],
+        teamChosen: null,
+        teams: [],
+        showAlert: false,
+        status: "choose status",
+        submitted: false,
+        today: "",
+        yesterday: ""
     }
 
     componentDidMount() {
@@ -60,46 +69,63 @@ class Home extends Component {
     }
 
     // set redirect to true
-    setRedirectToTrue = () => {
-        this.setState({
-            redirect: true
-        })
-    }
-
-    // should set redirect to false so they have to hit submit again
-    setRedirectToFalse = () => {
-        this.setState({
-            redirect: false,
-            showAlert: true
-        })
-    }
-
-    // render /sessions on redirect
-    renderRedirect = () => {
-        var date = this.state.date;
+    renderCardsOnSubmit = () => {
         var teamChosen = this.state.teamChosen;
 
-        if (this.state.redirect) {
-            if (teamChosen != null) {
-
-                return <Redirect to={{
-                    pathname: '/session',
-                    state: {
-                        date,
-                        teamChosen
-                    }
-                }} />
-            }
-            else {
-                this.setRedirectToFalse();
-            }
+        console.log("team chosen: " + teamChosen);
+        if (teamChosen != null) {
+            this.setState({
+                submitted: true,
+                showAlert: false
+            })
         }
+        else {
+            this.setState({
+                showAlert: true
+            });
+        }
+        console.log("state submitted: " + this.state.submitted);
+    }
+
+    getSession = (teamName, date) => {
+        var formattedDate = Moment(date, " YYYY-MM-DD[T]HH:mm:ss").format('YYYY-MM-DD');
+        console.log("session date: " + formattedDate);
+        API.getSessionByTeamNameAndDate(teamName, formattedDate)
+            .then(res =>
+                this.setState({
+                    members: res.data.Members,
+                    date: formattedDate
+                },
+                    this.getSession(this.state.teamChosen, this.state.date)
+                )
+            )
+            .catch(() =>
+                this.setState({
+                    members: []
+                })
+            );
+    };
+
+    getStatus = (id) => {
+        API.getStatusByMemberId(id)
+            .then(res =>
+                this.setState({
+                    memberStatus: res.data.Statuses
+                }))
+            .catch(() =>
+                this.setState({
+                    memberStatus: []
+                }))
+
+    }
+
+    addStatus = () => {
+        console.log("adding status");
     }
 
     render() {
         return (
             <div>
-                {this.renderRedirect()}
                 <Container>
                     <Row id="select-row" className="justify-content-md-center">
                         <Col md="auto" className="columns">
@@ -121,9 +147,10 @@ class Home extends Component {
                         />
                         <Col xs lg="2" className="columns">
                             <Button variant="outline-primary" size="lg" className="px-4"
-                                onClick={this.setRedirectToTrue}>Submit</Button>
+                                onClick={this.renderCardsOnSubmit}>Submit</Button>
                         </Col>
                     </Row>
+                    {/* Alert when no team chosen */}
                     {this.state.showAlert === true &&
                         (<Row>
                             <Col xs lg="12">
@@ -137,6 +164,44 @@ class Home extends Component {
                         </Row>
                         )}
                 </Container>
+                {/* Render team member cards */}
+                {this.state.submitted === true && (
+                    <div id="divider">
+                        <Container id="container">
+                            <Row>
+                                <Col size="md-12">
+                                    <CardDeck id="card-deck">
+                                        {this.state.members.map(member => (
+                                            <Card key={member.id} id="employee-card" fluid>
+                                                <Card.Img variant="top" rounded />
+                                                <Card.Body>
+                                                    <Card.Title>{member.first_name} {member.last_name}</Card.Title>
+                                                    {/* <div onClick={this.addStatus}> */}
+                                                    <FaPlusCircle id="plus" size={25} onClick={this.addStatus} />
+                                                    {/* </div> */}
+                                                    {/* {this.getStatus(member.id)} */}
+                                                    <Form>
+                                                        <Form.Group controlId="exampleForm.ControlTextarea1">
+                                                            <Form.Label>Doing</Form.Label>
+                                                            <Form.Control as="textarea" rows="3" placeholder="What are you doing today?" onChange={todayStatus => this.setState({ today: todayStatus })} />
+                                                            {/* {this.state.memberStatus.today_description} */}
+                                                        </Form.Group>
+                                                        <Form.Group controlId="exampleForm.ControlTextarea1">
+                                                            <Form.Label>Done</Form.Label>
+                                                            <Form.Control as="textarea" rows="3" placeholder="What did you do yesterday?" />
+                                                            {/* {this.state.memberStatus.yesterday_description} */}
+                                                        </Form.Group>
+                                                        <FormStatus />
+                                                    </Form>
+                                                </Card.Body>
+                                            </Card>
+                                        ))}
+                                    </CardDeck>
+                                </Col>
+                            </Row>
+                        </Container>
+                    </div>
+                )}
             </div>
         )
     }
