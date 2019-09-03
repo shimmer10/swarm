@@ -27,8 +27,7 @@ class Home extends Component {
         members: [],
         memberStatus: [],
         teams: [],
-        loggedIn: true,  // set the default to true
-        redirect: false,
+        loggedIn: true,
         teamChosen: null,
         teams: [],
         showAlert: false,
@@ -41,16 +40,12 @@ class Home extends Component {
     componentDidMount() {
         this.getTeams();
         console.log(sessionStorage)
-        if (!this.state.loggedIn) {
-            console.log('redirecting to main from home');
-            return <Redirect to="/" />;
-        }
-        if (!sessionStorage.getItem("userID")) {
-            console.log("no user ID in home");
-            this.props.updateWhichNav(con.NOUSER);
-            // prevent user from going to this page
+        if (sessionStorage.getItem("role") === 'Developer') {
+            console.log("returning nav developer from home");
+            console.log(sessionStorage.getItem("userID"));
+            this.props.updateWhichNav(con.DEVELOPER);
             this.setState({
-                loggedIn: false
+                loggedIn: true
             })
         } else if (sessionStorage.getItem("role") === 'Scrum Master') {
             console.log("returning nav admin from home");
@@ -60,12 +55,18 @@ class Home extends Component {
                 loggedIn: true
             })
         } else {
-            console.log("returning nav developer from home");
-            console.log(sessionStorage.getItem("userID"));
-            this.props.updateWhichNav(con.DEVELOPER);
+            console.log("no user ID in home");
+            this.props.updateWhichNav(con.NOUSER);
             this.setState({
-                loggedIn: true
+                loggedIn: false
             })
+            // prevent user from going to this page
+        }
+    }
+
+    renderRedirect = () => {
+        if (!this.state.loggedIn) {
+            return <Redirect to="/" />;
         }
     }
 
@@ -92,7 +93,7 @@ class Home extends Component {
         this.setState({ teamChosen, dropdownLabel: teamChosen })
     }
 
-    // set redirect to true
+    // set submitted to true if team chosen
     renderCardsOnSubmit = () => {
         var teamChosen = this.state.teamChosen;
 
@@ -150,6 +151,7 @@ class Home extends Component {
     render() {
         return (
             <div>
+                {this.renderRedirect()}
                 <Container>
                     <Row id="select-row" className="justify-content-md-center">
                         <Col md="auto" className="columns">
