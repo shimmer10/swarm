@@ -97,6 +97,7 @@ class Home extends Component {
     renderCardsOnSubmit = () => {
         var teamChosen = this.state.teamChosen;
 
+        console.log("date: " + this.state.date);
         console.log("team chosen: " + teamChosen);
         if (teamChosen != null) {
             this.setState({
