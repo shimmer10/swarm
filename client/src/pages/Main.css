@@ -6,10 +6,21 @@ h1, h6 {
     text-align: center;
 }
 
-#main-logo {
-    opacity: 0.9;
+#header-text {
+    color: #f6f045;
 }
+
+/* #main-logo {
+    opacity: 0.9;
+} */
 
 #main-section {
     resize: vertical;
+    /* background-color: #f6f045; */
+    /* color: #f6f045; */
+    background: url("../images/light_honeycomb.png"); 
 }
+
+/* #login {
+    color: white;
+} */

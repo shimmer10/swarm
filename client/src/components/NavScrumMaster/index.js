@@ -12,13 +12,6 @@ class NavBar extends Component {
         width: window.innerWidth
     };
 
-    // called when logout button is selected
-    // this clears the session storage which is
-    // what we use to indicate a user is logged in
-    handleLogOut = props => {
-        sessionStorage.clear()
-    }
-
     updateWidth = () => {
         const newState = { width: window.innerWidth };
 
@@ -66,10 +59,9 @@ class NavBar extends Component {
                             <NavDropdown.Item href="https://spbryan.github.io/Bootstrap-Portfolio/" target="_blank">Sean</NavDropdown.Item>
                         </NavDropdown>
                     </Nav>
-                    <Link className="ml-auto" id="login" to="/loginscreen">
-                        Sign-in/Sign-up
+                    <Link className="ml-auto" id="admin" to="/admin">
+                        Manage
                     </Link>
-                    
                 </Navbar.Collapse>
             </Navbar >
         )

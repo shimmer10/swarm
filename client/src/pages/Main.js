@@ -39,7 +39,7 @@ class Main extends Component {
                         </Col>
                     </Row>
                     <Row fluid>
-                        <Col size="md-12">
+                        <Col size="md-12" id="header-text">
                             <h1>Welcome To SWARM</h1>
                             <h6>Standup With A Remote Motif</h6>
                         </Col>

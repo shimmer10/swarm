@@ -2,4 +2,8 @@ body {
   margin: 0;
   padding: 0;
   font-family: sans-serif;
+  box-sizing: border-box;
+  background: url("./images/techno-honeycomb.jpg"); 
+  background-attachment: fixed;
+  background-size: cover;
 }

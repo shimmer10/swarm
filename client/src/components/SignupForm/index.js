@@ -6,6 +6,8 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 
+import './style.css';
+
 
 class SignupForm extends Component {
 
@@ -33,7 +35,7 @@ class SignupForm extends Component {
         console.log(res.data);
         // set logged in user into session storage for retreival by other components
         sessionStorage.setItem("userID", res.data.id);
-        sessionStorage.setItem("firstName", res.data.firs_tname);
+        sessionStorage.setItem("firstName", res.data.first_name);
         sessionStorage.setItem("lastName", res.data.last_name);
         sessionStorage.setItem("role", res.data.role);
         sessionStorage.setItem("email", res.data.email);
