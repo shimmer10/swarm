@@ -6,19 +6,17 @@ import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import CardDeck from 'react-bootstrap/CardDeck';
 import Col from 'react-bootstrap/Col';
+import con from "../utils/const";
 import Container from 'react-bootstrap/Container';
 import CustomToggle from '../components/CustomToggle';
 import CustomMenu from '../components/CustomMenu';
-import Col from 'react-bootstrap/Col';
-import Container from 'react-bootstrap/Container';
 import DatePicker from 'react-date-picker';
 import Dropdown from 'react-bootstrap/Dropdown';
 import { FaPlusCircle } from 'react-icons/fa';
 import Form from 'react-bootstrap/Form';
 import FormStatus from '../components/FormStatus';
-import Row from 'react-bootstrap/Row';
 import Moment from 'moment';
-import con from "../utils/const";
+import Row from 'react-bootstrap/Row';
 import './Home.css';
 
 class Home extends Component {
@@ -104,13 +102,13 @@ class Home extends Component {
                 submitted: true,
                 showAlert: false
             })
+            console.log("state submitted: " + this.state.submitted);
         }
         else {
             this.setState({
                 showAlert: true
             });
         }
-        console.log("state submitted: " + this.state.submitted);
     }
 
     getSession = (teamName, date) => {
