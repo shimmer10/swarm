@@ -211,7 +211,7 @@ class Home extends Component {
                                                 <Card.Body>
                                                     <Card.Title>{member.first_name} {member.last_name}</Card.Title>
                                                     {/* <div onClick={this.addStatus}> */}
-                                                    <FaPlusCircle id="plus" size={25} onClick={this.addStatus} />
+                                                    {/* <FaPlusCircle id="plus" size={25} onClick={this.addStatus} /> */}
                                                     {/* </div> */}
                                                     {/* {this.getStatus(member.id)} */}
                                                     <Form>
@@ -227,6 +227,7 @@ class Home extends Component {
                                                             {/* {this.state.memberStatus.yesterday_description} */}
                                                         </Form.Group>
                                                         <FormStatus />
+                                                        <Button onClick={this.addStatus}>Submit</Button>
                                                     </Form>
                                                 </Card.Body>
                                             </Card>
