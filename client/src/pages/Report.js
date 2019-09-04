@@ -167,8 +167,8 @@ class Report extends Component {
         if (!this.state.displayReport) {
             return (
                 <Container>
-                    <Row className="team-dropdown mt-2 pt-2">
-                        <Col xs={2}>
+                    <Row id="select-row" className="team-dropdown pt-2">
+                        <Col xs={2} id="team-select">
                             <Dropdown>
                                 <Dropdown.Toggle as={CustomToggle} id="dropdown-custom-components">
                                     {this.state.dropdownLabel}
@@ -246,7 +246,7 @@ class Report extends Component {
                     </Row>
                     <Row id="button-row">
                         <Col id="exit-button">
-                            <Button variant="outline-primary" size="lg" className="px-4"
+                            <Button size="lg" className="new-btn px-4"
                                 onClick={this.resetPage}>Exit</Button>
                         </Col>
                     </Row>
