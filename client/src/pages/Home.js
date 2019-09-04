@@ -97,14 +97,13 @@ class Home extends Component {
     renderCardsOnSubmit = () => {
         var teamChosen = this.state.teamChosen;
 
-        console.log("date: " + this.state.date);
-        console.log("team chosen: " + teamChosen);
         if (teamChosen != null) {
             this.setState({
                 submitted: true,
                 showAlert: false
             })
-            console.log("state submitted: " + this.state.submitted);
+            var sessionsRendered = 0;
+            this.getSession(teamChosen, this.state.date, sessionsRendered);
         }
         else {
             this.setState({
@@ -113,16 +112,16 @@ class Home extends Component {
         }
     }
 
-    getSession = (teamName, date) => {
+    getSession = (teamName, date, sessionsRendered) => {
         var formattedDate = Moment(date, " YYYY-MM-DD[T]HH:mm:ss").format('YYYY-MM-DD');
         console.log("session date: " + formattedDate);
+        sessionsRendered++;
         API.getSessionByTeamNameAndDate(teamName, formattedDate)
             .then(res =>
                 this.setState({
                     members: res.data.Members,
-                    date: formattedDate
                 },
-                    this.getSession(this.state.teamChosen, this.state.date)
+                    this.verifySessionNeeded(teamName, date, sessionsRendered)
                 )
             )
             .catch(() =>
@@ -132,12 +131,20 @@ class Home extends Component {
             );
     };
 
+    verifySessionNeeded = (teamName, date, sessionsRendered) => {
+        console.log("sessions rendered: " + sessionsRendered);
+        if (sessionsRendered < 2) {
+            this.getSession(teamName, date, sessionsRendered);
+        }
+    };
+
     getStatus = (id) => {
         API.getStatusByMemberId(id)
             .then(res =>
                 this.setState({
                     memberStatus: res.data.Statuses
-                }))
+                }),
+                console.log("in here:"))
             .catch(() =>
                 this.setState({
                     memberStatus: []
@@ -210,8 +217,9 @@ class Home extends Component {
                                                     <Form>
                                                         <Form.Group controlId="exampleForm.ControlTextarea1">
                                                             <Form.Label>Doing</Form.Label>
-                                                            <Form.Control as="textarea" rows="3" placeholder="What are you doing today?" onChange={todayStatus => this.setState({ today: todayStatus })} />
-                                                            {/* {this.state.memberStatus.today_description} */}
+                                                            <Form.Control as="textarea" rows="3" placeholder="What are you doing today?" >
+                                                                {this.state.memberStatus.today_description}
+                                                            </Form.Control>
                                                         </Form.Group>
                                                         <Form.Group controlId="exampleForm.ControlTextarea1">
                                                             <Form.Label>Done</Form.Label>
