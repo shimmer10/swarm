@@ -140,6 +140,15 @@ class People extends Component {
     this.setState({ [event.target.name]: event.target.value });
   }
 
+  // return true if the employee selected for edit is also the employee logged in
+  isThisUserLoggedIn = () => {
+    if (sessionStorage.getItem("userID") != this.state.id) {
+      return false;
+    }
+    return true;
+
+  }
+
   render() {
 
     if (!this.state.employeeSelected) {
@@ -166,7 +175,7 @@ class People extends Component {
         </div>
       );
     }
-    else {
+    else if (!this.isThisUserLoggedIn()) {
       return (
 
         <div className="inner-container">
@@ -241,6 +250,67 @@ class People extends Component {
           </Container>
         </div>
       );
+    } else {
+      return (
+
+        <div className="inner-container">
+          <h2 align="center" className="header">
+            Editing: {this.state.first_name} {this.state.last_name} Information
+          </h2>
+          <Container>
+            <Row>
+              <Col>
+                <h4>Employees</h4>
+                <p>Click to Edit</p>
+                <ListGroup>
+                  {this.state.employees.map(employee => (
+                    <ListGroup.Item className="list-item"
+                      key={employee.id}
+                      onClick={() => this.handleEmployeeSelect(employee.id)}>{employee.last_name}, {employee.first_name}</ListGroup.Item>
+                  ))}
+                </ListGroup>
+              </Col>
+              <Col>
+                <h4>Employee Info</h4>
+
+                <Form.Row>
+                  <Form.Group as={Col} controlId="formGridfirstName">
+                    <Form.Label>First Name</Form.Label>
+                    <Form.Control type="firstname" name="first_name" placeholder={this.state.first_name} onChange={this.handleInputChange} />
+                  </Form.Group>
+                </Form.Row>
+
+                <Form.Row>
+                  <Form.Group as={Col} controlId="formGridLastName">
+                    <Form.Label>Last Name</Form.Label>
+                    <Form.Control type="lastname" name="last_name" placeholder={this.state.last_name} onChange={this.handleInputChange} />
+                  </Form.Group>
+                </Form.Row>
+
+                <Form.Row>
+                  <Form.Group as={Col} controlId="formGridEmail">
+                    <Form.Label>Email</Form.Label>
+                    <Form.Control type="email" name="email" placeholder={this.state.email} onChange={this.handleInputChange} />
+                  </Form.Group>
+                </Form.Row>
+              </Col>
+            </Row>
+            <Row>
+              <Col align="center">
+                <Button
+                  type="button"
+                  className="new-btn ml-4"
+                  onClick={this.handleSubmit}>Submit</Button>
+                <Button
+                  type="button"
+                  className="new-btn ml-4"
+                  onClick={this.handleCancel}>Cancel</Button>
+              </Col>
+            </Row>
+          </Container>
+        </div>
+      );
+
     }
   }
 }
