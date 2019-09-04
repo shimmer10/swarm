@@ -132,25 +132,25 @@ class Home extends Component {
     };
 
     verifySessionNeeded = (teamName, date, sessionsRendered) => {
-        console.log("sessions rendered: " + sessionsRendered);
+        console.log("member data " + JSON.stringify(this.state.members));
         if (sessionsRendered < 2) {
             this.getSession(teamName, date, sessionsRendered);
         }
     };
 
-    getStatus = (id) => {
-        API.getStatusByMemberId(id)
-            .then(res =>
-                this.setState({
-                    memberStatus: res.data.Statuses
-                }),
-                console.log("in here:"))
-            .catch(() =>
-                this.setState({
-                    memberStatus: []
-                }))
+    // getStatus = (id) => {
+    //     API.getStatusByMemberId(id)
+    //         .then(res =>
+    //             this.setState({
+    //                 memberStatus: res.data.Statuses
+    //             }),
+    //             console.log("in here:"))
+    //         .catch(() =>
+    //             this.setState({
+    //                 memberStatus: []
+    //             }))
 
-    }
+    // }
 
     addStatus = () => {
         console.log("adding status");
@@ -218,7 +218,7 @@ class Home extends Component {
                                                         <Form.Group controlId="exampleForm.ControlTextarea1">
                                                             <Form.Label>Doing</Form.Label>
                                                             <Form.Control as="textarea" rows="3" placeholder="What are you doing today?" >
-                                                                {this.state.memberStatus.today_description}
+                                                                {member.Status.today_description}
                                                             </Form.Control>
                                                         </Form.Group>
                                                         <Form.Group controlId="exampleForm.ControlTextarea1">
