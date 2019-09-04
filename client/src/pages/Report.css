@@ -6,12 +6,22 @@
     margin-top: 20px;
 }
 
+#start-date {
+    padding-top: 10px;
+}
+
+#end-date {
+    padding-top: 10px;
+}
+
 #start-label {
     text-align: right;
+    padding-top: 10px;
 }
 
 #end-label {
     text-align: right;
+    padding-top: 10px;
 }
 
 #exit-button {
@@ -20,4 +30,8 @@
 
 #submit-button {
     text-align: right;
+}
+
+#team-select {
+    padding-top: 10px;
 }

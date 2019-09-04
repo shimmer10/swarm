@@ -1,5 +1,7 @@
 #select-row {
-    padding-top: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background: url("../images/wall4.png");
 }
 
 .columns {
