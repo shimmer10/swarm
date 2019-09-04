@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import Nav from 'react-bootstrap/Nav'
 import Navbar from 'react-bootstrap/Navbar'
 import NavDropdown from 'react-bootstrap/NavDropdown';
@@ -69,15 +69,15 @@ class NavBarDeveloper extends Component {
                             <NavDropdown.Item href="https://spbryan.github.io/Bootstrap-Portfolio/" target="_blank">Sean</NavDropdown.Item>
                         </NavDropdown>
                     </Nav>
-                    <Link onClick={this.handleLogOut} className="ml-auto" id="logout" to="/">
+                    <NavLink onClick={this.handleLogOut} className="ml-auto" id="logout" to="/">
                         Logout for {this.props.devName}
-                    </Link>
-                    <Link className="ml-auto" id="home" to="/home">
+                    </NavLink>
+                    <NavLink className="ml-auto" activeStyle={{ fontWeight: "bold", textDecoration: "underline" }} id="home" to="/home">
                         Home
-                    </Link>
-                    <Link className="ml-auto" id="report" to="/report">
+                    </NavLink>
+                    <NavLink className="ml-auto" activeStyle={{ fontWeight: "bold", textDecoration: "underline" }} id="report" to="/report">
                         Report
-                    </Link>
+                    </NavLink>
                 </Navbar.Collapse>
             </Navbar >
         )
