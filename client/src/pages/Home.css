@@ -25,6 +25,15 @@
     background: url("../images/wall4.png");
 }
 
+#date-pick {
+    text-align: center;
+    padding-top: 10px;
+}
+
+#team-select {
+    padding-top: 10px;
+}
+
 .columns {
     padding-left: 50px;
     padding-right: 50px;

@@ -4,6 +4,7 @@ import Button from 'react-bootstrap/Button';
 import CustomToggle from '../components/CustomToggle';
 import CustomMenu from '../components/CustomMenu';
 import DatePicker from 'react-date-picker';
+import Alert from 'react-bootstrap/Alert';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -35,7 +36,8 @@ class Report extends Component {
         greenTotal: 0,
         greyTotal: 0,
         displayReport: false,
-        teamChosen: 0,
+        teamChosen: null,
+        showAlert: false,
         dropdownLabel: "Choose Team"
     }
 
@@ -78,19 +80,28 @@ class Report extends Component {
     }
 
     displayReport = () => {
-        this.getSessions();
+        var teamChosen = this.state.teamChosen;
+        if (teamChosen != null) {
+            this.getSessions();
+        }
+        else {
+            this.setState({
+                showAlert: true
+            });
+        }
     }
 
     resetPage = () => {
         this.setState({
             lowDate: new Date(),
             highDate: new Date(),
-            teamChosen: 0,
+            teamChosen: null,
             sessions: [],
             redTotal: 0,
             yellowTotal: 0,
             greenTotal: 0,
             greyTotal: 0,
+            showAlert: false,
             displayReport: false,
             dropdownLabel: "Choose Team"
         })
@@ -145,7 +156,7 @@ class Report extends Component {
                     else if (member.Status.current_status === "YELLOW") {
                         this.state.yellowTotal++;
                     }
-                    else if (member.Status.current_status === "GREEN"){
+                    else if (member.Status.current_status === "GREEN") {
                         this.state.greenTotal++;
                     }
                     else {
@@ -204,18 +215,31 @@ class Report extends Component {
                                 onClick={this.displayReport}>Submit</Button>
                         </Col>
                     </Row>
+                    {/* Alert when no team chosen */}
+                    {this.state.showAlert === true &&
+                        (<Row>
+                            <Col xs lg="12">
+                                <Alert id="alert" variant="danger" onClose={() => this.setState({ showAlert: false })} dismissible>
+                                    <Alert.Heading>No Team Provided</Alert.Heading>
+                                    <p>
+                                        A team is required. Please select a team and submit again
+                                </p>
+                                </Alert>
+                            </Col>
+                        </Row>
+                        )}
                 </Container>
             )
         }
         else {
-            let lowDate = Moment(this.state.lowDate).format('YYYY-MM-DD');
-            let highDate = Moment(this.state.highDate).format('YYYY-MM-DD');
+            let lowDate = Moment(this.state.lowDate).format('MM/DD/YYYY');
+            let highDate = Moment(this.state.highDate).format('MM/DD/YYYY');
 
             const options = {
                 animationEnabled: true,
                 colorSet: "customColorSet1",
                 title: {
-                    text: "Team Status " + lowDate + " to " + highDate
+                    text: lowDate + " to " + highDate
                 },
                 subtitles: [{
                     text: this.state.teamChosen,
