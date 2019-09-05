@@ -16,7 +16,7 @@ class FormStatus extends Component {
     // handle Blocker Description
     handleBlockerDescription(event) {
         var blockerDescription = event.target.value;
-        {this.props.data({blockerDescription})};
+        {this.props.data(blockerDescription)};
         
     }
 

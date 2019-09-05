@@ -32,7 +32,9 @@ class Home extends Component {
         teams: [],
         showAlert: false,
         status: null,
-        submitted: false
+        submitted: false,
+        today: null,
+        yesterday: null
     }
 
     componentDidMount() {
@@ -113,7 +115,6 @@ class Home extends Component {
     // get session from API
     getSession = (teamName, date, sessionsRendered) => {
         var formattedDate = Moment(date, " YYYY-MM-DD[T]HH:mm:ss").format('YYYY-MM-DD');
-        console.log("session date: " + formattedDate);
         sessionsRendered++;
         API.getSessionByTeamNameAndDate(teamName, formattedDate)
             .then(res =>
@@ -132,7 +133,6 @@ class Home extends Component {
 
     // render session only twice to pick up new sessions
     verifySessionNeeded = (teamName, date, sessionsRendered) => {
-        console.log("member data " + JSON.stringify(this.state.members));
         if (sessionsRendered < 2) {
             this.getSession(teamName, date, sessionsRendered);
         }
@@ -141,46 +141,42 @@ class Home extends Component {
     // add status to db
     addStatus = (id) => {
         const request = {
-            current_status: "RED",
-            yesterday_description: "default",
-            today_description: "default",
-            blocker_description: "default",
+            current_status: this.state.status,
+            yesterday_description: this.state.yesterday,
+            today_description: this.state.today,
+            blocker_description: this.state.blockerDescription,
             MemberId: id
         }
 
-        API.addStatus( request )
-        .then(res =>
-            console.log(res)
-          )
-          .catch(err => {
-            alert("Error updating status: " + err);
-          });
-        console.log("adding status");
-        console.log("state status: " + this.state.status);
-        console.log("state blocker description: " + this.state.blockerDescription);
+        API.addStatus(request)
+            .then(res =>
+                console.log(res)
+            )
+            .catch(err => {
+                alert("Error updating status: " + err);
+            });
+
+        this.getSession(this.state.teamChosen, this.state.date, 0);
+    }
+
+    // handle change of yesterday & today fields
+    handleInputChange = event => {
+        this.setState({ [event.target.name]: event.target.value });
     }
 
     // grab status and blocker value from FormStatus
-    update(value){
-        console.log("value: " + JSON.stringify(value));
-        if (value === "RED" || value === "YELLOW" || value === "GREEN"){
-            console.log("status");
-            return () => {
-                this.setState({
-                  status: value
-                });
-             }
+    update(value) {
+        if (value === "RED" || value === "YELLOW" || value === "GREEN") {
+            this.setState({
+                status: value
+            });
         }
         else {
-            console.log("in else");
-            return () => {
-                this.setState({
-                  blockerDescription: value
-                });
-             }
+            this.setState({
+                blockerDescription: value
+            });
         }
-      }
-
+    }
 
     render() {
         return (
@@ -232,8 +228,8 @@ class Home extends Component {
                                 <Col size="md-12">
                                     <CardDeck id="card-deck">
                                         {this.state.members.map(member => (
-                                            <Card key={member.id} id="employee-card" fluid>
-                                                <Card.Img variant="top" rounded />
+                                            <Card key={member.id} id="employee-card" fluid="true" >
+                                                <Card.Img variant="top" rounded="true" />
                                                 <Card.Body>
                                                     <Card.Title>{member.first_name} {member.last_name}</Card.Title>
                                                     {/* <FaPlusCircle id="plus" size={25} onClick={this.addStatus} /> */}
@@ -242,14 +238,14 @@ class Home extends Component {
                                                             <Form.Label>Doing</Form.Label>
                                                             {member.Status
                                                                 ? <h6>{member.Status.today_description}</h6>
-                                                                : <Form.Control as="textarea" rows="3" placeholder="What are you doing today?" />
+                                                                : <Form.Control as="textarea" rows="3" name="today" placeholder="What are you doing today?" onChange={this.handleInputChange} />
                                                             }
                                                         </Form.Group>
                                                         <Form.Group controlId="exampleForm.ControlTextarea1">
                                                             <Form.Label>Done</Form.Label>
                                                             {member.Status
                                                                 ? <h6>{member.Status.yesterday_description}</h6>
-                                                                : <Form.Control as="textarea" rows="3" placeholder="What did you do yesterday?" />
+                                                                : <Form.Control as="textarea" rows="3" name="yesterday" placeholder="What did you do yesterday?" onChange={this.handleInputChange} />
                                                             }
                                                         </Form.Group>
                                                         <Form.Group controlId="exampleForm.ControlTextarea1">
