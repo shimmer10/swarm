@@ -25,7 +25,6 @@ class Home extends Component {
         date: new Date(),
         dropdownLabel: "Choose Team",
         members: [],
-        teams: [],
         loggedIn: true,
         teamChosen: null,
         teams: [],
