@@ -12,7 +12,6 @@ import CustomToggle from '../components/CustomToggle';
 import CustomMenu from '../components/CustomMenu';
 import DatePicker from 'react-date-picker';
 import Dropdown from 'react-bootstrap/Dropdown';
-import { FaPlusCircle } from 'react-icons/fa';
 import Form from 'react-bootstrap/Form';
 import FormStatus from '../components/FormStatus';
 import Moment from 'moment';
@@ -232,7 +231,6 @@ class Home extends Component {
                                                 <Card.Img variant="top" rounded="true" />
                                                 <Card.Body>
                                                     <Card.Title>{member.first_name} {member.last_name}</Card.Title>
-                                                    {/* <FaPlusCircle id="plus" size={25} onClick={this.addStatus} /> */}
                                                     <Form>
                                                         <Form.Group controlId="exampleForm.ControlTextarea1">
                                                             <Form.Label>Doing</Form.Label>
