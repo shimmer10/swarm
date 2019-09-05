@@ -53,8 +53,8 @@ export default {
     return axios.get("/api/sessions/range/" + teamName + "/" + lowDate + "/" + highDate);
   },
 
-  addStatus: function() {
-    return axios.get("api/statuses");
+  addStatus: function(statusData) {
+    return axios.post("api/statuses", statusData);
   },
 
   getStatusByMemberId: function(memberId) {

@@ -12,7 +12,6 @@ import CustomToggle from '../components/CustomToggle';
 import CustomMenu from '../components/CustomMenu';
 import DatePicker from 'react-date-picker';
 import Dropdown from 'react-bootstrap/Dropdown';
-import { FaPlusCircle } from 'react-icons/fa';
 import Form from 'react-bootstrap/Form';
 import FormStatus from '../components/FormStatus';
 import Moment from 'moment';
@@ -22,19 +21,19 @@ import './Home.css';
 class Home extends Component {
 
     state = {
+        blockerDescription: null,
         date: new Date(),
         dropdownLabel: "Choose Team",
         members: [],
-        memberStatus: [],
         teams: [],
         loggedIn: true,
         teamChosen: null,
         teams: [],
         showAlert: false,
-        status: "choose status",
+        status: null,
         submitted: false,
-        today: "",
-        yesterday: ""
+        today: null,
+        yesterday: null
     }
 
     componentDidMount() {
@@ -112,9 +111,9 @@ class Home extends Component {
         }
     }
 
+    // get session from API
     getSession = (teamName, date, sessionsRendered) => {
         var formattedDate = Moment(date, " YYYY-MM-DD[T]HH:mm:ss").format('YYYY-MM-DD');
-        console.log("session date: " + formattedDate);
         sessionsRendered++;
         API.getSessionByTeamNameAndDate(teamName, formattedDate)
             .then(res =>
@@ -131,29 +130,51 @@ class Home extends Component {
             );
     };
 
+    // render session only twice to pick up new sessions
     verifySessionNeeded = (teamName, date, sessionsRendered) => {
-        console.log("member data " + JSON.stringify(this.state.members));
         if (sessionsRendered < 2) {
             this.getSession(teamName, date, sessionsRendered);
         }
     };
 
-    // getStatus = (id) => {
-    //     API.getStatusByMemberId(id)
-    //         .then(res =>
-    //             this.setState({
-    //                 memberStatus: res.data.Statuses
-    //             }),
-    //             console.log("in here:"))
-    //         .catch(() =>
-    //             this.setState({
-    //                 memberStatus: []
-    //             }))
+    // add status to db
+    addStatus = (id) => {
+        const request = {
+            current_status: this.state.status,
+            yesterday_description: this.state.yesterday,
+            today_description: this.state.today,
+            blocker_description: this.state.blockerDescription,
+            MemberId: id
+        }
 
-    // }
+        API.addStatus(request)
+            .then(res =>
+                console.log(res)
+            )
+            .catch(err => {
+                alert("Error updating status: " + err);
+            });
 
-    addStatus = () => {
-        console.log("adding status");
+        this.getSession(this.state.teamChosen, this.state.date, 0);
+    }
+
+    // handle change of yesterday & today fields
+    handleInputChange = event => {
+        this.setState({ [event.target.name]: event.target.value });
+    }
+
+    // grab status and blocker value from FormStatus
+    update(value) {
+        if (value === "RED" || value === "YELLOW" || value === "GREEN") {
+            this.setState({
+                status: value
+            });
+        }
+        else {
+            this.setState({
+                blockerDescription: value
+            });
+        }
     }
 
     render() {
@@ -206,28 +227,34 @@ class Home extends Component {
                                 <Col size="md-12">
                                     <CardDeck id="card-deck">
                                         {this.state.members.map(member => (
-                                            <Card key={member.id} id="employee-card" fluid>
-                                                <Card.Img variant="top" rounded />
+                                            <Card key={member.id} id="employee-card" fluid="true" >
+                                                <Card.Img variant="top" rounded="true" />
                                                 <Card.Body>
                                                     <Card.Title>{member.first_name} {member.last_name}</Card.Title>
-                                                    {/* <div onClick={this.addStatus}> */}
-                                                    {/* <FaPlusCircle id="plus" size={25} onClick={this.addStatus} /> */}
-                                                    {/* </div> */}
-                                                    {/* {this.getStatus(member.id)} */}
                                                     <Form>
                                                         <Form.Group controlId="exampleForm.ControlTextarea1">
                                                             <Form.Label>Doing</Form.Label>
-                                                            <Form.Control as="textarea" rows="3" placeholder="What are you doing today?" >
-                                                                {member.Status.today_description}
-                                                            </Form.Control>
+                                                            {member.Status
+                                                                ? <h6>{member.Status.today_description}</h6>
+                                                                : <Form.Control as="textarea" rows="3" name="today" placeholder="What are you doing today?" onChange={this.handleInputChange} />
+                                                            }
                                                         </Form.Group>
                                                         <Form.Group controlId="exampleForm.ControlTextarea1">
                                                             <Form.Label>Done</Form.Label>
-                                                            <Form.Control as="textarea" rows="3" placeholder="What did you do yesterday?" />
-                                                            {/* {this.state.memberStatus.yesterday_description} */}
+                                                            {member.Status
+                                                                ? <h6>{member.Status.yesterday_description}</h6>
+                                                                : <Form.Control as="textarea" rows="3" name="yesterday" placeholder="What did you do yesterday?" onChange={this.handleInputChange} />
+                                                            }
                                                         </Form.Group>
-                                                        <FormStatus />
-                                                        <Button onClick={this.addStatus}>Submit</Button>
+                                                        <Form.Group controlId="exampleForm.ControlTextarea1">
+                                                            {member.Status
+                                                                ? (<div><Form.Label>Blocker</Form.Label> <h6>{member.Status.blocker_description}</h6></div>)
+                                                                : <FormStatus data={this.update.bind(this)} />
+                                                            }
+                                                        </Form.Group>
+                                                        {member.Status === null && (
+                                                            <Button onClick={() => this.addStatus(member.id)}>Submit</Button>
+                                                        )}
                                                     </Form>
                                                 </Card.Body>
                                             </Card>
