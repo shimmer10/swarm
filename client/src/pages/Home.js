@@ -182,7 +182,7 @@ class Home extends Component {
                 {this.renderRedirect()}
                 <Container>
                     <Row id="select-row" className="justify-content-md-center">
-                        <Col md="auto" className="columns">
+                        <Col md="auto" className="columns" id="team-select">
                             <Dropdown>
                                 <Dropdown.Toggle as={CustomToggle} id="dropdown-custom-components">
                                     {this.state.dropdownLabel}
@@ -195,11 +195,13 @@ class Home extends Component {
                                 </Dropdown.Menu>
                             </Dropdown>
                         </Col>
-                        <DatePicker
-                            onChange={this.handleDateSelect}
-                            value={this.state.date}
-                        />
-                        <Col xs lg="2" className="columns">
+                        <Col id="date-pick">
+                            <DatePicker
+                                onChange={this.handleDateSelect}
+                                value={this.state.date}
+                            />
+                        </Col>
+                        <Col xs lg="2" className="columns" id="submit-button">
                             <Button variant="outline-primary" size="lg" className="px-4"
                                 onClick={this.renderCardsOnSubmit}>Submit</Button>
                         </Col>
