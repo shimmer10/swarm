@@ -23,7 +23,7 @@ class FormStatus extends Component {
     render() {
         return (
             <Form.Group controlId="exampleForm.ControlSelect1">
-                <Form.Label>Status</Form.Label>
+                <Form.Label className="card-label">Status</Form.Label>
                 <Form.Control as="select" onChange={this.handleStatusSelect.bind(this)}>
                     <option value="choose status">Choose Status</option>
                     <option value="GREEN">Clear</option>
