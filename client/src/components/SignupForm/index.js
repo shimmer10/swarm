@@ -25,8 +25,9 @@ class SignupForm extends Component {
   redirectLocation = '';  // set when we want to redirect. used when this.state.redirect is true
 
   handleInputChange = event => {
-    console.log('handle input change on signup: ' + event.target.name + ' ' + event.target.value);
-    this.setState({ [event.target.name]: event.target.value });
+    console.log('handle input change on signup: ' + event.target.name + ' ' + event.target.value.toUpperCase());
+    
+    this.setState({ [event.target.name]: event.target.value.toUpperCase() });
   }
   submitRegister = event => {
     event.preventDefault();
@@ -93,8 +94,8 @@ class SignupForm extends Component {
                 <Form.Label>Role</Form.Label>
                 <Form.Control as="select" name="role" onChange={this.handleInputChange}>
                   <option>Choose...</option>
-                  <option>Developer</option>
-                  <option>Scrum Master</option>
+                  <option>DEVELOPER</option>
+                  <option>SCRUM MASTER</option>
                 </Form.Control>
               </Form.Group>
             </Form.Row>
