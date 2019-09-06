@@ -69,17 +69,17 @@ class NavBarAdmin extends Component {
                             <NavDropdown.Item href="https://spbryan.github.io/Bootstrap-Portfolio/" target="_blank">Sean</NavDropdown.Item>
                         </NavDropdown>
                     </Nav>
-                    <NavLink onClick={this.handleLogOut} className="ml-auto" id="logout" to="/">
-                        Logout for {this.props.devName}
+                    <NavLink className="ml-auto" activeStyle={{ fontWeight: "bold", textDecoration: "underline" }} id="home" to="/home">
+                        Home
                     </NavLink>
                     <NavLink className="ml-auto" activeStyle={{ fontWeight: "bold", textDecoration: "underline" }} id="admin" to="/admin">
                         Admin
                     </NavLink>
-                    <NavLink className="ml-auto" activeStyle={{ fontWeight: "bold", textDecoration: "underline" }} id="home" to="/home">
-                        Home
-                    </NavLink>
                     <NavLink className="ml-auto" activeStyle={{ fontWeight: "bold", textDecoration: "underline" }} id="report" to="/report">
                         Report
+                    </NavLink>
+                    <NavLink onClick={this.handleLogOut} className="ml-auto" id="logout" to="/">
+                        Logout for {this.props.devName}
                     </NavLink>
                 </Navbar.Collapse>
             </Navbar >
