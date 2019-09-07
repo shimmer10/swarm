@@ -38,14 +38,14 @@ class Home extends Component {
     componentDidMount() {
         this.getTeams();
         console.log(sessionStorage)
-        if (sessionStorage.getItem("role") === 'Developer') {
+        if (sessionStorage.getItem("role") === 'DEVELOPER') {
             console.log("returning nav developer from home");
             console.log(sessionStorage.getItem("userID"));
             this.props.updateWhichNav(con.DEVELOPER);
             this.setState({
                 loggedIn: true
             })
-        } else if (sessionStorage.getItem("role") === 'Scrum Master') {
+        } else if (sessionStorage.getItem("role") === 'SCRUM MASTER') {
             console.log("returning nav admin from home");
             console.log(sessionStorage.getItem("userID"));
             this.props.updateWhichNav(con.ADMIN);

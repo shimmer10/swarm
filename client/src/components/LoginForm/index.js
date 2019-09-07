@@ -21,8 +21,8 @@ class LoginForm extends Component {
   redirectLocation = '';  // set when we want to redirect. used when this.state.redirect is true
 
   handleInputChange = event => {
-    console.log('handle input change on login: ' + event.target.name + ' ' + event.target.value);
-    this.setState({ [event.target.name]: event.target.value });
+    console.log('handle input change on login: ' + event.target.name + ' ' + event.target.value.toUpperCase());
+    this.setState({ [event.target.name]: event.target.value.toUpperCase() });
   }
 
   submitLogin = event => {
