@@ -1,3 +1,11 @@
+h6 {
+    background-color: white;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border: 1px solid lightgray;
+    min-height: 30px;
+}
+
 #alert {
     margin-top: 20px;
 }
@@ -6,10 +14,33 @@
     padding-top: 20px;
 }
 
+#card-name {
+    color: #70a1ff;
+    text-align: center;
+    font-weight: bold;
+    border-bottom: 3px solid #70a1ff;
+}
+
+#doing-val {
+    text-align: left;
+    padding-left: 3px;
+}
+
+#done-val {
+    text-align: left;
+    padding-left: 3px;
+}
+
+#block-val {
+    text-align: left;
+    padding-left: 3px;
+}
+
 #employee-card {
     /* max-width:25%; */
     min-width: 250px;
     margin-top: 20px;
+    background: url("../images/wall4.png");
 }
 
 #plus {
@@ -36,7 +67,16 @@
     padding-top: 10px;
 }
 
+.card-form {
+    text-align: left;
+}
+
 .columns {
     padding-left: 50px;
     padding-right: 50px;
+}
+
+.card-label {
+    font-weight: bold;
+    text-align: left;
 }

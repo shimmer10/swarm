@@ -231,25 +231,25 @@ class Home extends Component {
                                             <Card key={member.id} id="employee-card" fluid="true" >
                                                 <Card.Img variant="top" rounded="true" />
                                                 <Card.Body>
-                                                    <Card.Title>{member.first_name} {member.last_name}</Card.Title>
+                                                    <Card.Title id="card-name">{member.first_name} {member.last_name}</Card.Title>
                                                     <Form>
                                                         <Form.Group controlId="exampleForm.ControlTextarea1">
-                                                            <Form.Label>Doing</Form.Label>
+                                                            <Form.Label className="card-label">Doing</Form.Label>
                                                             {member.Status
-                                                                ? <h6>{member.Status.today_description}</h6>
+                                                                ? <h6 id="doing-val">{member.Status.today_description}</h6>
                                                                 : <Form.Control as="textarea" rows="3" name="today" placeholder="What are you doing today?" onChange={this.handleInputChange} />
                                                             }
                                                         </Form.Group>
                                                         <Form.Group controlId="exampleForm.ControlTextarea1">
-                                                            <Form.Label>Done</Form.Label>
+                                                            <Form.Label className="card-label">Done</Form.Label>
                                                             {member.Status
-                                                                ? <h6>{member.Status.yesterday_description}</h6>
+                                                                ? <h6 id="done-val">{member.Status.yesterday_description}</h6>
                                                                 : <Form.Control as="textarea" rows="3" name="yesterday" placeholder="What did you do yesterday?" onChange={this.handleInputChange} />
                                                             }
                                                         </Form.Group>
                                                         <Form.Group controlId="exampleForm.ControlTextarea1">
                                                             {member.Status
-                                                                ? (<div><Form.Label>Blocker</Form.Label> <h6>{member.Status.blocker_description}</h6></div>)
+                                                                ? (<div><Form.Label className="card-label">Blocker</Form.Label> <h6 id="block-val">{member.Status.blocker_description}</h6></div>)
                                                                 : <FormStatus data={this.update.bind(this)} />
                                                             }
                                                         </Form.Group>
