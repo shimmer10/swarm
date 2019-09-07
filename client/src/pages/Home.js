@@ -154,6 +154,10 @@ class Home extends Component {
                 alert("Error updating status: " + err);
             });
 
+            this.setState({
+                blocker_description: null
+            })
+
         this.getSession(this.state.teamChosen, this.state.date, 0);
     }
 
