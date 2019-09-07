@@ -41,7 +41,7 @@ class Main extends Component {
                     <Row fluid>
                         <Col size="md-12" id="header-text">
                             <h1>Welcome To SWARM</h1>
-                            <h6>Standup With A Remote Motif</h6>
+                            <h5>Standup With A Remote Motif</h5>
                         </Col>
                     </Row>
                     <Row fluid>
