@@ -21,7 +21,7 @@ class Admin extends Component {
 
   componentDidMount() {
     console.log(sessionStorage);
-    if (sessionStorage.getItem("role") === 'Scrum Master') {
+    if (sessionStorage.getItem("role") === 'SCRUM MASTER') {
       // allow access to admin page if role is scrum master
       console.log("admin page: user role is scrum master");
       this.props.updateWhichNav(con.ADMIN);

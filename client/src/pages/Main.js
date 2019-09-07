@@ -20,7 +20,7 @@ class Main extends Component {
         if (!sessionStorage.getItem("userID")) {
             console.log("MAIN: no user ID in session");
             this.props.updateWhichNav(con.NOUSER);
-        } else if (sessionStorage.getItem("role") === 'Scrum Master') {
+        } else if (sessionStorage.getItem("role") === 'SCRUM MASTER') {
             console.log("MAIN: returning nav admin from main");
             this.props.updateWhichNav(con.ADMIN);
         } else {

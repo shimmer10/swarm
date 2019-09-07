@@ -51,7 +51,7 @@ class Report extends Component {
             this.setState({
                 LoggedIn: false
             })
-        } else if (sessionStorage.getItem("role") === 'Scrum Master') {
+        } else if (sessionStorage.getItem("role") === 'SCRUM MASTER') {
             console.log("REPORT: returning nav admin");
             console.log(sessionStorage.getItem("userID"));
             this.props.updateWhichNav(con.ADMIN);
