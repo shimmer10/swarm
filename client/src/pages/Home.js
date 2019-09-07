@@ -148,15 +148,14 @@ class Home extends Component {
 
         API.addStatus(request)
             .then(res =>
-                console.log(res)
+                console.log(res),
+                this.setState({
+                    blockerDescription: null
+                })
             )
             .catch(err => {
                 alert("Error updating status: " + err);
             });
-
-            this.setState({
-                blocker_description: null
-            })
 
         this.getSession(this.state.teamChosen, this.state.date, 0);
     }
@@ -181,6 +180,7 @@ class Home extends Component {
     }
 
     render() {
+        console.log("this: " + JSON.stringify(this.state));
         return (
             <div>
                 {this.renderRedirect()}
