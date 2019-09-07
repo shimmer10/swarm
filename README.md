@@ -63,7 +63,14 @@
             * Clicking their name will move them to the 'Team Members' section on the right-hand side
             * After they have made their changes they select the 'Save' button to save or 'Exit' to cancel changes
 ### **Enhancements**
-
+    * Add Validations:
+        * Admin page - must enter team name when creating new team
+        * Login page - user gets a better message when they try to sign-in before signing-up. Currently get 404.
+        * Home/Sessions page - should get validation error when they try to submit a status without doing or done filled out. Should also get a validation error when they leave the status as 'choose status' and if they choose blocked, blocker must be filled out.
+    * Add project page: 
+        * This page would be a feature that allows granular level details at the project level which may have multiple teams working on one project.
+    * Images for employees - allow someone to input image and have default for those who don't
+    * Ability to create more granular reports from the report page. Allow the user to dig down into the report data.
 -------------------------------------------------------------------------------------
 
 # Create React Express App
