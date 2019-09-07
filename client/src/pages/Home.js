@@ -180,7 +180,6 @@ class Home extends Component {
     }
 
     render() {
-        console.log("this: " + JSON.stringify(this.state));
         return (
             <div>
                 {this.renderRedirect()}
